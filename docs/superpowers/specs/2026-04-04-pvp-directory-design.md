@@ -47,6 +47,9 @@ Stack: Next.js (App Router) + Supabase (Postgres + Edge Functions) + SLP (Server
 | description   | TEXT         | Long-form description           |
 | version       | TEXT         | e.g., "1.8", "1.20.4"          |
 | tags          | TEXT[]       | ["crystal", "pvp", "lifesteal"] |
+| platform      | TEXT         | Enum: 'java', 'bedrock', 'crossplay' |
+| bedrock_ip    | TEXT         | Bedrock IP if crossplay         |
+| bedrock_port  | INTEGER      | Bedrock port if crossplay       |
 | verified      | BOOLEAN      | Default false                   |
 | votifier_key  | TEXT         | Encrypted RSA public key        |
 | vote_count    | INTEGER      | Default 0                       |
@@ -127,35 +130,44 @@ Response: { status: boolean, latency_ms: number, player_count: number, max_playe
 
 ### Pages
 
-| Route                      | Description                              |
-|----------------------------|------------------------------------------|
-| `/`                        | Home — server list, filters, search     |
-| `/servers/[ip]`            | Individual server page (real-time data)  |
-| `/submit`                  | Server submission + verification flow     |
-| `/top`                     | Top-ranked servers by votes               |
-| `/category/[slug]`          | Category-filtered server list            |
-| `/version/[version]`        | Version-filtered server list             |
-| `/blog`                    | Blog index                               |
-| `/blog/[slug]`              | Blog post                                |
-| `/api/server/[ip]`         | Server status proxy endpoint              |
-| `/api/vote`                | Vote endpoint (POST, CSRF protected)     |
-| `/api/servers`             | Server list API (paginated, filterable)   |
-| `/api/v1/servers/[ip]/status` | Public API: server status JSON         |
-| `/api/v1/servers/[ip]/badge` | Public API: SVG rank/latency badge     |
+All pages live under the `/minecraft` path for SEO. The root `/` redirects to `/minecraft`.
+
+| Route                           | Description                              |
+|---------------------------------|------------------------------------------|
+| `/minecraft`                    | Home — Minecraft server list, filters, search |
+| `/minecraft/servers/[ip]`       | Individual server page (real-time data)  |
+| `/minecraft/submit`             | Server submission + verification flow     |
+| `/minecraft/top`                | Top-ranked servers by votes               |
+| `/minecraft/category/[slug]`    | Category-filtered server list            |
+| `/minecraft/version/[version]`   | Version-filtered server list             |
+| `/minecraft/blog`                | Blog index                               |
+| `/minecraft/blog/[slug]`         | Blog post                                |
+| `/api/server/[ip]`              | Server status proxy endpoint              |
+| `/api/vote`                    | Vote endpoint (POST, CSRF protected)     |
+| `/api/servers`                 | Server list API (paginated, filterable)   |
+| `/api/v1/servers/[ip]/status`  | Public API: server status JSON           |
+| `/api/v1/servers/[ip]/badge`    | Public API: SVG rank/latency badge       |
+
+**Java/Bedrock Toggle:** Filter bar includes a Java/Bedrock toggle. Server card shows platform badge. Filterable via `?platform=java|bedrock|crossplay` query param.
 
 ### Server Card Component
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ [Icon]  ServerName                          [Ping] │
-│         play.example.com                    32ms   │
-│         ★ 4.2 (128 votes)                           │
-│                                                     │
-│ [1.20.4] [PvP] [Lifesteal] [Cross-Play]           │
-│                                                     │
-│ 124/500 players online                    [Vote]   │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│ [Icon]  ServerName                      [Java]      [Ping] │
+│         play.example.com                      badge:  32ms   │
+│         ★ 4.2 (128 votes)                                 │
+│                                                             │
+│ [1.20.4] [PvP] [Lifesteal]                               │
+│                                                             │
+│ 124/500 players online                            [Vote]   │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+**Platform badge** (Java / Bedrock / Cross-Play): Color-coded pill below server name.
+- Java: Orange badge
+- Bedrock: Green badge
+- Cross-Play: Blue badge
 
 **Ping badge colors:**
 - Green: < 50ms
@@ -229,6 +241,43 @@ Response: SVG image (server owners can embed in their website)
 
 ## SEO Strategy
 
+### Domain Architecture: Subdomain Strategy
+
+To establish clear topical authority with search engines, the site uses a **subdomain-first architecture**:
+
+```
+minecraft.pvpserverlist.gg   → Minecraft server directory (primary, Phase 1)
+                                (also reachable at pvpserverlist.gg/minecraft)
+rust.pvpserverlist.gg         → Rust server directory (Phase 2)
+ark.pvpserverlist.gg          → ARK server directory (Phase 2)
+www.pvpserverlist.gg          → Root domain redirects to minecraft.pvpserverlist.gg
+```
+
+**Why subdomain over subdirectory:**
+- Google treats subdomains as **separate sites** for ranking purposes — perfect for multi-game topical authority
+- minecraft.pvpserverlist.gg signals "this is a Minecraft expert site" to search engines
+- Each game gets its own crawl budget, ranking signals, and domain authority
+- Brand remains unified under pvpserverlist.gg
+- Future games (Rust, ARK) get their own subdomains without diluting Minecraft authority
+
+**Implementation:**
+- Vercel: Configure subdomain in DNS + Vercel dashboard
+- Next.js: All routes live under the root app (`/`) — Vercel routes subdomain traffic to the same app
+- Supabase: Shared database across all subdomains (same project)
+- Cookie/domain policy: Set `domain=.pvpserverlist.gg` for cross-subdomain voting
+
+**Current phase (Phase 1):** Build at root or `/minecraft` path first. Subdomain migration happens at deploy time — the code doesn't change, only DNS + Vercel routing.
+
+### SEO: Topical Authority Signals
+
+Each Minecraft subdomain page reinforces "Minecraft expert" signals:
+- Title: always starts with "Minecraft" or "Minecraft PvP"
+- H1: game-specific ("Best Minecraft PvP Servers 2026")
+- Version badges prominently displayed (1.8, 1.21, etc.)
+- Java/Bedrock toggle filter
+- Breadcrumb: Home > Minecraft > [Category]
+- Internal links to other Minecraft-relevant content only (no cross-game dilution)
+
 ### 10 High-Intent PvP Keywords
 
 1. `Crystal PvP servers 1.20.4`
@@ -258,12 +307,18 @@ Server owners select tags at submission. Tag → slug mapping generates category
 
 ### JSON-LD Schema
 
-**Homepage:**
+**Homepage (minecraft.pvpserverlist.gg):**
 ```json
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "Best Minecraft PvP Servers 2026",
+  "description": "Top-ranked Minecraft PvP servers with real-time latency, player counts, and version filters. Find Crystal PvP, UHC, Sumo, NoDebuff, and more.",
+  "url": "https://minecraft.pvpserverlist.gg",
+  "about": {
+    "@type": "Thing",
+    "name": "Minecraft PvP Gaming"
+  },
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -272,11 +327,18 @@ Server owners select tags at submission. Tag → slug mapping generates category
         "@type": "SoftwareApplication",
         "name": "ServerName",
         "applicationCategory": "GameServer",
+        "applicationSubCategory": "PvPServer",
         "operatingSystem": "Minecraft 1.20.4",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": "4.8",
-          "ratingCount": "1240"
+          "ratingCount": "1240",
+          "bestRating": "5"
         }
       }
     }
@@ -284,7 +346,7 @@ Server owners select tags at submission. Tag → slug mapping generates category
 }
 ```
 
-**Individual server page:** SoftwareApplication schema with server IP, version, player count.
+**Individual server page:** SoftwareApplication schema with server IP, version, player count, and potentialAction for "Vote" interaction.
 
 ### Blog (Top-of-Funnel Content)
 
