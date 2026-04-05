@@ -66,7 +66,7 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-colors">
       {server.banner && (
-        <div className="w-full h-24 md:h-28 overflow-hidden bg-zinc-800">
+        <div className="w-full aspect-[2.87/1] overflow-hidden bg-zinc-800">
           {server.banner.endsWith('.mp4') ? (
             <video
               src={server.banner}
