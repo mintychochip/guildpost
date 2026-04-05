@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { SubmitForm } from "@/components/submit/SubmitForm";
+import { AdBanner } from "@/components/ads/AdBanner";
 
 export const metadata: Metadata = {
   title: "Submit Server — PvP Index",
@@ -24,6 +25,10 @@ export default function SubmitPage() {
         <h1 className="text-2xl font-bold text-white mb-2">Submit Your Server</h1>
         <p className="text-zinc-400 mb-6">Add your server to the PvP Index directory.</p>
         <SubmitForm />
+
+        <div className="mt-8">
+          <AdBanner slot="footer" />
+        </div>
       </main>
     </div>
   );

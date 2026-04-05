@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { notFound } from "next/navigation";
+import { AdBanner } from "@/components/ads/AdBanner";
 
 interface VerifyServer {
   id: string;
@@ -74,6 +75,9 @@ export default async function VerifyPage({
             </p>
           </>
         )}
+      </div>
+      <div className="mt-6">
+        <AdBanner slot="footer" />
       </div>
     </div>
   );
