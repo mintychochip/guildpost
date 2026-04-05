@@ -13,7 +13,7 @@ export default function LoginPage({
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-1">PvP Index</h1>
+          <h1 className="text-3xl font-bold text-white mb-1">Guild Post</h1>
           <p className="text-zinc-500 text-sm">Sign in to manage your servers</p>
         </div>
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-6">
@@ -29,7 +29,7 @@ export default function LoginPage({
           <LoginForm />
         </div>
         <p className="text-center text-xs text-zinc-600 mt-4">
-          <Link href="/" className="hover:text-zinc-400">← Back to PvP Index</Link>
+          <Link href="/" className="hover:text-zinc-400">← Back to Guild Post</Link>
         </p>
       </div>
     </div>

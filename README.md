@@ -1,8 +1,8 @@
-# PvP Index
+# GuildPost
 
 Real-time Minecraft PvP server directory. Live latency checks, player counts, and community votes — ranked by performance.
 
-**Live:** [pvp-directory.vercel.app](https://pvp-directory.vercel.app) (custom domain: pvpserverlist.gg — coming soon)
+**Live:** [guildpost.tech](https://guildpost.tech)
 
 ## Stack
 
@@ -65,5 +65,4 @@ The `watcher/` directory is a standalone Node.js cron that polls all servers eve
 ## SEO
 
 - JSON-LD schema (ItemList, SoftwareApplication) on all listing pages
-- Subdomain strategy: `minecraft.pvpserverlist.gg` → Minecraft topical authority
 - Programmatic SEO pages: `/minecraft/version/[version]/[tag]/[region]`

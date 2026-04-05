@@ -73,7 +73,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${server.name} — PvP Index`,
+    title: `${server.name} — Guild Post`,
     description: server.description ?? `Join ${server.name} on ${server.ip}:${server.port}. ${server.version ?? "Minecraft"} server with real-time status.`,
   };
 }
