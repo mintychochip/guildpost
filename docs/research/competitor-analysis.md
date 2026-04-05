@@ -92,4 +92,9 @@
 - BattleMetrics: Multi-game but no SEO-first subdomain approach
 
 ### Our Advantage
-The subdomain architecture we're building is NOT YET DOMINATED by any competitor. This is a 2026 SEO opportunity.
+The subdomain architecture + programmatic SEO is NOT YET DOMINATED by any competitor. This is a 2026 SEO opportunity.
+
+**Programmatic SEO** — No competitor auto-generates 1000+ pages for version+tag+region combinations. This means:
+- No competitor ranks for "1.21.1 crystal pvp server europe" (specific long-tail)
+- When AI search (SGE) gives a specific recommendation, we have a page for it
+- Traditional competitors only rank for head terms ("Minecraft PvP servers")
