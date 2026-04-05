@@ -40,7 +40,7 @@ function PingBadge({ ms }: { ms: number | null }) {
   );
 }
 
-function LastChecked({ time }: { time?: string }) {
+function LastChecked({ time, isOnline }: { time?: string; isOnline: boolean }) {
   if (!time) return null;
   const date = new Date(time);
   const now = new Date();
@@ -55,7 +55,7 @@ function LastChecked({ time }: { time?: string }) {
 
   return (
     <span className="text-xs text-zinc-600" title={date.toLocaleString()}>
-      checked {label}
+      {isOnline ? "checked" : "last seen"} {label}
     </span>
   );
 }
@@ -169,7 +169,7 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
                 <span className="text-zinc-500">Offline</span>
               )}
             </div>
-            <LastChecked time={last_checked} />
+            <LastChecked time={last_checked} isOnline={isOnline} />
           </div>
 
           <div className="flex items-center gap-3">
