@@ -1,0 +1,150 @@
+# https://llmstxt.txt
+# Full manifest for AI crawlers - comprehensive site documentation
+
+Version: 1.0
+Date: 2026-04-05
+
+Last Modified: 2026-04-05
+Change Frequency: weekly
+Retry After: 86400
+
+Sitemap: https://guildpost.tech/sitemap.xml
+Documentation: https://guildpost.tech/docs
+
+---
+
+## SITE OVERVIEW
+
+Guild Post (guildpost.tech) is a Minecraft server list website that helps players find the best PvP servers with real-time status checks, filtering, sorting, and voting.
+
+Base URL: https://guildpost.tech
+Contact: info@guildpost.tech
+
+---
+
+## MAIN PAGES
+
+### Home Page (/)
+- Server listing with grid/list view toggle
+- Filters: sort (votes/players/latency/new), tag, version, search
+- Pagination (20 servers per page)
+- Real-time server status (online/offline, player count, latency)
+- Ad banner placements: leaderboard, skyscraper (sidebar)
+- FAQ section with contact form
+- SEO: Schema.org ItemList for server listings
+
+### Category Pages (/category/[category])
+- Dynamic routes for server categories
+- Filtered server lists by category tag
+
+### Top Servers (/top)
+- Top-ranked servers by votes
+
+### Login (/login)
+- User authentication page
+
+### Dashboard (/dashboard)
+- User dashboard (authenticated)
+
+### Submit Server (/submit)
+- Server submission form for owners
+
+### Server Detail (/servers/[id])
+- Individual server pages with full details
+
+---
+
+## API ROUTES
+
+### Public APIs
+- /api/v1/* - Public API endpoints
+- /api/servers/* - Server listing and details
+- /api/submit/* - Server submission handling
+- /api/vote/* - Voting endpoints
+- /api/cron/* - Scheduled jobs (status checking, etc.)
+
+### Auth APIs
+- /api/auth/* - Authentication endpoints
+- /auth/callback - OAuth callback handler
+
+---
+
+## DATA MODEL
+
+### Server Entity
+```
+id: string (UUID)
+ip: string
+port: number
+name: string
+description: string | null
+version: string | null
+tags: string[]
+verified: boolean
+vote_count: number
+banner: string | null
+icon: string | null
+created_at: timestamp
+```
+
+### Server Status (related)
+```
+status: boolean (online/offline)
+latency_ms: number | null
+player_count: number
+max_players: number
+last_checked: timestamp
+```
+
+---
+
+## FEATURES
+
+### Server Filtering & Sorting
+- By tags (PvP, Skyblock, Survival, etc.)
+- By version (1.8, 1.12, 1.20, etc.)
+- By sort: votes (default), players online, latency, newest
+- Search by server name
+
+### Voting System
+- One vote per 24 hours per IP
+- Optional review with vote
+- VPN/Proxy votes blocked
+- Votes > 15 days old auto-deleted
+- Votifier support (NU Votes plugin)
+
+### Real-time Status Checks
+- Periodic latency/status polling
+- Player count tracking
+- Last checked timestamps
+
+---
+
+## AUTHENTICATION
+
+- Supabase-based authentication
+- OAuth providers (GitHub, etc.)
+- Session-based auth with callback handling
+
+---
+
+## FRONTEND STACK
+
+- Next.js 15+ (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase (Postgres + Realtime)
+
+---
+
+## KEY ROUTES QUICK REFERENCE
+
+| Route | Description |
+|-------|-------------|
+| / | Home - server listing |
+| /category/[tag] | Category filtered list |
+| /top | Top voted servers |
+| /login | Login page |
+| /dashboard | User dashboard |
+| /submit | Submit new server |
+| /servers/[id] | Server detail page |

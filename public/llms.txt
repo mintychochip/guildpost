@@ -1,0 +1,10 @@
+# https://llmstxt.txt
+# Lightweight manifest for AI crawlers
+
+Version: 1.0
+Date: 2026-04-05
+
+Sitemap: https://guildpost.tech/sitemap.xml
+Documentation: https://guildpost.tech/docs
+
+# For full content, see /llms-full.txt

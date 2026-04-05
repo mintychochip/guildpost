@@ -37,7 +37,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen">
       <header className="border-b border-zinc-800 py-4">
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-bold text-white">PvP Index</Link>
+          <Link href="/" className="text-2xl font-bold text-white">Guild Post</Link>
           <nav className="flex gap-4">
             <Link href="/top" className="text-sm text-zinc-400 hover:text-white transition-colors">Top Servers</Link>
             <Link href="/submit" className="text-sm text-zinc-400 hover:text-white transition-colors">Submit</Link>

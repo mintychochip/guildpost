@@ -220,8 +220,8 @@ export default async function HomePage({
             <h2 className="text-2xl font-bold text-white mb-8 text-center">Frequently Asked Questions</h2>
             <div className="space-y-6">
               <div>
-                <h3 className="text-white font-semibold mb-2">What is PvP Index?</h3>
-                <p className="text-zinc-400 text-sm">PvP Index is a Minecraft server list website created to help players find the best PvP servers. With multiple filters, ordered lists, categories, and real-time server status, finding your ideal server is easier than ever.</p>
+                <h3 className="text-white font-semibold mb-2">What is Guild Post?</h3>
+                <p className="text-zinc-400 text-sm">Guild Post is a Minecraft server list website created to help players find the best PvP servers. With multiple filters, ordered lists, categories, and real-time server status, finding your ideal server is easier than ever.</p>
               </div>
               <div>
                 <h3 className="text-white font-semibold mb-2">Who lists the servers?</h3>
@@ -237,12 +237,12 @@ export default async function HomePage({
               </div>
               <div>
                 <h3 className="text-white font-semibold mb-2">How can I contact you?</h3>
-                <p className="text-zinc-400 text-sm">You can reach out via email at <a href="mailto:info@pvpserverlist.com" className="text-indigo-400 hover:underline">info@pvpserverlist.com</a>, or message us via Discord or Twitter. You can also use the contact form below.</p>
+                <p className="text-zinc-400 text-sm">You can reach out via email at <a href="mailto:info@guildpost.tech" className="text-indigo-400 hover:underline">info@guildpost.tech</a>, or message us via Discord or Twitter. You can also use the contact form below.</p>
               </div>
             </div>
             <ContactForm />
             <div className="mt-10 pt-6 border-t border-zinc-800 text-center text-zinc-600 text-sm">
-              PvP Index — Real-time Minecraft server status
+              Guild Post — Real-time Minecraft server status
             </div>
           </div>
         </footer>

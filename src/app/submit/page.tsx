@@ -8,8 +8,8 @@ import { AdBanner } from "@/components/ads/AdBanner";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Submit Server — PvP Index",
-  description: "Submit your Minecraft server to PvP Index.",
+  title: "Submit Server — Guild Post",
+  description: "Submit your Minecraft server to Guild Post.",
 };
 
 export default function SubmitPage() {
@@ -25,7 +25,7 @@ export default function SubmitPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold text-white mb-2">Submit Your Server</h1>
-        <p className="text-zinc-400 mb-6">Add your server to the PvP Index directory.</p>
+        <p className="text-zinc-400 mb-6">Add your server to the Guild Post directory.</p>
         <SubmitForm />
 
         <div className="mt-8">

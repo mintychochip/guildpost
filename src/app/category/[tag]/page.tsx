@@ -48,7 +48,7 @@ export async function generateMetadata({
   const { tag } = await params;
   const label = TAG_LABELS[tag] ?? tag;
   return {
-    title: `${label} — PvP Index`,
+    title: `${label} — Guild Post`,
     description: `Find the best ${label.toLowerCase()}. Real-time latency and player counts.`,
   };
 }

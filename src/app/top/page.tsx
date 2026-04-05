@@ -29,7 +29,7 @@ interface ServerWithStatus {
 }
 
 export const metadata: Metadata = {
-  title: "Top Servers — PvP Index",
+  title: "Top Servers — Guild Post",
   description: "Highest ranked Minecraft PvP servers by votes.",
 };
 
