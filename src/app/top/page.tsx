@@ -5,7 +5,6 @@ import { createClient } from "@/lib/supabase/server";
 import { ServerCard } from "@/components/server/ServerCard";
 import { Metadata } from "next";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { SidebarAds } from "@/components/ads/SidebarAds";
 
 interface ServerWithStatus {
   id: string;
@@ -58,30 +57,37 @@ export default async function TopPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <AdBanner slot="leaderboard" className="mb-6" />
-
-        <h1 className="text-3xl font-bold text-white mb-2">Top Servers</h1>
-        <p className="text-zinc-400 mb-6">Ranked by community votes.</p>
-
-        <div className="grid gap-6" style={{ gridTemplateColumns: '1fr 300px' }}>
-          <div className="space-y-2">
-          {servers?.map((server, i) => (
-            <div key={server.id} className="flex items-center gap-4">
-              <span className="text-2xl font-bold text-zinc-600 w-8 text-right">
-                {i + 1}
-              </span>
-              <div className="flex-1">
-                <ServerCard server={server as unknown as ServerWithStatus} />
-              </div>
-            </div>
-          ))}
-          </div>
-          <div className="hidden lg:block">
-            <SidebarAds />
-          </div>
+      <div className="grid" style={{ gridTemplateColumns: '1fr minmax(0, 1152px) 1fr' }}>
+        <div className="hidden xl:flex xl:justify-end xl:pr-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+          <AdBanner slot="skyscraper" />
         </div>
-      </main>
+
+        <div>
+          <main className="px-4 py-8">
+            <AdBanner slot="leaderboard" className="mb-6" />
+
+            <h1 className="text-3xl font-bold text-white mb-2">Top Servers</h1>
+            <p className="text-zinc-400 mb-6">Ranked by community votes.</p>
+
+            <div className="space-y-2">
+            {servers?.map((server, i) => (
+              <div key={server.id} className="flex items-center gap-4">
+                <span className="text-2xl font-bold text-zinc-600 w-8 text-right">
+                  {i + 1}
+                </span>
+                <div className="flex-1">
+                  <ServerCard server={server as unknown as ServerWithStatus} />
+                </div>
+              </div>
+            ))}
+            </div>
+          </main>
+        </div>
+
+        <div className="hidden xl:flex xl:pl-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+          <AdBanner slot="skyscraper" />
+        </div>
+      </div>
     </div>
   );
 }

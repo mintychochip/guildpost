@@ -7,7 +7,6 @@ import { ServerStatusPoller } from "@/components/server/ServerStatusPoller";
 import { VoteButton } from "@/components/server/VoteButton";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { SidebarAds } from "@/components/ads/SidebarAds";
 
 interface ServerStatus {
   status: boolean;
@@ -95,66 +94,71 @@ export default async function ServerPage({
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-8">
-          <AdBanner slot="leaderboard" className="mb-6" />
+        <div className="grid" style={{ gridTemplateColumns: '1fr minmax(0, 1152px) 1fr' }}>
+          <div className="hidden xl:flex xl:justify-end xl:pr-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+            <AdBanner slot="skyscraper" />
+          </div>
 
-          <div className="grid gap-6" style={{ gridTemplateColumns: '1fr 300px' }}>
-            <div>
+          <div>
+            <main className="px-4 py-8">
+              <AdBanner slot="leaderboard" className="mb-6" />
+
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-6">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  {server.name}
-                  {server.verified && (
-                    <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded">
-                      Verified
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+                      {server.name}
+                      {server.verified && (
+                        <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded">
+                          Verified
+                        </span>
+                      )}
+                    </h1>
+                    <p className="text-zinc-500 font-mono mt-1">
+                      {server.ip}:{server.port}
+                    </p>
+                  </div>
+                  <VoteButton serverId={server.id} />
+                </div>
+
+                <div className="flex items-center gap-6 mb-4">
+                  <ServerStatusPoller
+                    ip={server.ip}
+                    port={server.port}
+                    initialStatus={status ?? undefined}
+                  />
+                </div>
+
+                {server.description && (
+                  <p className="text-zinc-400 mt-4">{server.description}</p>
+                )}
+
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {server.version && (
+                    <span className="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">
+                      {server.version}
                     </span>
                   )}
-                </h1>
-                <p className="text-zinc-500 font-mono mt-1">
-                  {server.ip}:{server.port}
-                </p>
+                  {server.tags?.map((tag: string) => (
+                    <span key={tag} className="text-xs bg-purple-900/30 text-purple-300 px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <VoteButton serverId={server.id} />
-            </div>
 
-            <div className="flex items-center gap-6 mb-4">
-              <ServerStatusPoller
-                ip={server.ip}
-                port={server.port}
-                initialStatus={status ?? undefined}
-              />
-            </div>
-
-            {server.description && (
-              <p className="text-zinc-400 mt-4">{server.description}</p>
-            )}
-
-            <div className="flex flex-wrap gap-2 mt-4">
-              {server.version && (
-                <span className="text-xs bg-zinc-800 text-zinc-300 px-2 py-1 rounded">
-                  {server.version}
-                </span>
-              )}
-              {server.tags?.map((tag: string) => (
-                <span key={tag} className="text-xs bg-purple-900/30 text-purple-300 px-2 py-1 rounded">
-                  {tag}
-                </span>
-              ))}
-            </div>
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-white mb-2">Votes</h2>
+                <p className="text-3xl font-bold text-indigo-400">{server.vote_count}</p>
+                <p className="text-sm text-zinc-500 mt-1">Total votes received</p>
+              </div>
+            </main>
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-2">Votes</h2>
-            <p className="text-3xl font-bold text-indigo-400">{server.vote_count}</p>
-            <p className="text-sm text-zinc-500 mt-1">Total votes received</p>
+          <div className="hidden xl:flex xl:pl-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+            <AdBanner slot="skyscraper" />
           </div>
-            </div>
-            <div className="hidden lg:block">
-              <SidebarAds />
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
     </>
   );

@@ -6,7 +6,6 @@ import { ServerCard } from "@/components/server/ServerCard";
 import { FilterBar } from "@/components/server/FilterBar";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { SidebarAds } from "@/components/ads/SidebarAds";
 import { ContactForm } from "@/components/ui/ContactForm";
 
 interface ServerWithStatus {
@@ -117,65 +116,71 @@ export default async function HomePage({
           </div>
         </header>
 
-        <main className="max-w-6xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2">
-              Best Minecraft PvP Servers
-            </h2>
-            <p className="text-zinc-400">
-              Real-time latency checks. Ranked by performance. Updated daily.
-            </p>
+        <div className="grid" style={{ gridTemplateColumns: '1fr minmax(0, 1152px) 1fr' }}>
+          <div className="hidden xl:flex xl:justify-end xl:pr-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+            <AdBanner slot="skyscraper" />
           </div>
 
-          <div className="mb-6">
-            <FilterBar />
-          </div>
+          <div>
+            <main className="px-4 py-8">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-white mb-2">
+                  Best Minecraft PvP Servers
+                </h2>
+                <p className="text-zinc-400">
+                  Real-time latency checks. Ranked by performance. Updated daily.
+                </p>
+              </div>
 
-          <div className="mb-6">
-            <AdBanner slot="leaderboard" />
-          </div>
+              <div className="mb-6">
+                <FilterBar />
+              </div>
 
-          <div className="grid gap-6" style={{ gridTemplateColumns: '1fr 300px' }}>
-            <div className={layout === "grid"
-              ? "grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
-              : "grid gap-4 grid-cols-1"
-            }>
-              {servers?.map((server) => (
-                <ServerCard key={server.id} server={server as unknown as ServerWithStatus} />
-              ))}
+              <div className="mb-6">
+                <AdBanner slot="leaderboard" />
+              </div>
 
-              {servers?.length === 0 && (
-                <div className="text-center py-12 text-zinc-500 col-span-full">
-                  No servers found. <Link href="/submit" className="text-indigo-400 hover:underline">Submit one!</Link>
+              <div className={layout === "grid"
+                ? "grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+                : "grid gap-4 grid-cols-1"
+              }>
+                {servers?.map((server) => (
+                  <ServerCard key={server.id} server={server as unknown as ServerWithStatus} />
+                ))}
+
+                {servers?.length === 0 && (
+                  <div className="text-center py-12 text-zinc-500 col-span-full">
+                    No servers found. <Link href="/submit" className="text-indigo-400 hover:underline">Submit one!</Link>
+                  </div>
+                )}
+              </div>
+
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-2 mt-8">
+                  {page > 1 && (
+                    <Link href={`/?page=${page - 1}&sort=${sort}${tag ? `&tag=${tag}` : ""}${version ? `&version=${version}` : ""}${layout !== "grid" ? `&layout=${layout}` : ""}`}
+                       className="px-4 py-2 bg-zinc-800 text-white rounded-lg text-sm">
+                      Previous
+                    </Link>
+                  )}
+                  <span className="px-4 py-2 text-zinc-500 text-sm">
+                    Page {page} of {totalPages}
+                  </span>
+                  {page < totalPages && (
+                    <Link href={`/?page=${page + 1}&sort=${sort}${tag ? `&tag=${tag}` : ""}${version ? `&version=${version}` : ""}${layout !== "grid" ? `&layout=${layout}` : ""}`}
+                       className="px-4 py-2 bg-zinc-800 text-white rounded-lg text-sm">
+                      Next
+                    </Link>
+                  )}
                 </div>
               )}
-            </div>
-
-            <div className="hidden lg:block">
-              <SidebarAds />
-            </div>
+            </main>
           </div>
 
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-8">
-              {page > 1 && (
-                <Link href={`/?page=${page - 1}&sort=${sort}${tag ? `&tag=${tag}` : ""}${version ? `&version=${version}` : ""}${layout !== "grid" ? `&layout=${layout}` : ""}`}
-                   className="px-4 py-2 bg-zinc-800 text-white rounded-lg text-sm">
-                  Previous
-                </Link>
-              )}
-              <span className="px-4 py-2 text-zinc-500 text-sm">
-                Page {page} of {totalPages}
-              </span>
-              {page < totalPages && (
-                <Link href={`/?page=${page + 1}&sort=${sort}${tag ? `&tag=${tag}` : ""}${version ? `&version=${version}` : ""}${layout !== "grid" ? `&layout=${layout}` : ""}`}
-                   className="px-4 py-2 bg-zinc-800 text-white rounded-lg text-sm">
-                  Next
-                </Link>
-              )}
-            </div>
-          )}
-        </main>
+          <div className="hidden xl:flex xl:pl-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
+            <AdBanner slot="skyscraper" />
+          </div>
+        </div>
 
         <footer className="border-t border-zinc-800 py-12 mt-12">
           <div className="max-w-4xl mx-auto px-4">
