@@ -26,6 +26,7 @@ interface ServerDetail {
   tags: string[];
   verified: boolean;
   vote_count: number;
+  icon: string | null;
   server_status?: ServerStatus | null;
 }
 
@@ -45,6 +46,7 @@ export default async function ServerPage({
       .from("servers")
       .select(`
         id, ip, port, name, description, version, tags, verified, vote_count,
+  icon,
         server_status (status, latency_ms, player_count, max_players, motd, last_checked)
       `)
       .eq("ip", ip)

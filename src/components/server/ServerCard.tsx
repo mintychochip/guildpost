@@ -16,6 +16,7 @@ interface ServerCardProps {
     tags: string[];
     verified: boolean;
     vote_count: number;
+    icon: string | null;
     server_status?: {
       status: boolean;
       latency_ms: number | null;
@@ -44,13 +45,25 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-700 transition-colors">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">
-            {isOnline ? (
-              <Server className="w-5 h-5 text-green-400" />
+          {server.icon ? (
+            <img
+              src={server.icon}
+              alt={server.name}
+              className="w-10 h-10 rounded-lg border border-zinc-700 bg-zinc-800 object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = 'none';
+                (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">${isOnline ? '🟢' : '⬛'}</div>`;
+              }}
+            />
+          ) : (
+            <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">
+              {isOnline ? (
+                <Server className="w-5 h-5 text-green-400" />
             ) : (
-              <WifiOff className="w-5 h-5 text-zinc-600" />
-            )}
-          </div>
+                <WifiOff className="w-5 h-5 text-zinc-600" />
+              )}
+            </div>
+          )}
           <div>
             <h3 className="font-semibold text-white flex items-center gap-2">
               {server.name}
