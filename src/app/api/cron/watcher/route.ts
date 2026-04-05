@@ -59,7 +59,7 @@ interface Server {
   name: string;
 }
 
-async function fetchAllServers(supabase: ReturnType<typeof createClient>): Promise<Server[]> {
+async function fetchAllServers(supabase: any): Promise<Server[]> {
   const servers: Server[] = [];
   let page: Server[] = [];
   let offset = 0;
@@ -79,8 +79,7 @@ async function fetchAllServers(supabase: ReturnType<typeof createClient>): Promi
   return servers;
 }
 
-async function upsertServerStatus(
-  supabase: ReturnType<typeof createClient>,
+async function upsertServerStatus(supabase: any,
   serverId: string,
   status: boolean,
   latencyMs: number | null,
@@ -97,7 +96,7 @@ async function upsertServerStatus(
       max_players: maxPlayers,
       motd,
       last_checked: new Date().toISOString(),
-    },
+    } as never,
     { onConflict: "server_id" }
   );
 }
