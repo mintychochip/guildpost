@@ -17,6 +17,7 @@ interface ServerCardProps {
     verified: boolean;
     vote_count: number;
     icon: string | null;
+    banner: string | null;
     server_status?: {
       status: boolean;
       latency_ms: number | null;
@@ -42,7 +43,18 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
   const isOnline = status === true;
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 hover:border-zinc-700 transition-colors">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-colors">
+      {server.banner && (
+        <div className="w-full h-24 md:h-28 overflow-hidden bg-zinc-800">
+          <img
+            src={server.banner}
+            alt=""
+            className="w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+        </div>
+      )}
+      <div className="p-4">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           {server.icon ? (
@@ -134,6 +146,7 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
             Vote
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

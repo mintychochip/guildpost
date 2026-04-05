@@ -28,6 +28,7 @@ interface ServerDetail {
   tags: string[];
   verified: boolean;
   vote_count: number;
+  banner: string | null;
   icon: string | null;
   server_status?: ServerStatus | null;
 }

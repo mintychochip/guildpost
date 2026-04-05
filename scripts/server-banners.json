@@ -1,0 +1,126 @@
+{
+  "all_banners": [
+    {
+      "buzz_id": "3096",
+      "buzz_name": "Complex Gaming",
+      "buzz_alt": "Complex Gaming",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2.webm",
+      "banner_hash": "minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "4223",
+      "buzz_name": "OPBlocks Network",
+      "buzz_alt": "OPBlocks Network",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-794d312a0212b2ddd68b7e09db9e8df1.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-794d312a0212b2ddd68b7e09db9e8df1.webm",
+      "banner_hash": "minecraft-server-img-794d312a0212b2ddd68b7e09db9e8df1",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "5482",
+      "buzz_name": "Netherite",
+      "buzz_alt": "Netherite",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-213dca3e7743c2c83a58b79420c4f69e.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-213dca3e7743c2c83a58b79420c4f69e.webm",
+      "banner_hash": "minecraft-server-img-213dca3e7743c2c83a58b79420c4f69e",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "5416",
+      "buzz_name": "ManaCube",
+      "buzz_alt": "ManaCube",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-19574db9084b257680a82560c392fb0a.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-19574db9084b257680a82560c392fb0a.webm",
+      "banner_hash": "minecraft-server-img-19574db9084b257680a82560c392fb0a",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "4306",
+      "buzz_name": "WildWood",
+      "buzz_alt": "WildWood",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-c5fbb677bd2011bfbaa74050948fabe8.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-c5fbb677bd2011bfbaa74050948fabe8.webm",
+      "banner_hash": "minecraft-server-img-c5fbb677bd2011bfbaa74050948fabe8",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "5137",
+      "buzz_name": "SmileMoreCraft",
+      "buzz_alt": "SmileMoreCraft",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-95a87ca8fde389b17268480a0c77e2e7.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-95a87ca8fde389b17268480a0c77e2e7.webm",
+      "banner_hash": "minecraft-server-img-95a87ca8fde389b17268480a0c77e2e7",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "17926",
+      "buzz_name": "EarthStonks",
+      "buzz_alt": "EarthStonks",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-ed08e769ad25f310364ab07afae867bb.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-ed08e769ad25f310364ab07afae867bb.webm",
+      "banner_hash": "minecraft-server-img-ed08e769ad25f310364ab07afae867bb",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "18644",
+      "buzz_name": "Craftadia",
+      "buzz_alt": "Craftadia",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-c7ef81875cc0ff7763d8d99ce6696d88.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-c7ef81875cc0ff7763d8d99ce6696d88.webm",
+      "banner_hash": "minecraft-server-img-c7ef81875cc0ff7763d8d99ce6696d88",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "8019",
+      "buzz_name": "MetroMC",
+      "buzz_alt": "MetroMC",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-f976a5b78ad7a4f5cc4301813b41d33c.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-f976a5b78ad7a4f5cc4301813b41d33c.webm",
+      "banner_hash": "minecraft-server-img-f976a5b78ad7a4f5cc4301813b41d33c",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "buzz_id": "12528",
+      "buzz_name": "Complex Gaming",
+      "buzz_alt": "Complex Gaming",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-9da50cec8b418d25e58738d38f271a2a.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-9da50cec8b418d25e58738d38f271a2a.webm",
+      "banner_hash": "minecraft-server-img-9da50cec8b418d25e58738d38f271a2a",
+      "page_url": "https://minecraft.buzz/java"
+    }
+  ],
+  "matched": [
+    {
+      "ip": "mc.complex.gg",
+      "name": "Complex Gaming",
+      "buzz_id": "3096",
+      "buzz_name": "Complex Gaming",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2.webm",
+      "banner_hash": "minecraft-server-img-43b5ae96cac2e8dad8249f6c04d7a0c2",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "ip": "play.manacube.com",
+      "name": "ManaCube",
+      "buzz_id": "5416",
+      "buzz_name": "ManaCube",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-19574db9084b257680a82560c392fb0a.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-19574db9084b257680a82560c392fb0a.webm",
+      "banner_hash": "minecraft-server-img-19574db9084b257680a82560c392fb0a",
+      "page_url": "https://minecraft.buzz/java"
+    },
+    {
+      "ip": "mc.complex.gg",
+      "name": "Complex Gaming",
+      "buzz_id": "12528",
+      "buzz_name": "Complex Gaming",
+      "banner_poster": "https://crisps.minecraft.buzz/banners/minecraft-server-img-9da50cec8b418d25e58738d38f271a2a.jpeg",
+      "banner_webm": "https://crisps.minecraft.buzz/banners/minecraft-server-img-9da50cec8b418d25e58738d38f271a2a.webm",
+      "banner_hash": "minecraft-server-img-9da50cec8b418d25e58738d38f271a2a",
+      "page_url": "https://minecraft.buzz/java"
+    }
+  ]
+}
