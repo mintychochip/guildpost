@@ -1,0 +1,10901 @@
+[
+  {
+    "n": "Hypixel",
+    "i": "mc.hypixel.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "Duels"
+    ],
+    "votes": 15420
+  },
+  {
+    "n": "Purple Prison",
+    "i": "purpleprison.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 5200
+  },
+  {
+    "n": "2b2t",
+    "i": "2b2t.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 5200
+  },
+  {
+    "n": "CubeCraft",
+    "i": "play.cubecraft.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "Eggwars"
+    ],
+    "votes": 4800
+  },
+  {
+    "n": "PikaNetwork",
+    "i": "play.pika.network",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "NoDebuff",
+      "KitPvP",
+      "Duels",
+      "OPPrison"
+    ],
+    "votes": 4200
+  },
+  {
+    "n": "SaicoPvP",
+    "i": "saiocopvp.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA",
+      "Duels"
+    ],
+    "votes": 4100
+  },
+  {
+    "n": "Archon",
+    "i": "mc.archonhq.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "KitPvP",
+      "Prison"
+    ],
+    "votes": 3800
+  },
+  {
+    "n": "JartexNetwork",
+    "i": "play.jartex.network",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "KitPvP",
+      "Duels",
+      "OPPrison",
+      "Skyblock"
+    ],
+    "votes": 3600
+  },
+  {
+    "n": "CosmicPvP",
+    "i": "cosmicpvp.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "KitMap"
+    ],
+    "votes": 3500
+  },
+  {
+    "n": "Complex Gaming",
+    "i": "mc.complex.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Factions",
+      "Prison"
+    ],
+    "votes": 3200
+  },
+  {
+    "n": "ManaCube",
+    "i": "play.manacube.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Survival",
+      "Olympus",
+      "Prison"
+    ],
+    "votes": 3200
+  },
+  {
+    "n": "ViperMC",
+    "i": "play.vipermc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "KitMap"
+    ],
+    "votes": 2800
+  },
+  {
+    "n": "OPBlocks",
+    "i": "play.opblocks.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "Skyblock"
+    ],
+    "votes": 2800
+  },
+  {
+    "n": "Mineplex",
+    "i": "us.mineplex.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Clans"
+    ],
+    "votes": 2800
+  },
+  {
+    "n": "FadeCloud",
+    "i": "play.fadecloud.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 2800
+  },
+  {
+    "n": "PokeFind",
+    "i": "play.pokefind.co",
+    "v": "1.8-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 2500
+  },
+  {
+    "n": "Performium",
+    "i": "play.performium.net",
+    "v": "1.8-1.21",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels",
+      "Skywars"
+    ],
+    "votes": 2200
+  },
+  {
+    "n": "Minemen Club",
+    "i": "minemen.club",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels",
+      "Ranked",
+      "FFA"
+    ],
+    "votes": 2200
+  },
+  {
+    "n": "PvPLand",
+    "i": "play.pvpland.com",
+    "v": "1.8-1.21",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels",
+      "BoxPvP"
+    ],
+    "votes": 1800
+  },
+  {
+    "n": "MineVille",
+    "i": "play.mineville.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "Prison"
+    ],
+    "votes": 1800
+  },
+  {
+    "n": "Kohi",
+    "i": "play.kohi.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 1800
+  },
+  {
+    "n": "EarthMC",
+    "i": "play.earthmc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 1800
+  },
+  {
+    "n": "Herobrine.org",
+    "i": "herobrine.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "Bedwars"
+    ],
+    "votes": 1600
+  },
+  {
+    "n": "SMPEarth",
+    "i": "play.smpearth.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 1600
+  },
+  {
+    "n": "EasyMC",
+    "i": "play.easymc.io",
+    "v": "1.8-1.21",
+    "t": [
+      "Cracked",
+      "Skywars",
+      "Bedwars",
+      "PvP"
+    ],
+    "votes": 1500
+  },
+  {
+    "n": "MineSuperior",
+    "i": "play.minesuperior.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 1400
+  },
+  {
+    "n": "TatsuMC",
+    "i": "play.tatsumc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Hardcore"
+    ],
+    "votes": 1400
+  },
+  {
+    "n": "MushMC",
+    "i": "play.mushmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "Combo",
+      "Sumo",
+      "Duels"
+    ],
+    "votes": 1400
+  },
+  {
+    "n": "MineHQ",
+    "i": "play.minehq.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "Factions",
+      "KitPvP"
+    ],
+    "votes": 1200
+  },
+  {
+    "n": "Lifesteal SMP",
+    "i": "play.lifestealmp.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "SMP",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 1200
+  },
+  {
+    "n": "PokeTwo",
+    "i": "play.poketwo.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 1200
+  },
+  {
+    "n": "SnapCraft",
+    "i": "play.snapcraft.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "Skyblock",
+      "Creative",
+      "Minigames"
+    ],
+    "votes": 1200
+  },
+  {
+    "n": "HyperLands",
+    "i": "play.hyperlands.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "Bedwars",
+      "PvP",
+      "Minigames"
+    ],
+    "votes": 1100
+  },
+  {
+    "n": "MeowMC",
+    "i": "play.meowmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "Combo",
+      "Duels",
+      "NoDebuff"
+    ],
+    "votes": 950
+  },
+  {
+    "n": "Zonix",
+    "i": "play.zonixmc.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 900
+  },
+  {
+    "n": "RiseMC",
+    "i": "play.risemc.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 900
+  },
+  {
+    "n": "9b9t",
+    "i": "9b9t.org",
+    "v": "1.16",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 900
+  },
+  {
+    "n": "CrystalPvP",
+    "i": "crystalpvp.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 900
+  },
+  {
+    "n": "UHC Network",
+    "i": "play.uhcnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 900
+  },
+  {
+    "n": "PokeNation",
+    "i": "play.pokenation.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 822
+  },
+  {
+    "n": "TalonMC",
+    "i": "play.talonmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "Duels",
+      "BoxPvP"
+    ],
+    "votes": 820
+  },
+  {
+    "n": "Bedwars Practice",
+    "i": "play.bedwarspractice.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Practice",
+      "Solo"
+    ],
+    "votes": 820
+  },
+  {
+    "n": "Blockdrop",
+    "i": "play.blockdrop.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Skywars"
+    ],
+    "votes": 800
+  },
+  {
+    "n": "Oldfag",
+    "i": "oldfag.org",
+    "v": "1.12",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 800
+  },
+  {
+    "n": "LifestealMC",
+    "i": "play.lifestealmc.xyz",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "Survival",
+      "SMP"
+    ],
+    "votes": 800
+  },
+  {
+    "n": "Origin Realms",
+    "i": "play.originrealms.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "RPG",
+      "Custom"
+    ],
+    "votes": 800
+  },
+  {
+    "n": "AnarchyElite",
+    "i": "anarchyelite.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 795
+  },
+  {
+    "n": "PixelmonHub",
+    "i": "play.pixelmonhub.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 790
+  },
+  {
+    "n": "AnarchyRage",
+    "i": "anarchyrage.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 785
+  },
+  {
+    "n": "PvPWars",
+    "i": "play.pvpwars.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 750
+  },
+  {
+    "n": "PokeWorld",
+    "i": "play.pokeworld.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 746
+  },
+  {
+    "n": "NovaPvP",
+    "i": "play.novapvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "Duels",
+      "BoxPvP"
+    ],
+    "votes": 720
+  },
+  {
+    "n": "PixelmonBattle",
+    "i": "play.pixelmonbattle.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 711
+  },
+  {
+    "n": "Astereal",
+    "i": "play.astereal.com",
+    "v": "1.8",
+    "t": [
+      "Practice",
+      "PvP",
+      "Duels",
+      "NoDebuff"
+    ],
+    "votes": 700
+  },
+  {
+    "n": "PokePlus",
+    "i": "play.pokeplus.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 695
+  },
+  {
+    "n": "BedWarsShadow",
+    "i": "play.bedwarsshadow.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 693
+  },
+  {
+    "n": "BedWarsGalaxy",
+    "i": "play.bedwarsgalaxy.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 691
+  },
+  {
+    "n": "BedWarsFlame",
+    "i": "play.bedwarsflame.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 687
+  },
+  {
+    "n": "GymCraft",
+    "i": "play.gymcraft.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 686
+  },
+  {
+    "n": "PokePro",
+    "i": "play.pokepro.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 684
+  },
+  {
+    "n": "PvP Legacy",
+    "i": "play.pvplegacy.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 680
+  },
+  {
+    "n": "BuildUHC MC",
+    "i": "play.builduhc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "BuildUHC",
+      "Duels"
+    ],
+    "votes": 680
+  },
+  {
+    "n": "MineHero",
+    "i": "play.minehero.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Prison"
+    ],
+    "votes": 680
+  },
+  {
+    "n": "KingdomMC",
+    "i": "play.kingdommc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Factions",
+      "PvP",
+      "Kingdoms",
+      "RPG"
+    ],
+    "votes": 680
+  },
+  {
+    "n": "BedWarsFire",
+    "i": "play.bedwarsfire.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 679
+  },
+  {
+    "n": "PokeVerse",
+    "i": "play.pokeverse.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 675
+  },
+  {
+    "n": "BedRush",
+    "i": "play.bedrush.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 667
+  },
+  {
+    "n": "PixelMC",
+    "i": "play.pixelmc.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 667
+  },
+  {
+    "n": "LifestealEmpire",
+    "i": "play.lifestealempire.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 663
+  },
+  {
+    "n": "BedWarsUltimate",
+    "i": "play.bedwarsultimate.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 661
+  },
+  {
+    "n": "LifestealVoid",
+    "i": "play.lifestealvoid.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 651
+  },
+  {
+    "n": "PixelmonWorld",
+    "i": "play.pixelmonworld.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 651
+  },
+  {
+    "n": "AnarchyMC",
+    "i": "play.anarchymc.net",
+    "v": "1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Anarchy"
+    ],
+    "votes": 650
+  },
+  {
+    "n": "PvPWars",
+    "i": "play.pvpwars.me",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 650
+  },
+  {
+    "n": "LifestealPro",
+    "i": "play.lifestealpro.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 647
+  },
+  {
+    "n": "AnarchyEmpire",
+    "i": "anarchyempire.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 641
+  },
+  {
+    "n": "LifestealShadow",
+    "i": "play.lifestealshadow.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 628
+  },
+  {
+    "n": "BedWarsX",
+    "i": "play.bedwarsx.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 623
+  },
+  {
+    "n": "FFA MC",
+    "i": "play.ffamc.net",
+    "v": "1.8",
+    "t": [
+      "FFA",
+      "PvP",
+      "KitPvP",
+      "Practice"
+    ],
+    "votes": 620
+  },
+  {
+    "n": "LegacyMC",
+    "i": "play.legacymc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 620
+  },
+  {
+    "n": "PokeBattle",
+    "i": "play.pokebattle.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 619
+  },
+  {
+    "n": "LifestealNova",
+    "i": "play.lifestealnova.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 618
+  },
+  {
+    "n": "PokeHub",
+    "i": "play.pokehub.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 618
+  },
+  {
+    "n": "Lifesteal World",
+    "i": "play.lifestealworld.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 615
+  },
+  {
+    "n": "LifestealTitan",
+    "i": "play.lifestealtitan.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 612
+  },
+  {
+    "n": "BedCraft",
+    "i": "play.bedcraft.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 605
+  },
+  {
+    "n": "PokeCraft",
+    "i": "play.pokecraft.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 602
+  },
+  {
+    "n": "LifestealStorm",
+    "i": "play.lifestealstorm.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 601
+  },
+  {
+    "n": "ImpactMC",
+    "i": "play.impactmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Economy"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "VortexFactions",
+    "i": "play.vortexfactions.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "FluxMC",
+    "i": "play.fluxmc.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "Constantiam",
+    "i": "constantiam.net",
+    "v": "1.16",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "HeartSteal",
+    "i": "play.heartsteal.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "CivMC",
+    "i": "play.civmc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "Political",
+      "Factions",
+      "Nation"
+    ],
+    "votes": 600
+  },
+  {
+    "n": "ThiefMC",
+    "i": "play.thiefmc.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 597
+  },
+  {
+    "n": "AnarchyHavoc",
+    "i": "anarchyhavoc.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 593
+  },
+  {
+    "n": "PixelmonCraft",
+    "i": "play.pixelmoncraft.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 593
+  },
+  {
+    "n": "LifestealNetwork",
+    "i": "play.lifestealnetwork.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 586
+  },
+  {
+    "n": "MinePrison",
+    "i": "play.mineprison.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 586
+  },
+  {
+    "n": "EscapeMC",
+    "i": "play.escapemc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 584
+  },
+  {
+    "n": "BedWarsNova",
+    "i": "play.bedwarsnova.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 580
+  },
+  {
+    "n": "PrisonDuke",
+    "i": "play.prisonduke.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 575
+  },
+  {
+    "n": "LifestealConquest",
+    "i": "play.lifestealconquest.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 574
+  },
+  {
+    "n": "BedFamine",
+    "i": "play.bedfamine.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 571
+  },
+  {
+    "n": "Bedwars Hub",
+    "i": "play.bedwarshub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 567
+  },
+  {
+    "n": "BedWarsTitan",
+    "i": "play.bedwarstitan.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 567
+  },
+  {
+    "n": "DiamondPvP",
+    "i": "play.diamondpvp.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 560
+  },
+  {
+    "n": "UHC Central",
+    "i": "play.uhccentral.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 560
+  },
+  {
+    "n": "ChallengeMC",
+    "i": "play.challengemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 560
+  },
+  {
+    "n": "HeartKingdom",
+    "i": "play.heartkingdom.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 559
+  },
+  {
+    "n": "PrisonPlus",
+    "i": "play.prisonplus.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 558
+  },
+  {
+    "n": "OPPrisonMC",
+    "i": "play.opprisonmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 555
+  },
+  {
+    "n": "PrisonWorld",
+    "i": "play.prisonworld.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 552
+  },
+  {
+    "n": "WardenMC",
+    "i": "play.wardenmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 552
+  },
+  {
+    "n": "HCFSurge",
+    "i": "play.hcfsurge.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid",
+      "Economy"
+    ],
+    "votes": 549
+  },
+  {
+    "n": "PrisonNetwork",
+    "i": "play.prisonnetwork.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 548
+  },
+  {
+    "n": "BlockGames",
+    "i": "play.blockgames.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Bedwars"
+    ],
+    "votes": 547
+  },
+  {
+    "n": "HCFBlaze",
+    "i": "play.hcfblaze.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 546
+  },
+  {
+    "n": "VoltageMC",
+    "i": "play.voltagemc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 545
+  },
+  {
+    "n": "SkywarsGalaxy",
+    "i": "play.skywarsgalaxy.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 545
+  },
+  {
+    "n": "RaidBattle",
+    "i": "raidbattle.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 545
+  },
+  {
+    "n": "AnarchyLegends",
+    "i": "anarchylegends.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 541
+  },
+  {
+    "n": "AnarchyFree",
+    "i": "anarchyfree.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 541
+  },
+  {
+    "n": "Bedwars Central",
+    "i": "play.bedwarscentral.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames"
+    ],
+    "votes": 540
+  },
+  {
+    "n": "EmpireMC",
+    "i": "play.empiremc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Factions",
+      "PvP",
+      "Kingdoms",
+      "RPG"
+    ],
+    "votes": 540
+  },
+  {
+    "n": "HCFVoid",
+    "i": "play.hcfvoid.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 540
+  },
+  {
+    "n": "FightCraft",
+    "i": "pvp.fightcraft..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 538
+  },
+  {
+    "n": "SMPWars",
+    "i": "play.smpwars.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 537
+  },
+  {
+    "n": "LifestealCrystal",
+    "i": "play.lifestealcrystal.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 535
+  },
+  {
+    "n": "FactionsElite",
+    "i": "play.factionselite.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 535
+  },
+  {
+    "n": "BedWarsPro",
+    "i": "play.bedwarspro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 533
+  },
+  {
+    "n": "PrisonBaron",
+    "i": "play.prisonbaron.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 532
+  },
+  {
+    "n": "HeroMC",
+    "i": "play.heromc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 531
+  },
+  {
+    "n": "SavageSMP",
+    "i": "play.savagesmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 530
+  },
+  {
+    "n": "PokeKingdom",
+    "i": "play.pokekingdom.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 529
+  },
+  {
+    "n": "FunMC",
+    "i": "play.funmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 528
+  },
+  {
+    "n": "HCFX",
+    "i": "play.hcfx.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 528
+  },
+  {
+    "n": "VanguardMC",
+    "i": "mc.vanguardmc.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid"
+    ],
+    "votes": 527
+  },
+  {
+    "n": "PrisonJail",
+    "i": "play.prisonjail.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 526
+  },
+  {
+    "n": "NomadMC",
+    "i": "play.nomadmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 525
+  },
+  {
+    "n": "PulseMC",
+    "i": "pvp.pulsemc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 524
+  },
+  {
+    "n": "UHCDomination",
+    "i": "play.uhcdomination.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 522
+  },
+  {
+    "n": "AstraMC",
+    "i": "play.astramc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "ProPvP",
+    "i": "play.propvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "BlitzMC",
+    "i": "play.blitzmc.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "Skywars"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "LunarMC",
+    "i": "play.lunarmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "CrystalPvP",
+      "Duels"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "CrystalMC",
+    "i": "play.crystalmc.net",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "Aternia",
+    "i": "play.aternia.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 520
+  },
+  {
+    "n": "HeartMC",
+    "i": "play.heartmc.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 519
+  },
+  {
+    "n": "EssenceMC",
+    "i": "play.essencemc.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 519
+  },
+  {
+    "n": "EssencePvP",
+    "i": "play.essencepvp.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 518
+  },
+  {
+    "n": "JoyMC",
+    "i": "play.joymc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Bedwars"
+    ],
+    "votes": 517
+  },
+  {
+    "n": "AnarchyDestruction",
+    "i": "anarchydestruction.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 515
+  },
+  {
+    "n": "TestMC",
+    "i": "play.testmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 513
+  },
+  {
+    "n": "AnarchyHub",
+    "i": "anarchyhub.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 512
+  },
+  {
+    "n": "BloodMC",
+    "i": "play.bloodmc.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 512
+  },
+  {
+    "n": "SkyWarsDragon",
+    "i": "play.skywarsdragon.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 511
+  },
+  {
+    "n": "UHCLegends",
+    "i": "play.uhclegends.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 510
+  },
+  {
+    "n": "LifestealBlaze",
+    "i": "play.lifestealblaze.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 509
+  },
+  {
+    "n": "HeartWars",
+    "i": "play.heartwars.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 508
+  },
+  {
+    "n": "FactionsRealm",
+    "i": "play.factionsrealm.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 508
+  },
+  {
+    "n": "SMPWorld",
+    "i": "play.smpworld.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla"
+    ],
+    "votes": 507
+  },
+  {
+    "n": "BedWarsRoyale",
+    "i": "play.bedwarsroyale.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 506
+  },
+  {
+    "n": "BedWarsArena",
+    "i": "play.bedwarsarena.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 506
+  },
+  {
+    "n": "PrisonLegends",
+    "i": "play.prisonlegends.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 505
+  },
+  {
+    "n": "SoulMC",
+    "i": "play.soulmc.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 504
+  },
+  {
+    "n": "LifeStealNetwork",
+    "i": "play.lifestealnetwork.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 502
+  },
+  {
+    "n": "OrdealMC",
+    "i": "play.ordealmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 501
+  },
+  {
+    "n": "UHCLeague",
+    "i": "play.uhcleague.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 498
+  },
+  {
+    "n": "HCFReaper",
+    "i": "play.hcfreaper.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore"
+    ],
+    "votes": 498
+  },
+  {
+    "n": "UHCConquest",
+    "i": "play.uhcconquest.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 497
+  },
+  {
+    "n": "SMPElite",
+    "i": "play.smpelite.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla"
+    ],
+    "votes": 497
+  },
+  {
+    "n": "RaidWars",
+    "i": "raidwars.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 497
+  },
+  {
+    "n": "UHCBattle",
+    "i": "play.uhcbattle.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 496
+  },
+  {
+    "n": "AnarchyRaid",
+    "i": "anarchyraid.net",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 496
+  },
+  {
+    "n": "AllegianceMC",
+    "i": "play.allegiancemc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 494
+  },
+  {
+    "n": "HCFHub",
+    "i": "play.hcfhub.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 494
+  },
+  {
+    "n": "SettlerMC",
+    "i": "play.settlermc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Factions"
+    ],
+    "votes": 494
+  },
+  {
+    "n": "FrontlineMC",
+    "i": "hcf.frontlinemc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 493
+  },
+  {
+    "n": "RogueMC",
+    "i": "play.roguemc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 492
+  },
+  {
+    "n": "PokeNetwork",
+    "i": "play.pokenetwork.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 492
+  },
+  {
+    "n": "FactionsNetwork",
+    "i": "play.factionsnetwork.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore",
+      "Raid"
+    ],
+    "votes": 492
+  },
+  {
+    "n": "MiniGameHub",
+    "i": "play.minigamehub.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 491
+  },
+  {
+    "n": "StealHearts",
+    "i": "play.stealhearts.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 491
+  },
+  {
+    "n": "PillageWars",
+    "i": "pillagewars.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 491
+  },
+  {
+    "n": "BedWarsBlaze",
+    "i": "play.bedwarsblaze.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 489
+  },
+  {
+    "n": "BedWarsLegends",
+    "i": "play.bedwarslegends.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 488
+  },
+  {
+    "n": "SkyWarsTitan",
+    "i": "play.skywarstitan.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 487
+  },
+  {
+    "n": "LifeStealX",
+    "i": "play.lifestealx.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 486
+  },
+  {
+    "n": "UHCLegacy",
+    "i": "play.uhclegacy.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 485
+  },
+  {
+    "n": "RelentlessMC",
+    "i": "play.relentlessmc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 485
+  },
+  {
+    "n": "SoulPvP",
+    "i": "play.soulpvp.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 485
+  },
+  {
+    "n": "WastelandSurvival",
+    "i": "wastelandsurvival.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 485
+  },
+  {
+    "n": "BanditMC",
+    "i": "play.banditmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 484
+  },
+  {
+    "n": "PokeLegends",
+    "i": "play.pokelegends.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 484
+  },
+  {
+    "n": "BattleBox",
+    "i": "play.battlebox.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "PvPWars UHC",
+    "i": "uhc.pvpwars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Competitive"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "ReviveMC",
+    "i": "play.revivemc.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "NoDebuffMC",
+    "i": "play.nodebuffmc.com",
+    "v": "1.8",
+    "t": [
+      "NoDebuff",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "ApexPvP",
+    "i": "play.apexpvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "OdysseyMC",
+    "i": "play.odysseymc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "RPG",
+      "Custom"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "InmateMC",
+    "i": "play.inmatemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "HCFTempest",
+    "i": "play.hcftempest.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "FactionsHub",
+    "i": "play.factionshub.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore",
+      "Economy"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "ApocalypseBattle",
+    "i": "apocalypsebattle.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP",
+      "Raid"
+    ],
+    "votes": 480
+  },
+  {
+    "n": "LifestealRealm",
+    "i": "play.lifestealrealm.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 476
+  },
+  {
+    "n": "MinigameWorld",
+    "i": "play.minigameworld.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 476
+  },
+  {
+    "n": "HCFEclipse",
+    "i": "play.hcfeclipse.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "Hardcore"
+    ],
+    "votes": 475
+  },
+  {
+    "n": "PokeElite",
+    "i": "play.pokeelite.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 474
+  },
+  {
+    "n": "ApocalypsePvP",
+    "i": "apocalypsepvp.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 474
+  },
+  {
+    "n": "AnarchyChaos",
+    "i": "anarchychaos.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 472
+  },
+  {
+    "n": "HCFFrost",
+    "i": "play.hcffrost.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 472
+  },
+  {
+    "n": "EggWarsWorld",
+    "i": "play.eggwarsworld.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 471
+  },
+  {
+    "n": "SMPLegends",
+    "i": "play.smplegends.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 469
+  },
+  {
+    "n": "PioneerSMP",
+    "i": "play.pioneersmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 469
+  },
+  {
+    "n": "KeepMC",
+    "i": "hcf.keepmc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 468
+  },
+  {
+    "n": "MCPrison",
+    "i": "play.mcprison.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 468
+  },
+  {
+    "n": "SurvivalWars",
+    "i": "play.survivalwars.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 467
+  },
+  {
+    "n": "ArcadeMC",
+    "i": "play.arcademc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 467
+  },
+  {
+    "n": "KnightMC",
+    "i": "play.knightmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Classes",
+      "Custom"
+    ],
+    "votes": 465
+  },
+  {
+    "n": "TNTWars",
+    "i": "play.tntwars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 465
+  },
+  {
+    "n": "FlashMC",
+    "i": "play.flashmc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 464
+  },
+  {
+    "n": "SkyBattle",
+    "i": "play.skybattle.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 464
+  },
+  {
+    "n": "IgnitePvP",
+    "i": "pvp.ignitepvp..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 462
+  },
+  {
+    "n": "UHCHub",
+    "i": "play.uhchub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 462
+  },
+  {
+    "n": "WarriorRealm",
+    "i": "play.warriorrealm.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 462
+  },
+  {
+    "n": "FortressMC",
+    "i": "hcf.fortressmc.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 461
+  },
+  {
+    "n": "UHCVictory",
+    "i": "play.uhcvictory.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 461
+  },
+  {
+    "n": "RPGNetwork",
+    "i": "play.rpgnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes",
+      "Factions"
+    ],
+    "votes": 461
+  },
+  {
+    "n": "ComboMC",
+    "i": "play.combomc.net",
+    "v": "1.8",
+    "t": [
+      "Combo",
+      "PvP",
+      "Practice",
+      "Duels"
+    ],
+    "votes": 460
+  },
+  {
+    "n": "SkywarsMaster",
+    "i": "play.skywarsmaster.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 460
+  },
+  {
+    "n": "HCF Network",
+    "i": "mc.hcfnetwork.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 458
+  },
+  {
+    "n": "FactionsBattle",
+    "i": "play.factionsbattle.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 458
+  },
+  {
+    "n": "ChampionMC",
+    "i": "pvp.championmc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 457
+  },
+  {
+    "n": "HCFRealm",
+    "i": "play.hcfrealm.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "Hardcore"
+    ],
+    "votes": 457
+  },
+  {
+    "n": "UHCTriumph",
+    "i": "play.uhctriumph.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 457
+  },
+  {
+    "n": "AnarchyShadow",
+    "i": "anarchyshadow.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 457
+  },
+  {
+    "n": "PokemonCraft",
+    "i": "play.pokemoncraft.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 456
+  },
+  {
+    "n": "SkywarsArena",
+    "i": "play.skywarsarena.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 455
+  },
+  {
+    "n": "UHCWarfare",
+    "i": "play.uhcwarfare.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 454
+  },
+  {
+    "n": "LifeStealers",
+    "i": "play.lifestealers.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 454
+  },
+  {
+    "n": "PrisonMax",
+    "i": "play.prisonmax.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 453
+  },
+  {
+    "n": "OPPrisonOmega",
+    "i": "play.opprisonomega.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 453
+  },
+  {
+    "n": "AnarchyLoot",
+    "i": "anarchyloot.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 452
+  },
+  {
+    "n": "ApocalypseWars",
+    "i": "apocalypsewars.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 452
+  },
+  {
+    "n": "FactionWars",
+    "i": "play.factionwars.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "AbyssMC",
+    "i": "play.abyssmc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Anarchy"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "VoxelMC",
+    "i": "play.voxelmc.net",
+    "v": "1.8",
+    "t": [
+      "Practice",
+      "PvP",
+      "Duels",
+      "NoDebuff",
+      "Debuff"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "VortexMC",
+    "i": "play.vortexmc.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "WildCraft",
+    "i": "play.wildcraft.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Wilderness"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "ViperMC Network",
+    "i": "play.vipermcnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "Skywars",
+      "PvP"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "AnarchyMayhem",
+    "i": "anarchymayhem.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "PixelmonArena",
+    "i": "play.pixelmonarena.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 450
+  },
+  {
+    "n": "SkyWarsPvP",
+    "i": "play.skywarspvp.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 448
+  },
+  {
+    "n": "StrikePvP",
+    "i": "mc.strikepvp..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 447
+  },
+  {
+    "n": "HCFReaper",
+    "i": "play.hcfreaper.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 447
+  },
+  {
+    "n": "FunZoneMC",
+    "i": "play.funzonemc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 447
+  },
+  {
+    "n": "PvPGamma",
+    "i": "play.pvpgamma.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 446
+  },
+  {
+    "n": "BedwarsBlaze",
+    "i": "play.bedwarsblaze.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 446
+  },
+  {
+    "n": "BedwarsStronghold",
+    "i": "play.bedwarsstronghold.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 446
+  },
+  {
+    "n": "SlayerMC",
+    "i": "mc.slayermc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 445
+  },
+  {
+    "n": "UHCRealm",
+    "i": "play.uhcrealm.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 445
+  },
+  {
+    "n": "PokeEmpire",
+    "i": "play.pokeempire.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 445
+  },
+  {
+    "n": "AnarchyState",
+    "i": "anarchystate.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 444
+  },
+  {
+    "n": "ApocalypseSurvival",
+    "i": "apocalypsesurvival.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 444
+  },
+  {
+    "n": "RPGLegends",
+    "i": "play.rpglegends.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 444
+  },
+  {
+    "n": "HCFFlame",
+    "i": "play.hcfflame.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 443
+  },
+  {
+    "n": "ParkourMC",
+    "i": "play.parkourmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 443
+  },
+  {
+    "n": "SoulWars",
+    "i": "play.soulwars.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 442
+  },
+  {
+    "n": "EggWarsNetwork",
+    "i": "play.eggwarsnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 442
+  },
+  {
+    "n": "BedwarsFrost",
+    "i": "play.bedwarsfrost.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 442
+  },
+  {
+    "n": "PvPOmega",
+    "i": "play.pvpomega.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 441
+  },
+  {
+    "n": "AnarchyX",
+    "i": "anarchyx.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP",
+      "Raid"
+    ],
+    "votes": 441
+  },
+  {
+    "n": "EclipseMC",
+    "i": "play.eclipsemc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Practice",
+      "PvP",
+      "Duels",
+      "CrystalPvP"
+    ],
+    "votes": 440
+  },
+  {
+    "n": "SkyblockPvP",
+    "i": "play.skyblockpvp.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 440
+  },
+  {
+    "n": "IslandPvP",
+    "i": "play.islandpvp.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 440
+  },
+  {
+    "n": "FactionsWars",
+    "i": "play.factionswars.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore"
+    ],
+    "votes": 439
+  },
+  {
+    "n": "AnarchyChaos",
+    "i": "anarchychaos.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 439
+  },
+  {
+    "n": "PokeArena",
+    "i": "play.pokearena.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 438
+  },
+  {
+    "n": "PvPCentral",
+    "i": "pvp.pvpcentral..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "TempoMC",
+    "i": "mc.tempomc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "CellMC",
+    "i": "play.cellmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "HCFChaos",
+    "i": "play.hcfchaos.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "BedwarsFire",
+    "i": "play.bedwarsfire.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "BedwarsMadness",
+    "i": "play.bedwarsmadness.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 437
+  },
+  {
+    "n": "VanillaUHC",
+    "i": "play.vanillauhc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 436
+  },
+  {
+    "n": "HCFPlus",
+    "i": "play.hcfplus.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore",
+      "Raid",
+      "Economy"
+    ],
+    "votes": 436
+  },
+  {
+    "n": "UHCEmpire",
+    "i": "play.uhcempire.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 435
+  },
+  {
+    "n": "PureMC",
+    "i": "play.puremc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 435
+  },
+  {
+    "n": "VitalityMC",
+    "i": "play.vitalitymc.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 435
+  },
+  {
+    "n": "BedWarsElite",
+    "i": "play.bedwarselite.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 434
+  },
+  {
+    "n": "LifestealHub",
+    "i": "play.lifestealhub.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 433
+  },
+  {
+    "n": "PvPAlpha",
+    "i": "play.pvpalpha.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 433
+  },
+  {
+    "n": "WarriorMC",
+    "i": "mc.warriormc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 432
+  },
+  {
+    "n": "CloudWars",
+    "i": "play.cloudwars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 432
+  },
+  {
+    "n": "MythicMC",
+    "i": "play.mythicmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 432
+  },
+  {
+    "n": "DiamondPvP",
+    "i": "play.diamondpvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 430
+  },
+  {
+    "n": "NetherWars",
+    "i": "play.netherwars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 430
+  },
+  {
+    "n": "BloodConquest",
+    "i": "play.bloodconquest.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 428
+  },
+  {
+    "n": "FFAEmpire",
+    "i": "play.ffaempire.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 428
+  },
+  {
+    "n": "ShockMC",
+    "i": "play.shockmc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 427
+  },
+  {
+    "n": "LifestealElite",
+    "i": "play.lifestealelite.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 427
+  },
+  {
+    "n": "SMPConquest",
+    "i": "play.smpconquest.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 427
+  },
+  {
+    "n": "AnarchyPlus",
+    "i": "anarchyplus.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 427
+  },
+  {
+    "n": "AnarchyRuin",
+    "i": "anarchyruin.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 424
+  },
+  {
+    "n": "AnchorMC",
+    "i": "play.anchormc.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 423
+  },
+  {
+    "n": "ClanMC",
+    "i": "hcf.clanmc.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid"
+    ],
+    "votes": 422
+  },
+  {
+    "n": "QuestPvP",
+    "i": "play.questpvp.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Custom"
+    ],
+    "votes": 422
+  },
+  {
+    "n": "SiegeSMP",
+    "i": "play.siegesmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 422
+  },
+  {
+    "n": "KitPvPPro",
+    "i": "play.kitpvppro.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 421
+  },
+  {
+    "n": "PrimeMC",
+    "i": "play.primemc.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "FrostMC",
+    "i": "play.frostmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "InfinityMC",
+    "i": "play.infinitymc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "VeltPvP",
+    "i": "play.veltpvp.com",
+    "v": "1.8",
+    "t": [
+      "SurvivalGames",
+      "PvP",
+      "Minigames",
+      "Duels"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "BlazeMC",
+    "i": "play.blazemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "PvP",
+      "Practice",
+      "CrystalPvP",
+      "Duels"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "DuelCraft",
+    "i": "play.duelcraft.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Duels",
+      "Practice",
+      "CrystalPvP"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "Sumo MC",
+    "i": "play.sumomc.net",
+    "v": "1.8",
+    "t": [
+      "Sumo",
+      "PvP",
+      "Practice",
+      "Duels"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "EnderMC",
+    "i": "play.endermc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "CelestialMC",
+    "i": "play.celestialmc.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "TwilightMC",
+    "i": "play.twilightmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "RPG",
+      "Custom"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "GoldenMC",
+    "i": "play.goldenmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "WastelandMC",
+    "i": "play.wastelandmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "Anarchy",
+      "SMP"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "ConquestMC",
+    "i": "play.conquestmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Factions",
+      "PvP",
+      "Conquest",
+      "RPG"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "DuelPro",
+    "i": "play.duelpro.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 420
+  },
+  {
+    "n": "TerritoryMC",
+    "i": "hcf.territorymc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "KitMap"
+    ],
+    "votes": 419
+  },
+  {
+    "n": "MCPrisonPro",
+    "i": "play.mcprisonpro.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 419
+  },
+  {
+    "n": "RaidedMC",
+    "i": "raidedmc.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 419
+  },
+  {
+    "n": "CrystalPvPHavoc",
+    "i": "play.crystalpvphavoc.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 419
+  },
+  {
+    "n": "RealmPvP",
+    "i": "play.realmpvp.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Classes",
+      "Custom"
+    ],
+    "votes": 417
+  },
+  {
+    "n": "SkyblockRaid",
+    "i": "play.skyblockraid.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 417
+  },
+  {
+    "n": "PrisonGamma",
+    "i": "play.prisongamma.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 417
+  },
+  {
+    "n": "LootPvP",
+    "i": "lootpvp.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 417
+  },
+  {
+    "n": "MageBattle",
+    "i": "play.magebattle.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes"
+    ],
+    "votes": 417
+  },
+  {
+    "n": "SurvivalPvP",
+    "i": "play.survivalpvp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Vanilla",
+      "Factions"
+    ],
+    "votes": 416
+  },
+  {
+    "n": "SkyblockWars",
+    "i": "play.skyblockwars.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 416
+  },
+  {
+    "n": "HCFOlympus",
+    "i": "hcf.hcfolympus.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid"
+    ],
+    "votes": 415
+  },
+  {
+    "n": "BrutalSMP",
+    "i": "play.brutalsmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla",
+      "Factions"
+    ],
+    "votes": 415
+  },
+  {
+    "n": "UHCBattles",
+    "i": "play.uhcbattles.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 414
+  },
+  {
+    "n": "KitPvPHub",
+    "i": "play.kitpvphub.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 414
+  },
+  {
+    "n": "HardcoreSMP",
+    "i": "play.hardcoresmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Factions"
+    ],
+    "votes": 414
+  },
+  {
+    "n": "SkyWarsVoid",
+    "i": "play.skywarsvoid.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 413
+  },
+  {
+    "n": "PrisonMadness",
+    "i": "play.prisonmadness.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 413
+  },
+  {
+    "n": "AnarchyHardcore",
+    "i": "anarchyhardcore.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 411
+  },
+  {
+    "n": "HardcoreUHC",
+    "i": "play.hardcoreuhc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Hardcore",
+      "Survival"
+    ],
+    "votes": 410
+  },
+  {
+    "n": "TitanMC",
+    "i": "play.titanmc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 410
+  },
+  {
+    "n": "SkywarsPro",
+    "i": "play.skywarspro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 410
+  },
+  {
+    "n": "DoomsdaySurvival",
+    "i": "doomsdaysurvival.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 410
+  },
+  {
+    "n": "SurgeMC",
+    "i": "mc.surgemc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 409
+  },
+  {
+    "n": "TrialMC",
+    "i": "play.trialmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Bedwars"
+    ],
+    "votes": 407
+  },
+  {
+    "n": "BedwarsSpeed",
+    "i": "play.bedwarsspeed.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 407
+  },
+  {
+    "n": "WandererMC",
+    "i": "play.wanderermc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla"
+    ],
+    "votes": 406
+  },
+  {
+    "n": "GottaCatchMC",
+    "i": "play.gottacatchmc.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 406
+  },
+  {
+    "n": "WastelandMC",
+    "i": "wastelandmc.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 405
+  },
+  {
+    "n": "PixelVerse",
+    "i": "play.pixelverse.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 404
+  },
+  {
+    "n": "AnarchyAbsolute",
+    "i": "anarchyabsolute.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 404
+  },
+  {
+    "n": "BedWarsMaster",
+    "i": "play.bedwarsmaster.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 403
+  },
+  {
+    "n": "PokeConquest",
+    "i": "play.pokeconquest.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Trainer"
+    ],
+    "votes": 403
+  },
+  {
+    "n": "BedwarsPhoenix",
+    "i": "play.bedwarsphoenix.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 403
+  },
+  {
+    "n": "WastelandPvP",
+    "i": "wastelandpvp.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 402
+  },
+  {
+    "n": "CrystalPvPRoyale",
+    "i": "play.crystalpvproyale.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 401
+  },
+  {
+    "n": "PracticeHub",
+    "i": "play.practicehub.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 401
+  },
+  {
+    "n": "OPPrisonExtreme",
+    "i": "play.opprisonextreme.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 401
+  },
+  {
+    "n": "ApocalypseMC",
+    "i": "apocalypsemc.com",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 401
+  },
+  {
+    "n": "PvPZenith",
+    "i": "play.pvpzenith.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 399
+  },
+  {
+    "n": "HCFZenith",
+    "i": "mc.hcfzenith.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 398
+  },
+  {
+    "n": "UHCWorld",
+    "i": "play.uhcworld.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 398
+  },
+  {
+    "n": "HCFPhantom",
+    "i": "mc.hcfphantom.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 397
+  },
+  {
+    "n": "ConquestSMP",
+    "i": "play.conquestsmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 397
+  },
+  {
+    "n": "LifestealPlus",
+    "i": "play.lifestealplus.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 395
+  },
+  {
+    "n": "FFAHub",
+    "i": "play.ffahub.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 395
+  },
+  {
+    "n": "CloudBattle",
+    "i": "play.cloudbattle.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 395
+  },
+  {
+    "n": "SorcererMC",
+    "i": "play.sorcerermc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 395
+  },
+  {
+    "n": "Skywars Network",
+    "i": "play.skywarsnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 394
+  },
+  {
+    "n": "CrystalPvPArena",
+    "i": "play.crystalpvparena.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 394
+  },
+  {
+    "n": "SurgePvP",
+    "i": "pvp.surgepvp..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 393
+  },
+  {
+    "n": "UHCForge",
+    "i": "play.uhcforge.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 393
+  },
+  {
+    "n": "RaiderMC",
+    "i": "play.raidermc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla",
+      "Factions"
+    ],
+    "votes": 393
+  },
+  {
+    "n": "EpicMC",
+    "i": "play.epicmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Custom"
+    ],
+    "votes": 393
+  },
+  {
+    "n": "ParkourWorld",
+    "i": "play.parkourworld.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Murder",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 392
+  },
+  {
+    "n": "SovereignMC",
+    "i": "mc.sovereignmc.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 391
+  },
+  {
+    "n": "OPPrisonSupreme",
+    "i": "play.opprisonsupreme.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 391
+  },
+  {
+    "n": "AnarchyTrue",
+    "i": "anarchytrue.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 391
+  },
+  {
+    "n": "CrystalPvPBlade",
+    "i": "play.crystalpvpblade.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 391
+  },
+  {
+    "n": "DuelZone",
+    "i": "play.duelzone..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 390
+  },
+  {
+    "n": "BreachMC",
+    "i": "mc.breachmc.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 390
+  },
+  {
+    "n": "SagaMC",
+    "i": "play.sagamc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Custom"
+    ],
+    "votes": 390
+  },
+  {
+    "n": "PvPEta",
+    "i": "play.pvpeta.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 389
+  },
+  {
+    "n": "HungerGamesPro",
+    "i": "play.hungergamespro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 389
+  },
+  {
+    "n": "SoulRealm",
+    "i": "play.soulrealm.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 388
+  },
+  {
+    "n": "HCFFury",
+    "i": "mc.hcffury.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "KitMap"
+    ],
+    "votes": 387
+  },
+  {
+    "n": "PvPOasis",
+    "i": "play.pvpoasis.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 387
+  },
+  {
+    "n": "FactionsWorld",
+    "i": "play.factionsworld.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Economy"
+    ],
+    "votes": 387
+  },
+  {
+    "n": "HeartSMP",
+    "i": "play.heartsmp.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 386
+  },
+  {
+    "n": "BattleSMP",
+    "i": "play.battlesmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Factions"
+    ],
+    "votes": 386
+  },
+  {
+    "n": "CrystalPvPHub",
+    "i": "play.crystalpvphub.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 385
+  },
+  {
+    "n": "RogueSMP",
+    "i": "play.roguesmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 385
+  },
+  {
+    "n": "FFABattle",
+    "i": "play.ffabattle.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 385
+  },
+  {
+    "n": "HCFPro",
+    "i": "mc.hcfpro.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 384
+  },
+  {
+    "n": "PrisonUltimate",
+    "i": "play.prisonultimate.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 384
+  },
+  {
+    "n": "PracticeElite",
+    "i": "play.practiceelite.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 383
+  },
+  {
+    "n": "RankedSMP",
+    "i": "play.rankedsmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 383
+  },
+  {
+    "n": "OPPrisonElite",
+    "i": "play.opprisonelite.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 382
+  },
+  {
+    "n": "MinigameElite",
+    "i": "play.minigameelite.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 382
+  },
+  {
+    "n": "BedWarsDragon",
+    "i": "play.bedwarsdragon.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 381
+  },
+  {
+    "n": "MurderMysteryMC",
+    "i": "play.murdermysterymc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 381
+  },
+  {
+    "n": "BrawlMC",
+    "i": "play.brawlmc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "RaidingMC",
+    "i": "play.raidingmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "Raid"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "RaidCraft",
+    "i": "play.raidcraft.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "Raid",
+      "HCF"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "RevivalMC",
+    "i": "play.revivalmc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "ObsidianMC",
+    "i": "play.obsidianmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "RaidPvP",
+    "i": "play.raidpvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "BedBreak",
+    "i": "play.bedbreak.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "SurvivalMC",
+    "i": "play.survivalmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "LandClaim"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "UHC MC",
+    "i": "play.uhcmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "BridgeMC",
+    "i": "play.bridgemc.org",
+    "v": "1.8",
+    "t": [
+      "Bridge",
+      "PvP",
+      "Practice",
+      "Minigames"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "GamerMC",
+    "i": "play.gamermc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "Bedwars"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "GalaxyMC",
+    "i": "play.galaxymc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "RPG PvP",
+    "i": "play.rpgpvp.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Duels"
+    ],
+    "votes": 380
+  },
+  {
+    "n": "PvPNexus",
+    "i": "play.pvpnexus.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 379
+  },
+  {
+    "n": "FactionsLegends",
+    "i": "play.factionslegends.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 379
+  },
+  {
+    "n": "WastelandBattle",
+    "i": "wastelandbattle.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 379
+  },
+  {
+    "n": "MinecraftPrison",
+    "i": "play.minecraftprison.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 378
+  },
+  {
+    "n": "UHCRoyale",
+    "i": "play.uhcroyale.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 377
+  },
+  {
+    "n": "PracticeLegends",
+    "i": "play.practicelegends.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 377
+  },
+  {
+    "n": "RPGWorld",
+    "i": "play.rpgworld.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 376
+  },
+  {
+    "n": "OPPrisonInsane",
+    "i": "play.opprisoninsane.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 375
+  },
+  {
+    "n": "SMPHCF",
+    "i": "play.smphcf.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 375
+  },
+  {
+    "n": "SkyEmpire",
+    "i": "play.skyempire.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 373
+  },
+  {
+    "n": "PrisonAlpha",
+    "i": "play.prisonalpha.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 373
+  },
+  {
+    "n": "VitalityPvP",
+    "i": "play.vitalitypvp.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 372
+  },
+  {
+    "n": "OPPrisonWorld",
+    "i": "play.opprisonworld.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 372
+  },
+  {
+    "n": "HCFLegion",
+    "i": "play.hcflegion.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 371
+  },
+  {
+    "n": "HeartBattle",
+    "i": "play.heartbattle.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 371
+  },
+  {
+    "n": "PrisonFrenzy",
+    "i": "play.prisonfrenzy.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 371
+  },
+  {
+    "n": "PokeWars",
+    "i": "play.pokewars.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 370
+  },
+  {
+    "n": "DuelNetwork",
+    "i": "play.duelnetwork.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 370
+  },
+  {
+    "n": "BurstMC",
+    "i": "play.burstmc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 369
+  },
+  {
+    "n": "PvPForge",
+    "i": "play.pvpforge.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 369
+  },
+  {
+    "n": "PracticeX",
+    "i": "play.practicex.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 369
+  },
+  {
+    "n": "FlameMC",
+    "i": "mc.flamemc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 368
+  },
+  {
+    "n": "BedwarsNova",
+    "i": "play.bedwarsnova.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 368
+  },
+  {
+    "n": "HCFInferno",
+    "i": "play.hcfinferno.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore",
+      "Raid"
+    ],
+    "votes": 366
+  },
+  {
+    "n": "BattleRoyaleMC",
+    "i": "play.battleroyalemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 366
+  },
+  {
+    "n": "ExplosionPvP",
+    "i": "play.explosionpvp.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 363
+  },
+  {
+    "n": "BedWarsStorm",
+    "i": "play.bedwarsstorm.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 362
+  },
+  {
+    "n": "EggWarsElite",
+    "i": "play.eggwarselite.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 362
+  },
+  {
+    "n": "CloudRaid",
+    "i": "play.cloudraid.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 361
+  },
+  {
+    "n": "QuantumMC",
+    "i": "play.quantummc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "PhoenixMC",
+    "i": "play.phoenixmc.org",
+    "v": "1.8",
+    "t": [
+      "Practice",
+      "PvP",
+      "Duels",
+      "FFA"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "ThunderPvP",
+    "i": "play.thunderpvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "HorizonMC",
+    "i": "play.horizonmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "EmeraldMC",
+    "i": "play.emeraldmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Economy"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "SkyWarsNexus",
+    "i": "play.skywarsnexus.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "PaladinMC",
+    "i": "play.paladinmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "HeroBattle",
+    "i": "play.herobattle.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 360
+  },
+  {
+    "n": "Bedwars Network",
+    "i": "play.bedwarsnetwork.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 358
+  },
+  {
+    "n": "FactionsDominion",
+    "i": "play.factionsdominion.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 357
+  },
+  {
+    "n": "FunWorld",
+    "i": "play.funworld.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Eggwars",
+      "Murder"
+    ],
+    "votes": 357
+  },
+  {
+    "n": "BedwarsNexus",
+    "i": "play.bedwarsnexus.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 357
+  },
+  {
+    "n": "CrystalPvPHub",
+    "i": "play.crystalpvphub.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 356
+  },
+  {
+    "n": "UHCPlus",
+    "i": "play.uhcplus.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 355
+  },
+  {
+    "n": "AnarchyNight",
+    "i": "anarchynight.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 354
+  },
+  {
+    "n": "OPPrisonFrenzy",
+    "i": "play.opprisonfrenzy.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 354
+  },
+  {
+    "n": "StormPvP",
+    "i": "play.stormpvp..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 351
+  },
+  {
+    "n": "ApexMC",
+    "i": "play.apexmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 350
+  },
+  {
+    "n": "CosmicSkywars",
+    "i": "play.cosmicskywars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames"
+    ],
+    "votes": 350
+  },
+  {
+    "n": "CraftPvP",
+    "i": "play.craftpvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP"
+    ],
+    "votes": 350
+  },
+  {
+    "n": "FrontierPvP",
+    "i": "play.frontierpvp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 350
+  },
+  {
+    "n": "VoxelGames",
+    "i": "play.voxelgames.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 350
+  },
+  {
+    "n": "PvPWorship",
+    "i": "play.pvpworship..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 349
+  },
+  {
+    "n": "FunPro",
+    "i": "play.funpro.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Eggwars",
+      "Murder",
+      "Bedwars"
+    ],
+    "votes": 349
+  },
+  {
+    "n": "CloudPvP",
+    "i": "play.cloudpvp.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 349
+  },
+  {
+    "n": "MomentumPvP",
+    "i": "play.momentumpvp..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 348
+  },
+  {
+    "n": "HCF Central",
+    "i": "play.hcfcentral.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "Hardcore",
+      "KitMap"
+    ],
+    "votes": 348
+  },
+  {
+    "n": "AnarchyFury",
+    "i": "anarchyfury.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 348
+  },
+  {
+    "n": "BedWarsVoid",
+    "i": "play.bedwarsvoid.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 347
+  },
+  {
+    "n": "SkyWarsX",
+    "i": "play.skywarsx.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 347
+  },
+  {
+    "n": "UHCPortal",
+    "i": "play.uhcportal.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 346
+  },
+  {
+    "n": "MagePvPHub",
+    "i": "play.magepvphub.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes",
+      "Factions"
+    ],
+    "votes": 346
+  },
+  {
+    "n": "SkywarsLegends",
+    "i": "play.skywarslegends.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 345
+  },
+  {
+    "n": "OPPrisonHub",
+    "i": "play.opprisonhub.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 345
+  },
+  {
+    "n": "SkyBattles",
+    "i": "play.skybattles.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 344
+  },
+  {
+    "n": "LifeStealPlus",
+    "i": "play.lifestealplus.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 344
+  },
+  {
+    "n": "WarzoneMC",
+    "i": "pvp.warzonemc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 343
+  },
+  {
+    "n": "VoltMC",
+    "i": "pvp.voltmc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 343
+  },
+  {
+    "n": "UHCElite",
+    "i": "play.uhcelite.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 343
+  },
+  {
+    "n": "LegendMC",
+    "i": "play.legendmc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 343
+  },
+  {
+    "n": "RuthlessMC",
+    "i": "play.ruthlessmc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 342
+  },
+  {
+    "n": "BloodPvP",
+    "i": "play.bloodpvp.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 342
+  },
+  {
+    "n": "RhythmMC",
+    "i": "play.rhythmmc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 341
+  },
+  {
+    "n": "ArcMC",
+    "i": "mc.arcmc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 341
+  },
+  {
+    "n": "ClassBattle",
+    "i": "play.classbattle.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes",
+      "Factions"
+    ],
+    "votes": 341
+  },
+  {
+    "n": "NexusMC",
+    "i": "play.nexusmc.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "ZenithMC",
+    "i": "play.zenithmc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "BoxPvP MC",
+    "i": "play.boxpvp.com",
+    "v": "1.8",
+    "t": [
+      "BoxPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "CraftZone",
+    "i": "play.craftzone.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "AlphaMC",
+    "i": "play.alphamc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "AetherMC",
+    "i": "play.aethermc.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "WildernessMC",
+    "i": "play.wildernessmc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Wilderness"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "BedwarsShadow",
+    "i": "play.bedwarsshadow.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Quads"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "DoomsdayMC",
+    "i": "doomsdaymc.net",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 340
+  },
+  {
+    "n": "SurvivalGamesMC",
+    "i": "play.survivalgamesmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 339
+  },
+  {
+    "n": "ArcherPvP",
+    "i": "play.archerpvp.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 337
+  },
+  {
+    "n": "KingdomMC",
+    "i": "play.kingdommc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Custom"
+    ],
+    "votes": 334
+  },
+  {
+    "n": "BedWarsPlus",
+    "i": "play.bedwarsplus.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 333
+  },
+  {
+    "n": "AnarchyVoid",
+    "i": "anarchyvoid.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 332
+  },
+  {
+    "n": "PixelGames",
+    "i": "play.pixelgames.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 331
+  },
+  {
+    "n": "PrisonHub",
+    "i": "play.prisonhub.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 330
+  },
+  {
+    "n": "LifeDrainMC",
+    "i": "play.lifedrainmc.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 330
+  },
+  {
+    "n": "FactionsKingdom",
+    "i": "play.factionskingdom.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid",
+      "Economy"
+    ],
+    "votes": 330
+  },
+  {
+    "n": "CompetitiveMC",
+    "i": "play.competitivemc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 330
+  },
+  {
+    "n": "PvPSurvival",
+    "i": "play.pvpsurvival.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 330
+  },
+  {
+    "n": "RageMC",
+    "i": "mc.ragemc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 329
+  },
+  {
+    "n": "UHCPro",
+    "i": "play.uhcpro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 329
+  },
+  {
+    "n": "BoltPvP",
+    "i": "pvp.boltpvp..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 327
+  },
+  {
+    "n": "CloudConquest",
+    "i": "play.cloudconquest.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 327
+  },
+  {
+    "n": "PvPSanctuary",
+    "i": "play.pvpsanctuary.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 326
+  },
+  {
+    "n": "KitPvPLegends",
+    "i": "play.kitpvplegends.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 326
+  },
+  {
+    "n": "AnarchyPure",
+    "i": "anarchypure.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 326
+  },
+  {
+    "n": "DoomsdayPvP",
+    "i": "doomsdaypvp.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 324
+  },
+  {
+    "n": "IslandBattles",
+    "i": "play.islandbattles.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 323
+  },
+  {
+    "n": "CrystalWars",
+    "i": "play.crystalwars.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 321
+  },
+  {
+    "n": "AetherWars",
+    "i": "play.aetherwars.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 321
+  },
+  {
+    "n": "PvP Thunder",
+    "i": "play.pvpthunder.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 320
+  },
+  {
+    "n": "UHC Champions",
+    "i": "play.uhcchampions.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Competitive",
+      "Ranked"
+    ],
+    "votes": 320
+  },
+  {
+    "n": "ParagonMC",
+    "i": "play.paragonmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla"
+    ],
+    "votes": 320
+  },
+  {
+    "n": "ClassCraft",
+    "i": "play.classcraft.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Arena"
+    ],
+    "votes": 320
+  },
+  {
+    "n": "PvPZone",
+    "i": "mc.pvpzone..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 319
+  },
+  {
+    "n": "DuelLegends",
+    "i": "play.duellegends.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 319
+  },
+  {
+    "n": "CrystalPvPCentral",
+    "i": "play.crystalpvpcentral.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 319
+  },
+  {
+    "n": "HCFTitan",
+    "i": "play.hcftitan.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 318
+  },
+  {
+    "n": "SiegeMC",
+    "i": "mc.siegemc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "KitMap"
+    ],
+    "votes": 317
+  },
+  {
+    "n": "PrisonCellblock",
+    "i": "play.prisoncellblock.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 317
+  },
+  {
+    "n": "AnarchyNetwork",
+    "i": "anarchynetwork.net",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 317
+  },
+  {
+    "n": "DuelHub",
+    "i": "play.duelhub.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 317
+  },
+  {
+    "n": "TNTRunMC",
+    "i": "play.tntrunmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Eggwars",
+      "Murder",
+      "Bedwars"
+    ],
+    "votes": 317
+  },
+  {
+    "n": "AdventureMC",
+    "i": "play.adventuremc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 316
+  },
+  {
+    "n": "KitPvPMasters",
+    "i": "play.kitpvpmasters.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 316
+  },
+  {
+    "n": "RawMC",
+    "i": "play.rawmc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 315
+  },
+  {
+    "n": "AnarchyLords",
+    "i": "anarchylords.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 315
+  },
+  {
+    "n": "HideSeek",
+    "i": "play.hideseek.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 315
+  },
+  {
+    "n": "SkyConquest",
+    "i": "play.skyconquest.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 315
+  },
+  {
+    "n": "QuestMC",
+    "i": "play.questmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 314
+  },
+  {
+    "n": "HCFAbyss",
+    "i": "play.hcfabyss.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Economy"
+    ],
+    "votes": 314
+  },
+  {
+    "n": "DetonateMC",
+    "i": "play.detonatemc.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 313
+  },
+  {
+    "n": "CrystalPvPElite",
+    "i": "play.crystalpvpelite.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 313
+  },
+  {
+    "n": "RPGHub",
+    "i": "play.rpghub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 313
+  },
+  {
+    "n": "CatalystPvP",
+    "i": "mc.catalystpvp..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 312
+  },
+  {
+    "n": "SkyFight",
+    "i": "play.skyfight.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 312
+  },
+  {
+    "n": "CrystalPvPPro",
+    "i": "play.crystalpvppro.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 312
+  },
+  {
+    "n": "PrisonOmega",
+    "i": "play.prisonomega.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 311
+  },
+  {
+    "n": "ZenMC",
+    "i": "play.zenmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "EvoMC",
+    "i": "play.evomc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "StrikeMC",
+    "i": "play.strikemc.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "DeDuels",
+    "i": "play.deduels.net",
+    "v": "1.8",
+    "t": [
+      "Debuff",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "EmberMC",
+    "i": "play.embermc.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "ArcadiaMC",
+    "i": "play.arcadiamc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "FrontierSMP",
+    "i": "play.frontiersmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 310
+  },
+  {
+    "n": "SkyWarsPhoenix",
+    "i": "play.skywarsphoenix.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 309
+  },
+  {
+    "n": "CrystalPvPFury",
+    "i": "play.crystalpvpfury.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 309
+  },
+  {
+    "n": "SkyWarsStorm",
+    "i": "play.skywarsstorm.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 308
+  },
+  {
+    "n": "FFANetwork",
+    "i": "play.ffanetwork.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 308
+  },
+  {
+    "n": "MinigamePlus",
+    "i": "play.minigameplus.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Eggwars"
+    ],
+    "votes": 308
+  },
+  {
+    "n": "MCPrisonHub",
+    "i": "play.mcprisonhub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 307
+  },
+  {
+    "n": "RPGBattle",
+    "i": "play.rpgbattle.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes"
+    ],
+    "votes": 307
+  },
+  {
+    "n": "ConvictMC",
+    "i": "play.convictmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 306
+  },
+  {
+    "n": "GladiatorMC",
+    "i": "play.gladiatormc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 305
+  },
+  {
+    "n": "WastelandWars",
+    "i": "wastelandwars.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 303
+  },
+  {
+    "n": "BedwarsVoid",
+    "i": "play.bedwarsvoid.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 302
+  },
+  {
+    "n": "EmpireMC",
+    "i": "play.empiremc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 301
+  },
+  {
+    "n": "AnarchyNation",
+    "i": "anarchynation.com",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 301
+  },
+  {
+    "n": "GameHub",
+    "i": "play.gamehub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 301
+  },
+  {
+    "n": "OutlawMC",
+    "i": "play.outlawmc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 300
+  },
+  {
+    "n": "AnarchyDark",
+    "i": "anarchydark.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 298
+  },
+  {
+    "n": "VampireMC",
+    "i": "play.vampiremc.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 298
+  },
+  {
+    "n": "IslandConquest",
+    "i": "play.islandconquest.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 297
+  },
+  {
+    "n": "LifestealArena",
+    "i": "play.lifestealarena.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 296
+  },
+  {
+    "n": "CrystalPvPFrost",
+    "i": "play.crystalpvpfrost.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 295
+  },
+  {
+    "n": "StealMC",
+    "i": "play.stealmc.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 295
+  },
+  {
+    "n": "OmegaSMP",
+    "i": "play.omegasmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 295
+  },
+  {
+    "n": "InfernoMC",
+    "i": "play.infernomc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 294
+  },
+  {
+    "n": "SkyWarsBlaze",
+    "i": "play.skywarsblaze.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 293
+  },
+  {
+    "n": "CrystalPvPLegends",
+    "i": "play.crystalpvplegends.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 293
+  },
+  {
+    "n": "SMPPlus",
+    "i": "play.smpplus.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 293
+  },
+  {
+    "n": "PvPSigma",
+    "i": "play.pvpsigma.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 293
+  },
+  {
+    "n": "ChillPvP",
+    "i": "play.chillpvp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 292
+  },
+  {
+    "n": "MagePvP",
+    "i": "play.magepvp.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 292
+  },
+  {
+    "n": "BlastMC",
+    "i": "play.blastmc.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 291
+  },
+  {
+    "n": "UltraMC",
+    "i": "play.ultramc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 291
+  },
+  {
+    "n": "RPGElite",
+    "i": "play.rpgelite.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 291
+  },
+  {
+    "n": "BedFamine",
+    "i": "play.bedfamine.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames"
+    ],
+    "votes": 290
+  },
+  {
+    "n": "OmegaMC",
+    "i": "play.omegamc.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP"
+    ],
+    "votes": 290
+  },
+  {
+    "n": "NatureMC",
+    "i": "play.naturemc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Vanilla"
+    ],
+    "votes": 289
+  },
+  {
+    "n": "AnarchyWrath",
+    "i": "anarchywrath.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP"
+    ],
+    "votes": 289
+  },
+  {
+    "n": "ShatterMC",
+    "i": "play.shattermc.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 286
+  },
+  {
+    "n": "BedWarsNexus",
+    "i": "play.bedwarsnexus.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 285
+  },
+  {
+    "n": "PrisonGuard",
+    "i": "play.prisonguard.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 285
+  },
+  {
+    "n": "PixelmonPro",
+    "i": "play.pixelmonpro.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 285
+  },
+  {
+    "n": "UHCArena",
+    "i": "play.uhcarena.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 284
+  },
+  {
+    "n": "SMPBattle",
+    "i": "play.smpbattle.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 284
+  },
+  {
+    "n": "MinigameCentral",
+    "i": "play.minigamecentral.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 284
+  },
+  {
+    "n": "UntamedMC",
+    "i": "play.untamedmc.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 283
+  },
+  {
+    "n": "EggWarsHub",
+    "i": "play.eggwarshub.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 283
+  },
+  {
+    "n": "OPPrisonMax",
+    "i": "play.opprisonmax.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 283
+  },
+  {
+    "n": "SMPPro",
+    "i": "play.smppro.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 282
+  },
+  {
+    "n": "BedWarsFrost",
+    "i": "play.bedwarsfrost.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 281
+  },
+  {
+    "n": "LifestealX",
+    "i": "play.lifestealx.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 281
+  },
+  {
+    "n": "CrystalPvPShadow",
+    "i": "play.crystalpvpshadow.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 281
+  },
+  {
+    "n": "NexusPvP",
+    "i": "play.nexuspvp.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BoxPvP"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "TacticalMC",
+    "i": "play.tacticalmc.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "HawkMC",
+    "i": "play.hawkmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Bedwars"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "SkyWars Plus",
+    "i": "play.skywarsplus.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "BlockPvP",
+    "i": "play.blockpvp.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "NebulaMC",
+    "i": "play.nebulamc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "PrismMC",
+    "i": "play.prismmc.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Minigames"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "RadiantMC",
+    "i": "play.radiantmc.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "IronMC",
+    "i": "play.ironmc.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "VanillaPvP",
+    "i": "play.vanillapvp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "Vanilla",
+      "SMP"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "BattleRealms",
+    "i": "play.battlerealms.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "DuelElite",
+    "i": "play.duelelite.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "FFAWar",
+    "i": "play.ffawar.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "AlphaSMP",
+    "i": "play.alphasmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 280
+  },
+  {
+    "n": "HCFLegends",
+    "i": "hcf.hcflegends.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 278
+  },
+  {
+    "n": "HCFNexus",
+    "i": "play.hcfnexus.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 277
+  },
+  {
+    "n": "PvPArena",
+    "i": "play.pvparena..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 276
+  },
+  {
+    "n": "FeralMC",
+    "i": "play.feralmc.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 276
+  },
+  {
+    "n": "FactionsX",
+    "i": "play.factionsx.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 275
+  },
+  {
+    "n": "PrisonSupreme",
+    "i": "play.prisonsupreme.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 274
+  },
+  {
+    "n": "IslandWars",
+    "i": "play.islandwars.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 273
+  },
+  {
+    "n": "SigmaSMP",
+    "i": "play.sigmasmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Factions"
+    ],
+    "votes": 273
+  },
+  {
+    "n": "UHCSurvival",
+    "i": "play.uhcsurvival.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 272
+  },
+  {
+    "n": "DuelMC",
+    "i": "mc.duelmc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 271
+  },
+  {
+    "n": "KingOfTheHill",
+    "i": "mc.kingofthehill.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid"
+    ],
+    "votes": 271
+  },
+  {
+    "n": "VanillaSMP",
+    "i": "play.vanillasmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny",
+      "Factions"
+    ],
+    "votes": 271
+  },
+  {
+    "n": "FactionsEmpire",
+    "i": "play.factionsempire.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 270
+  },
+  {
+    "n": "HCFLegion",
+    "i": "play.hcflegion.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 269
+  },
+  {
+    "n": "HCFEclipse",
+    "i": "play.hcfeclipse.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Economy"
+    ],
+    "votes": 269
+  },
+  {
+    "n": "MurderHub",
+    "i": "play.murderhub.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 269
+  },
+  {
+    "n": "HeroConquest",
+    "i": "play.heroconquest.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes",
+      "Factions"
+    ],
+    "votes": 269
+  },
+  {
+    "n": "KnightPvP",
+    "i": "play.knightpvp.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 269
+  },
+  {
+    "n": "WildMC",
+    "i": "play.wildmc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 268
+  },
+  {
+    "n": "PrisonExtreme",
+    "i": "play.prisonextreme.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 268
+  },
+  {
+    "n": "BedWarsCrystal",
+    "i": "play.bedwarscrystal.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Team"
+    ],
+    "votes": 267
+  },
+  {
+    "n": "FloatMC",
+    "i": "play.floatmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 267
+  },
+  {
+    "n": "PrisonLord",
+    "i": "play.prisonlord.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 267
+  },
+  {
+    "n": "BedwarsTitan",
+    "i": "play.bedwarstitan.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 267
+  },
+  {
+    "n": "RankedPvP",
+    "i": "play.rankedpvp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 267
+  },
+  {
+    "n": "MurderNetwork",
+    "i": "play.murdernetwork.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 266
+  },
+  {
+    "n": "SkyblockBattle",
+    "i": "play.skyblockbattle.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 266
+  },
+  {
+    "n": "HCFPrime",
+    "i": "mc.hcfprime.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 265
+  },
+  {
+    "n": "PvPRealm",
+    "i": "play.pvprealm.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 265
+  },
+  {
+    "n": "RaidedPvP",
+    "i": "raidedpvp.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 264
+  },
+  {
+    "n": "PrisonElite",
+    "i": "play.prisonelite.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 263
+  },
+  {
+    "n": "ChronicleMC",
+    "i": "play.chroniclemc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 263
+  },
+  {
+    "n": "TaleMC",
+    "i": "play.talemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 263
+  },
+  {
+    "n": "AnarchyReal",
+    "i": "anarchyreal.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 263
+  },
+  {
+    "n": "WizardMC",
+    "i": "play.wizardmc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes"
+    ],
+    "votes": 262
+  },
+  {
+    "n": "HCFApex",
+    "i": "play.hcfapex.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore",
+      "KitMap"
+    ],
+    "votes": 261
+  },
+  {
+    "n": "GameWorld",
+    "i": "play.gameworld.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 261
+  },
+  {
+    "n": "OblivionMC",
+    "i": "play.oblivionmc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "MomentumMC",
+    "i": "play.momentummc.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "DeltaMC",
+    "i": "play.deltamc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "SolarMC",
+    "i": "play.solarmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "FrontierMC",
+    "i": "play.frontiermc.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "LifeStealPro",
+    "i": "play.lifestealpro.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 260
+  },
+  {
+    "n": "PvPEmpire",
+    "i": "play.pvpempire.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 259
+  },
+  {
+    "n": "PracticeNetwork",
+    "i": "play.practicenetwork.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 259
+  },
+  {
+    "n": "DrifterSMP",
+    "i": "play.driftersmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 258
+  },
+  {
+    "n": "BloodArena",
+    "i": "play.bloodarena.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 258
+  },
+  {
+    "n": "MinigameHub",
+    "i": "play.minigamehub.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Eggwars",
+      "Murder",
+      "Bedwars"
+    ],
+    "votes": 258
+  },
+  {
+    "n": "PrisonBoss",
+    "i": "play.prisonboss.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 257
+  },
+  {
+    "n": "AnarchyPurge",
+    "i": "anarchypurge.org",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP",
+      "Survival"
+    ],
+    "votes": 257
+  },
+  {
+    "n": "SkyKingdom",
+    "i": "play.skykingdom.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 257
+  },
+  {
+    "n": "PvPSMP",
+    "i": "play.pvpsmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 257
+  },
+  {
+    "n": "GameNetwork",
+    "i": "play.gamenetwork.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 256
+  },
+  {
+    "n": "BedwarsDoubles",
+    "i": "play.bedwarsdoubles.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Quads"
+    ],
+    "votes": 256
+  },
+  {
+    "n": "CrystalPvPShadow",
+    "i": "play.crystalpvpshadow.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 255
+  },
+  {
+    "n": "SparkMC",
+    "i": "pvp.sparkmc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 254
+  },
+  {
+    "n": "PrisonSigma",
+    "i": "play.prisonsigma.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 254
+  },
+  {
+    "n": "CrystalPvPUltimate",
+    "i": "play.crystalpvpultimate.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Arena"
+    ],
+    "votes": 253
+  },
+  {
+    "n": "ConquerorMC",
+    "i": "play.conquerormc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 251
+  },
+  {
+    "n": "UHCCrusade",
+    "i": "play.uhccrusade.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 251
+  },
+  {
+    "n": "CrystalPvPStorm",
+    "i": "play.crystalpvpstorm.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 250
+  },
+  {
+    "n": "StrongholdMC",
+    "i": "play.strongholdmc.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore",
+      "KitMap"
+    ],
+    "votes": 249
+  },
+  {
+    "n": "CrusaderMC",
+    "i": "play.crusadermc.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 249
+  },
+  {
+    "n": "CrystalPvPRuin",
+    "i": "play.crystalpvpruin.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 249
+  },
+  {
+    "n": "LoreMC",
+    "i": "play.loremc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 248
+  },
+  {
+    "n": "PrimeSMP",
+    "i": "play.primesmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 248
+  },
+  {
+    "n": "BlazePvP",
+    "i": "pvp.blazepvp..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 246
+  },
+  {
+    "n": "EndMC",
+    "i": "play.endmc.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 246
+  },
+  {
+    "n": "FunElite",
+    "i": "play.funelite.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Murder",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 246
+  },
+  {
+    "n": "FunNetwork",
+    "i": "play.funnetwork.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Eggwars"
+    ],
+    "votes": 245
+  },
+  {
+    "n": "BedwarsLegend",
+    "i": "play.bedwarslegend.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 245
+  },
+  {
+    "n": "DominationSMP",
+    "i": "play.dominationsmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 245
+  },
+  {
+    "n": "RPGPro",
+    "i": "play.rpgpro.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes"
+    ],
+    "votes": 245
+  },
+  {
+    "n": "LifestealFire",
+    "i": "play.lifestealfire.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 244
+  },
+  {
+    "n": "MinigameNetwork",
+    "i": "play.minigamenetwork.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 244
+  },
+  {
+    "n": "BedwarsFrenzy",
+    "i": "play.bedwarsfrenzy.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 244
+  },
+  {
+    "n": "PrisonInsane",
+    "i": "play.prisoninsane.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 244
+  },
+  {
+    "n": "PrisonOmega",
+    "i": "play.prisonomega.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 244
+  },
+  {
+    "n": "MageWars",
+    "i": "play.magewars.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 243
+  },
+  {
+    "n": "SkyWarsFrost",
+    "i": "play.skywarsfrost.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 242
+  },
+  {
+    "n": "DoomsdayWars",
+    "i": "doomsdaywars.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 242
+  },
+  {
+    "n": "CrystalPvPRage",
+    "i": "play.crystalpvprage.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 241
+  },
+  {
+    "n": "PvPEpsilon",
+    "i": "play.pvpepsilon.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 240
+  },
+  {
+    "n": "SMPHub",
+    "i": "play.smphub.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 238
+  },
+  {
+    "n": "ParkourHub",
+    "i": "play.parkourhub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Eggwars",
+      "Murder"
+    ],
+    "votes": 237
+  },
+  {
+    "n": "CrystalPvPLunar",
+    "i": "play.crystalpvplunar.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 237
+  },
+  {
+    "n": "MagePvPElite",
+    "i": "play.magepvpelite.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 237
+  },
+  {
+    "n": "HCFStorm",
+    "i": "hcf.hcfstorm.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "KitMap"
+    ],
+    "votes": 236
+  },
+  {
+    "n": "CloudWars",
+    "i": "play.cloudwars.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 236
+  },
+  {
+    "n": "BloodWars",
+    "i": "play.bloodwars.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 235
+  },
+  {
+    "n": "FloatingPvP",
+    "i": "play.floatingpvp.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 233
+  },
+  {
+    "n": "PrisonDelta",
+    "i": "play.prisondelta.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 233
+  },
+  {
+    "n": "AnarchyAbyss",
+    "i": "anarchyabyss.net",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 232
+  },
+  {
+    "n": "TNTRun",
+    "i": "play.tntrun.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Eggwars"
+    ],
+    "votes": 232
+  },
+  {
+    "n": "TrainerMC",
+    "i": "play.trainermc.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Gym"
+    ],
+    "votes": 231
+  },
+  {
+    "n": "PracticeMasters",
+    "i": "play.practicemasters.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 231
+  },
+  {
+    "n": "EndCrystalPvP",
+    "i": "play.endcrystalpvp.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 230
+  },
+  {
+    "n": "GamesMC",
+    "i": "play.gamesmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 230
+  },
+  {
+    "n": "OPPrisonMadness",
+    "i": "play.opprisonmadness.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 230
+  },
+  {
+    "n": "DominionMC",
+    "i": "play.dominionmc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 229
+  },
+  {
+    "n": "RaidMC",
+    "i": "play.raidmc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 229
+  },
+  {
+    "n": "LifestealLegends",
+    "i": "play.lifesteallegends.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 229
+  },
+  {
+    "n": "BlockWars",
+    "i": "play.blockwars.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 228
+  },
+  {
+    "n": "SurvivalMCPro",
+    "i": "play.survivalmcpro.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 228
+  },
+  {
+    "n": "AnarchyStorm",
+    "i": "anarchystorm.com",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 228
+  },
+  {
+    "n": "CrystalPvPCrash",
+    "i": "play.crystalpvpcrash.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 226
+  },
+  {
+    "n": "CrystalPvPDoom",
+    "i": "play.crystalpvpdoom.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 226
+  },
+  {
+    "n": "CraftGames",
+    "i": "play.craftgames.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 224
+  },
+  {
+    "n": "BastionMC",
+    "i": "play.bastionmc.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "Hardcore"
+    ],
+    "votes": 223
+  },
+  {
+    "n": "FactionsConquest",
+    "i": "play.factionsconquest.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore"
+    ],
+    "votes": 222
+  },
+  {
+    "n": "SkyRaid",
+    "i": "play.skyraid.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 222
+  },
+  {
+    "n": "HeartPvP",
+    "i": "play.heartpvp.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 221
+  },
+  {
+    "n": "TempestMC",
+    "i": "play.tempestmc.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 220
+  },
+  {
+    "n": "MercilessSMP",
+    "i": "play.mercilesssmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 220
+  },
+  {
+    "n": "PrisonBreak",
+    "i": "play.prisonbreak.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 219
+  },
+  {
+    "n": "SMPPvP",
+    "i": "play.smppvp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 219
+  },
+  {
+    "n": "HCFTitans",
+    "i": "hcf.hcftitans.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 217
+  },
+  {
+    "n": "EnderMCPvP",
+    "i": "play.endermcpvp.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 216
+  },
+  {
+    "n": "SMPKingdom",
+    "i": "play.smpkingdom.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla",
+      "Factions"
+    ],
+    "votes": 216
+  },
+  {
+    "n": "RPGX",
+    "i": "play.rpgx.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes",
+      "Factions"
+    ],
+    "votes": 216
+  },
+  {
+    "n": "BuildBattleMC",
+    "i": "play.buildbattlemc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Murder",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 215
+  },
+  {
+    "n": "UHCCentral",
+    "i": "play.uhccentral.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 214
+  },
+  {
+    "n": "CrystalMC Network",
+    "i": "play.crystalmcnetwork.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 213
+  },
+  {
+    "n": "UHCDimension",
+    "i": "play.uhcdimension.com",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Competitive"
+    ],
+    "votes": 213
+  },
+  {
+    "n": "CrystalPvPPurge",
+    "i": "play.crystalpvppurge.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 213
+  },
+  {
+    "n": "SkyClash",
+    "i": "play.skyclash.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 212
+  },
+  {
+    "n": "BedWarsPhoenix",
+    "i": "play.bedwarsphoenix.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 211
+  },
+  {
+    "n": "MonsterMC",
+    "i": "play.monstermc.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 211
+  },
+  {
+    "n": "CrystalPvPFire",
+    "i": "play.crystalpvpfire.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 208
+  },
+  {
+    "n": "AnarchyRealm",
+    "i": "anarchyrealm.org",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "CrystalPvP"
+    ],
+    "votes": 207
+  },
+  {
+    "n": "BedwarsCrystal",
+    "i": "play.bedwarscrystal.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Quads"
+    ],
+    "votes": 207
+  },
+  {
+    "n": "HCFWorld",
+    "i": "hcf.hcfworld.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid",
+      "KitMap"
+    ],
+    "votes": 206
+  },
+  {
+    "n": "OPPrisonUltimate",
+    "i": "play.opprisonultimate.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 206
+  },
+  {
+    "n": "AnarchyUnlimited",
+    "i": "anarchyunlimited.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 206
+  },
+  {
+    "n": "UHCChampion",
+    "i": "play.uhcchampion.net",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Ranked"
+    ],
+    "votes": 205
+  },
+  {
+    "n": "AnarchyWorld",
+    "i": "anarchyworld.com",
+    "v": "1.16-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 205
+  },
+  {
+    "n": "VelocityMC",
+    "i": "pvp.velocitymc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 204
+  },
+  {
+    "n": "BedwarsDragon",
+    "i": "play.bedwarsdragon.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 204
+  },
+  {
+    "n": "BedwarsCitadel",
+    "i": "play.bedwarscitadel.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 204
+  },
+  {
+    "n": "HCFBattle",
+    "i": "mc.hcfbattle.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "KitMap"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "SkyWarsShadow",
+    "i": "play.skywarsshadow.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "SkyWarsCrystal",
+    "i": "play.skywarscrystal.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "UHCMasters",
+    "i": "play.uhcmasters.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "PrisonRanks",
+    "i": "play.prisonranks.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "AetherBattle",
+    "i": "play.aetherbattle.net",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Economy"
+    ],
+    "votes": 203
+  },
+  {
+    "n": "LabMC",
+    "i": "play.labmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 202
+  },
+  {
+    "n": "WarSMP",
+    "i": "play.warsmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 202
+  },
+  {
+    "n": "SMPEmpire",
+    "i": "play.smpempire.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 201
+  },
+  {
+    "n": "PrisonPro",
+    "i": "play.prisonpro.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 200
+  },
+  {
+    "n": "BedwarsStorm",
+    "i": "play.bedwarsstorm.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 200
+  },
+  {
+    "n": "HCFHub",
+    "i": "hcf.hcfhub.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 199
+  },
+  {
+    "n": "GamePro",
+    "i": "play.gamepro.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 199
+  },
+  {
+    "n": "PrisonMines",
+    "i": "play.prisonmines.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 198
+  },
+  {
+    "n": "MageMC",
+    "i": "play.magemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Custom"
+    ],
+    "votes": 198
+  },
+  {
+    "n": "CitadelMC",
+    "i": "mc.citadelmc.net",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "Skywars Hub",
+    "i": "play.skywarshub.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "DrainMC",
+    "i": "play.drainmc.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "PvPDelta",
+    "i": "play.pvpdelta.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "AetherPvP",
+    "i": "play.aetherpvp.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "PillageMC",
+    "i": "pillagemc.com",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "SupremacySMP",
+    "i": "play.supremacysmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 197
+  },
+  {
+    "n": "FragmentMC",
+    "i": "play.fragmentmc.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 196
+  },
+  {
+    "n": "SoulEmpire",
+    "i": "play.soulempire.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 196
+  },
+  {
+    "n": "SkyRealm",
+    "i": "play.skyrealm.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 196
+  },
+  {
+    "n": "CrystalPvPAbyss",
+    "i": "play.crystalpvpabyss.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 196
+  },
+  {
+    "n": "SkyWarsNova",
+    "i": "play.skywarsnova.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 195
+  },
+  {
+    "n": "RushMC",
+    "i": "play.rushmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 195
+  },
+  {
+    "n": "AnarchyTotal",
+    "i": "anarchytotal.com",
+    "v": "1.12-1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 195
+  },
+  {
+    "n": "AeroMC",
+    "i": "play.aeromc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 193
+  },
+  {
+    "n": "KothMC",
+    "i": "play.kothmc.gg",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Hardcore"
+    ],
+    "votes": 192
+  },
+  {
+    "n": "SMPNetwork",
+    "i": "play.smpnetwork.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 192
+  },
+  {
+    "n": "HardcoreMC",
+    "i": "hcf.hardcoremc.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 191
+  },
+  {
+    "n": "CrystalPvPStorm",
+    "i": "play.crystalpvpstorm.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 191
+  },
+  {
+    "n": "BedwarsTurbo",
+    "i": "play.bedwarsturbo.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 191
+  },
+  {
+    "n": "HCFVanguard",
+    "i": "mc.hcfvanguard.com",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions",
+      "Raid"
+    ],
+    "votes": 190
+  },
+  {
+    "n": "AetherRaid",
+    "i": "play.aetherraid.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 190
+  },
+  {
+    "n": "CrystalPvPStrike",
+    "i": "play.crystalpvpstrike.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 190
+  },
+  {
+    "n": "PrisonCount",
+    "i": "play.prisoncount.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 189
+  },
+  {
+    "n": "GameMC",
+    "i": "play.gamemc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 189
+  },
+  {
+    "n": "SuperiorSMP",
+    "i": "play.superiorsmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 189
+  },
+  {
+    "n": "HCFSpectre",
+    "i": "hcf.hcfspectre.org",
+    "v": "1.8",
+    "t": [
+      "HCF",
+      "PvP",
+      "Factions"
+    ],
+    "votes": 188
+  },
+  {
+    "n": "PrisonZeta",
+    "i": "play.prisonzeta.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 188
+  },
+  {
+    "n": "HardcoreUHC",
+    "i": "play.hardcoreuhc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "UHC",
+      "PvP",
+      "Survival",
+      "Deathmatch"
+    ],
+    "votes": 187
+  },
+  {
+    "n": "AssassinMC",
+    "i": "play.assassinmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Classes",
+      "Kingdoms",
+      "Custom"
+    ],
+    "votes": 187
+  },
+  {
+    "n": "CrystalPvPVoid",
+    "i": "play.crystalpvpvoid.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 187
+  },
+  {
+    "n": "ChillSMP",
+    "i": "play.chillsmp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 186
+  },
+  {
+    "n": "ReapMC",
+    "i": "pvp.reapmc..org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 185
+  },
+  {
+    "n": "HCFPhantom",
+    "i": "play.hcfphantom.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 184
+  },
+  {
+    "n": "FactionsPro",
+    "i": "play.factionspro.com",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Raid"
+    ],
+    "votes": 184
+  },
+  {
+    "n": "MurderMC",
+    "i": "play.murdermc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 184
+  },
+  {
+    "n": "SkywarsRoyale",
+    "i": "play.skywarsroyale.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 183
+  },
+  {
+    "n": "HCFBattle",
+    "i": "play.hcfbattle.org",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 183
+  },
+  {
+    "n": "BedwarsQuick",
+    "i": "play.bedwarsquick.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 183
+  },
+  {
+    "n": "LootMC",
+    "i": "lootmc.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 183
+  },
+  {
+    "n": "FuryMC",
+    "i": "play.furymc..com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 181
+  },
+  {
+    "n": "HCFStorm",
+    "i": "play.hcfstorm.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF",
+      "Hardcore"
+    ],
+    "votes": 181
+  },
+  {
+    "n": "SkyWarsUltimate",
+    "i": "play.skywarsultimate.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 180
+  },
+  {
+    "n": "MinigamePro",
+    "i": "play.minigamepro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 180
+  },
+  {
+    "n": "ClassPvP",
+    "i": "play.classpvp.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 179
+  },
+  {
+    "n": "PrisonTycoon",
+    "i": "play.prisontycoon.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 178
+  },
+  {
+    "n": "GameElite",
+    "i": "play.gameelite.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 177
+  },
+  {
+    "n": "OPPrisonPro",
+    "i": "play.opprisonpro.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 176
+  },
+  {
+    "n": "AnarchyComplete",
+    "i": "anarchycomplete.net",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP"
+    ],
+    "votes": 175
+  },
+  {
+    "n": "CrystalPvPSolar",
+    "i": "play.crystalpvpsolar.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 175
+  },
+  {
+    "n": "CrystalPvPEdge",
+    "i": "play.crystalpvpedge.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 174
+  },
+  {
+    "n": "PrisonKing",
+    "i": "play.prisonking.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Ranks"
+    ],
+    "votes": 172
+  },
+  {
+    "n": "BedwarsSolo",
+    "i": "play.bedwarssolo.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 172
+  },
+  {
+    "n": "DoomsdayBattle",
+    "i": "doomsdaybattle.com",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival"
+    ],
+    "votes": 172
+  },
+  {
+    "n": "AetherConquest",
+    "i": "play.aetherconquest.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 170
+  },
+  {
+    "n": "PillagePvP",
+    "i": "pillagepvp.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP",
+      "Raid"
+    ],
+    "votes": 170
+  },
+  {
+    "n": "CrystalPvPImpact",
+    "i": "play.crystalpvpimpact.net",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 170
+  },
+  {
+    "n": "SkyWarsFire",
+    "i": "play.skywarsfire.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Insane"
+    ],
+    "votes": 169
+  },
+  {
+    "n": "PracticePro",
+    "i": "play.practicepro.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 169
+  },
+  {
+    "n": "BedwarsDuel",
+    "i": "play.bedwarsduel.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 169
+  },
+  {
+    "n": "RPGRealms",
+    "i": "play.rpgrealms.com",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 168
+  },
+  {
+    "n": "GauntletMC",
+    "i": "play.gauntletmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Bedwars",
+      "Skywars",
+      "SurvivalGames"
+    ],
+    "votes": 167
+  },
+  {
+    "n": "HCFSpectre",
+    "i": "play.hcfspectre.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 167
+  },
+  {
+    "n": "HeroWars",
+    "i": "play.herowars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 167
+  },
+  {
+    "n": "CombatMC",
+    "i": "mc.combatmc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 166
+  },
+  {
+    "n": "SkywarsElite",
+    "i": "play.skywarselite.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Skywars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 166
+  },
+  {
+    "n": "BedwarsKeep",
+    "i": "play.bedwarskeep.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Quads"
+    ],
+    "votes": 166
+  },
+  {
+    "n": "EggWarsPro",
+    "i": "play.eggwarspro.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Duels",
+      "KitPvP",
+      "FFA"
+    ],
+    "votes": 165
+  },
+  {
+    "n": "SkyblockConquest",
+    "i": "play.skyblockconquest.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 164
+  },
+  {
+    "n": "SMPRaid",
+    "i": "play.smpraid.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 164
+  },
+  {
+    "n": "HeartConquest",
+    "i": "play.heartconquest.org",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 163
+  },
+  {
+    "n": "OPPrisonChaos",
+    "i": "play.opprisonchaos.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines"
+    ],
+    "votes": 163
+  },
+  {
+    "n": "ThunderMC",
+    "i": "mc.thundermc..net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 162
+  },
+  {
+    "n": "ArcherMC",
+    "i": "play.archermc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Classes",
+      "Custom"
+    ],
+    "votes": 162
+  },
+  {
+    "n": "SoulBattle",
+    "i": "play.soulbattle.com",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Survival"
+    ],
+    "votes": 162
+  },
+  {
+    "n": "DrainPvP",
+    "i": "play.drainpvp.net",
+    "v": "1.21",
+    "t": [
+      "Lifesteal",
+      "PvP",
+      "SMP",
+      "Hardcore"
+    ],
+    "votes": 162
+  },
+  {
+    "n": "RaidSurvival",
+    "i": "raidsurvival.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "Raid"
+    ],
+    "votes": 160
+  },
+  {
+    "n": "CrystalPvPX",
+    "i": "play.crystalpvpx.org",
+    "v": "1.12-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Ranked"
+    ],
+    "votes": 159
+  },
+  {
+    "n": "AdventurePvP",
+    "i": "play.adventurepvp.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Factions",
+      "Custom"
+    ],
+    "votes": 158
+  },
+  {
+    "n": "BedwarsRush",
+    "i": "play.bedwarsrush.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 158
+  },
+  {
+    "n": "AnarchySurvival",
+    "i": "anarchysurvival.org",
+    "v": "1.21",
+    "t": [
+      "Anarchy",
+      "PvP",
+      "Survival",
+      "CrystalPvP",
+      "Raid"
+    ],
+    "votes": 158
+  },
+  {
+    "n": "SkyFactions",
+    "i": "play.skyfactions.org",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Ranks"
+    ],
+    "votes": 157
+  },
+  {
+    "n": "kitPvPElite",
+    "i": "play.kitpvpelite.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 156
+  },
+  {
+    "n": "CrystalPvPMaster",
+    "i": "play.crystalpvpmaster.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 155
+  },
+  {
+    "n": "PokeRealm",
+    "i": "play.pokerealm.net",
+    "v": "1.16-1.21",
+    "t": [
+      "Pixelmon",
+      "PvP",
+      "Survival",
+      "Battle"
+    ],
+    "votes": 154
+  },
+  {
+    "n": "CrystalPvPSmash",
+    "i": "play.crystalpvpsmash.com",
+    "v": "1.16-1.21",
+    "t": [
+      "CrystalPvP",
+      "PvP",
+      "Duels",
+      "Practice"
+    ],
+    "votes": 154
+  },
+  {
+    "n": "WildernessPvP",
+    "i": "play.wildernesspvp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Vanilla"
+    ],
+    "votes": 153
+  },
+  {
+    "n": "PlayMC",
+    "i": "play.playmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 153
+  },
+  {
+    "n": "FFALegends",
+    "i": "play.ffalegends.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 153
+  },
+  {
+    "n": "BedwarsFort",
+    "i": "play.bedwarsfort.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 153
+  },
+  {
+    "n": "ExcitementMC",
+    "i": "play.excitementmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 152
+  },
+  {
+    "n": "FactionsSovereign",
+    "i": "play.factionssovereign.net",
+    "v": "1.8",
+    "t": [
+      "Factions",
+      "PvP",
+      "HCF"
+    ],
+    "votes": 151
+  },
+  {
+    "n": "HeroRealm",
+    "i": "play.herorealm.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 151
+  },
+  {
+    "n": "ExperimentMC",
+    "i": "play.experimentmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 150
+  },
+  {
+    "n": "MinigameX",
+    "i": "play.minigamex.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Eggwars",
+      "Murder"
+    ],
+    "votes": 150
+  },
+  {
+    "n": "PracticeWorld",
+    "i": "play.practiceworld.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 148
+  },
+  {
+    "n": "ParkourElite",
+    "i": "play.parkourelite.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Eggwars",
+      "Murder",
+      "Bedwars"
+    ],
+    "votes": 148
+  },
+  {
+    "n": "CompetitivePvP",
+    "i": "play.competitivepvp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 148
+  },
+  {
+    "n": "MinigameArena",
+    "i": "play.minigamearena.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Murder",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 144
+  },
+  {
+    "n": "PvPZeta",
+    "i": "play.pvpzeta.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 143
+  },
+  {
+    "n": "PracticePlus",
+    "i": "play.practiceplus.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 143
+  },
+  {
+    "n": "FFAPro",
+    "i": "play.ffapro.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 143
+  },
+  {
+    "n": "PrisonChaos",
+    "i": "play.prisonchaos.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison",
+      "Mines",
+      "Ranks"
+    ],
+    "votes": 142
+  },
+  {
+    "n": "RPGPlus",
+    "i": "play.rpgplus.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 141
+  },
+  {
+    "n": "MCPrisonNetwork",
+    "i": "play.mcprisonnetwork.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Prison",
+      "PvP",
+      "OPPrison"
+    ],
+    "votes": 138
+  },
+  {
+    "n": "CompetitiveSMP",
+    "i": "play.competitivesmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 138
+  },
+  {
+    "n": "SMPFactions",
+    "i": "play.smpfactions.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP"
+    ],
+    "votes": 137
+  },
+  {
+    "n": "SkyConquest",
+    "i": "play.skyconquest.com",
+    "v": "1.21",
+    "t": [
+      "Skyblock",
+      "PvP",
+      "Survival",
+      "Custom"
+    ],
+    "votes": 136
+  },
+  {
+    "n": "PracticePlus",
+    "i": "play.practiceplus.org",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "NoDebuff",
+      "Ranked"
+    ],
+    "votes": 135
+  },
+  {
+    "n": "HeroPvP",
+    "i": "play.heropvp.gg",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Classes"
+    ],
+    "votes": 134
+  },
+  {
+    "n": "BedwarsCastle",
+    "i": "play.bedwarscastle.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 133
+  },
+  {
+    "n": "ClassWars",
+    "i": "play.classwars.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 132
+  },
+  {
+    "n": "CasualSMP",
+    "i": "play.casualsmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 131
+  },
+  {
+    "n": "FFAConquest",
+    "i": "play.ffaconquest.net",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "FFA",
+      "BoxPvP"
+    ],
+    "votes": 129
+  },
+  {
+    "n": "SMPHardcore",
+    "i": "play.smphardcore.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 127
+  },
+  {
+    "n": "ClassMC",
+    "i": "play.classmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 127
+  },
+  {
+    "n": "TerritorySMP",
+    "i": "play.territorysmp.com",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Factions"
+    ],
+    "votes": 126
+  },
+  {
+    "n": "EliteSMP",
+    "i": "play.elitesmp.org",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 126
+  },
+  {
+    "n": "FFAWorld",
+    "i": "play.ffaworld.gg",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "BuildUHC",
+      "Sumo"
+    ],
+    "votes": 125
+  },
+  {
+    "n": "ClassConquest",
+    "i": "play.classconquest.org",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom",
+      "Factions"
+    ],
+    "votes": 124
+  },
+  {
+    "n": "ThrillMC",
+    "i": "play.thrillmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Bedwars",
+      "Skywars"
+    ],
+    "votes": 123
+  },
+  {
+    "n": "ActionMC",
+    "i": "play.actionmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 123
+  },
+  {
+    "n": "CasualPvP",
+    "i": "play.casualpvp.net",
+    "v": "1.21",
+    "t": [
+      "Survival",
+      "PvP",
+      "SMP",
+      "Towny"
+    ],
+    "votes": 123
+  },
+  {
+    "n": "HungerGamesMC",
+    "i": "play.hungergamesmc.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Skywars",
+      "SurvivalGames",
+      "Duels"
+    ],
+    "votes": 121
+  },
+  {
+    "n": "WarlockMC",
+    "i": "play.warlockmc.net",
+    "v": "1.8-1.21",
+    "t": [
+      "RPG",
+      "PvP",
+      "Custom"
+    ],
+    "votes": 120
+  },
+  {
+    "n": "TrialsMC",
+    "i": "play.trialsmc.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "SurvivalGames",
+      "Duels",
+      "KitPvP"
+    ],
+    "votes": 119
+  },
+  {
+    "n": "BedwarsX",
+    "i": "play.bedwarsx.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 116
+  },
+  {
+    "n": "BedwarsInsane",
+    "i": "play.bedwarsinsane.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Trio"
+    ],
+    "votes": 115
+  },
+  {
+    "n": "BedwarsChaos",
+    "i": "play.bedwarschaos.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Ranked"
+    ],
+    "votes": 114
+  },
+  {
+    "n": "BedwarsTrio",
+    "i": "play.bedwarstrio.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Solo"
+    ],
+    "votes": 112
+  },
+  {
+    "n": "FFAArena",
+    "i": "play.ffaarena.com",
+    "v": "1.8",
+    "t": [
+      "PvP",
+      "Practice",
+      "KitPvP",
+      "Duels"
+    ],
+    "votes": 111
+  },
+  {
+    "n": "BedwarsBlitz",
+    "i": "play.bedwarsblitz.org",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Quads"
+    ],
+    "votes": 110
+  },
+  {
+    "n": "ParkourPro",
+    "i": "play.parkourpro.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "BuildBattle",
+      "Parkour",
+      "Eggwars"
+    ],
+    "votes": 109
+  },
+  {
+    "n": "BedwarsQuad",
+    "i": "play.bedwarsquad.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Bedwars",
+      "PvP",
+      "Minigames",
+      "Doubles"
+    ],
+    "votes": 100
+  },
+  {
+    "n": "TNTRush",
+    "i": "play.tntrush.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "Parkour",
+      "Eggwars",
+      "Murder"
+    ],
+    "votes": 90
+  },
+  {
+    "n": "FunHub",
+    "i": "play.funhub.com",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "FFA",
+      "BuildBattle",
+      "Parkour"
+    ],
+    "votes": 89
+  },
+  {
+    "n": "MinigameLegends",
+    "i": "play.minigamelegends.net",
+    "v": "1.8-1.21",
+    "t": [
+      "Minigames",
+      "PvP",
+      "KitPvP",
+      "FFA",
+      "BuildBattle"
+    ],
+    "votes": 86
+  }
+]
