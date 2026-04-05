@@ -27,6 +27,22 @@ npm run dev
 | `NEXT_PUBLIC_PUBLISHABLE_KEY` | Supabase publishable (anon) key |
 | `SECRET_KEY` | Supabase service role key (server-only) |
 
+### Google AdSense (monetization)
+
+Ad slots are integrated and will show placeholder boxes until AdSense credentials are added. Apply at [google.com/adsense](https://www.google.com/adsense).
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_ADSENSE_CLIENT_ID` | Your AdSense publisher ID (e.g. `ca-pub-XXXXXXXX`) |
+| `NEXT_PUBLIC_ADSENSE_SLOT_LEADERBOARD` | Ad slot ID for the 728×90 leaderboard |
+| `NEXT_PUBLIC_ADSENSE_SLOT_RECTANGLE` | Ad slot ID for the 300×250 rectangle |
+| `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` | Ad slot ID for the sidebar (rectangle + skyscraper share one ID) |
+
+**Ad placements:**
+- Homepage, Top, and Server detail pages: leaderboard (top) + sidebar
+- Submit and Verify pages: footer banner only
+- When credentials are not set, styled placeholder boxes are shown instead
+
 ## Database
 
 Schema and migrations live in `supabase/migrations/`. The `servers` table holds listings; `server_status` holds live ping data.
