@@ -23,6 +23,7 @@ interface ServerCardProps {
       latency_ms: number | null;
       player_count: number;
       max_players: number;
+      last_checked?: string;
     } | null;
   };
   onVote?: (serverId: string) => void;
@@ -38,8 +39,28 @@ function PingBadge({ ms }: { ms: number | null }) {
   );
 }
 
+function LastChecked({ time }: { time?: string }) {
+  if (!time) return null;
+  const date = new Date(time);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+
+  let label: string;
+  if (diffMins < 1) label = "just now";
+  else if (diffMins < 60) label = `${diffMins}m ago`;
+  else if (diffMins < 1440) label = `${Math.floor(diffMins / 60)}h ago`;
+  else label = date.toLocaleDateString();
+
+  return (
+    <span className="text-xs text-zinc-600" title={date.toLocaleString()}>
+      checked {label}
+    </span>
+  );
+}
+
 export function ServerCard({ server, onVote }: ServerCardProps) {
-  const { status, latency_ms, player_count, max_players } = server.server_status ?? {};
+  const { status, latency_ms, player_count, max_players, last_checked } = server.server_status ?? {};
   const isOnline = status === true;
 
   return (
@@ -136,14 +157,17 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
-        <div className="text-sm">
-          {isOnline ? (
-            <span className="text-green-400">
-              {player_count}/{max_players} online
-            </span>
-          ) : (
-            <span className="text-zinc-500">Offline</span>
-          )}
+        <div className="flex flex-col gap-0.5">
+          <div className="text-sm">
+            {isOnline ? (
+              <span className="text-green-400">
+                {player_count}/{max_players} online
+              </span>
+            ) : (
+              <span className="text-zinc-500">Offline</span>
+            )}
+          </div>
+          <LastChecked time={last_checked} />
         </div>
 
         <div className="flex items-center gap-3">
