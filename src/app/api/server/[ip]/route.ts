@@ -58,6 +58,7 @@ export async function GET(
           player_count: pingData.player_count ?? 0,
           max_players: pingData.max_players ?? 0,
           motd: pingData.motd ?? "",
+          version: pingData.version ?? "",
           last_checked: new Date().toISOString(),
         });
 
@@ -68,6 +69,7 @@ export async function GET(
             latency_ms: pingData.latency_ms ?? null,
             player_count: pingData.player_count ?? 0,
             max_players: pingData.max_players ?? 0,
+            version: pingData.version ?? "",
           },
         });
       }
