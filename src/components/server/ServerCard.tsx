@@ -2,6 +2,7 @@
 
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Server, Vote, WifiOff } from "lucide-react";
 
@@ -65,98 +66,101 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-colors">
-      {server.banner && (
-        <div className="w-full aspect-[2.87/1] overflow-hidden bg-zinc-800">
-          {server.banner.endsWith('.mp4') ? (
-            <video
-              src={server.banner}
-              className="w-full h-full object-cover"
-              muted
-              autoPlay
-              loop
-              playsInline
-              onError={(e) => { (e.target as HTMLVideoElement).style.display = 'none'; }}
-            />
-          ) : (
-            <img
-              src={server.banner}
-              alt=""
-              className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-          )}
-        </div>
-      )}
-      <div className="p-4">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-3">
-          {server.icon ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={server.icon}
-              alt={server.name}
-              className="w-10 h-10 rounded-lg border border-zinc-700 bg-zinc-800 object-cover"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = 'none';
-                (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">${isOnline ? '🟢' : '⬛'}</div>`;
-              }}
-            />
-          ) : (
-            <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">
-              {isOnline ? (
-                <Server className="w-5 h-5 text-green-400" />
+      <Link href={`/servers/${server.id}`} className="block">
+        {server.banner && (
+          <div className="w-full aspect-[2.87/1] overflow-hidden bg-zinc-800">
+            {server.banner.endsWith('.mp4') ? (
+              <video
+                src={server.banner}
+                className="w-full h-full object-cover"
+                muted
+                autoPlay
+                loop
+                playsInline
+                onError={(e) => { (e.target as HTMLVideoElement).style.display = 'none'; }}
+              />
             ) : (
-                <WifiOff className="w-5 h-5 text-zinc-600" />
-              )}
+              <img
+                src={server.banner}
+                alt=""
+                className="w-full h-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            )}
+          </div>
+        )}
+        <div className="p-4">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            {server.icon ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={server.icon}
+                alt={server.name}
+                className="w-10 h-10 rounded-lg border border-zinc-700 bg-zinc-800 object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                  (e.target as HTMLImageElement).parentElement!.innerHTML = `<div class="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">${isOnline ? '🟢' : '⬛'}</div>`;
+                }}
+              />
+            ) : (
+              <div className="w-10 h-10 bg-zinc-800 rounded-lg flex items-center justify-center">
+                {isOnline ? (
+                  <Server className="w-5 h-5 text-green-400" />
+              ) : (
+                  <WifiOff className="w-5 h-5 text-zinc-600" />
+                )}
+              </div>
+            )}
+            <div>
+              <h3 className="font-semibold text-white flex items-center gap-2">
+                {server.name}
+                {server.verified && (
+                  <span className="text-xs bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded">
+                    Verified
+                  </span>
+                )}
+              </h3>
+              <p className="text-xs text-zinc-500 font-mono">
+                {server.ip}:{server.port}
+              </p>
             </div>
-          )}
-          <div>
-            <h3 className="font-semibold text-white flex items-center gap-2">
-              {server.name}
-              {server.verified && (
-                <span className="text-xs bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded">
-                  Verified
-                </span>
-              )}
-            </h3>
-            <p className="text-xs text-zinc-500 font-mono">
-              {server.ip}:{server.port}
-            </p>
+          </div>
+
+          <div className="text-right">
+            {latency_ms !== undefined && latency_ms !== null ? (
+              <PingBadge ms={latency_ms} />
+            ) : (
+              <span className="text-xs text-zinc-600">-</span>
+            )}
           </div>
         </div>
 
-        <div className="text-right">
-          {latency_ms !== undefined && latency_ms !== null ? (
-            <PingBadge ms={latency_ms} />
-          ) : (
-            <span className="text-xs text-zinc-600">-</span>
-          )}
-        </div>
-      </div>
-
-      {server.description && (
-        <p className="mt-2 text-sm text-zinc-400 line-clamp-2">
-          {server.description}
-        </p>
-      )}
-
-      <div className="mt-3 flex flex-wrap gap-1">
-        {server.version && (
-          <span className="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded">
-            {server.version}
-          </span>
+        {server.description && (
+          <p className="mt-2 text-sm text-zinc-400 line-clamp-2">
+            {server.description}
+          </p>
         )}
-        {server.tags?.slice(0, 4).map((tag) => (
-          <span
-            key={tag}
-            className="text-xs bg-purple-900/30 text-purple-300 px-2 py-0.5 rounded"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
 
-      <div className="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+        <div className="mt-3 flex flex-wrap gap-1">
+          {server.version && (
+            <span className="text-xs bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded">
+              {server.version}
+            </span>
+          )}
+          {server.tags?.slice(0, 4).map((tag) => (
+            <span
+              key={tag}
+              className="text-xs bg-purple-900/30 text-purple-300 px-2 py-0.5 rounded"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        </div>
+      </Link>
+
+      <div className="px-4 pb-4 flex items-center justify-between border-t border-zinc-800 pt-3">
         <div className="flex flex-col gap-0.5">
           <div className="text-sm">
             {isOnline ? (
@@ -182,7 +186,6 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
             Vote
           </button>
         </div>
-      </div>
       </div>
     </div>
   );
