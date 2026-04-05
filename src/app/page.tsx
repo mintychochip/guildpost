@@ -190,7 +190,7 @@ export default async function HomePage({
               </div>
               <div>
                 <h3 className="text-white font-semibold mb-2">What are the requirements to list a server?</h3>
-                <p className="text-zinc-400 text-sm">We allow all sorts of servers as long as they're of good quality and follow our TOS guidelines. We do not allow servers hosted on Aternos or Minehut.</p>
+                <p className="text-zinc-400 text-sm">We allow all sorts of servers as long as they are of good quality and follow our TOS guidelines. We do not allow servers hosted on Aternos or Minehut.</p>
               </div>
               <div>
                 <h3 className="text-white font-semibold mb-2">Do you support Voting?</h3>
