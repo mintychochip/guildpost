@@ -46,6 +46,7 @@ export function ServerCard({ server, onVote }: ServerCardProps) {
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           {server.icon ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={server.icon}
               alt={server.name}
