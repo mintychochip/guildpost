@@ -4,7 +4,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { Search, LayoutGrid, List } from "lucide-react";
+import { Search, LayoutGrid, List, Eye, EyeOff } from "lucide-react";
 
 const TAGS = ["crystal-pvp", "uhc-pvp", "sumo", "nodepuff", "lifesteal", "smp", "practice", "bridge"];
 const VERSIONS = ["1.8", "1.12", "1.16", "1.20.4"];
@@ -34,6 +34,27 @@ export function FilterBar() {
   const currentSort = searchParams.get("sort") ?? "votes";
   const currentSearch = searchParams.get("search") ?? "";
   const currentLayout = searchParams.get("layout") ?? "grid";
+
+  const hideOffline = searchParams.get("max_offline_hours") === "24";
+  const showOffline = searchParams.get("show_offline") === "true";
+
+  const toggleHideOffline = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (hideOffline) {
+      params.delete("max_offline_hours");
+    } else {
+      params.set("max_offline_hours", "24");
+      params.delete("show_offline");
+    }
+    router.push(`/?${params.toString()}`);
+  };
+
+  const showRecentlyOffline = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("show_offline", "true");
+    params.set("max_offline_hours", "72");
+    router.push(`/?${params.toString()}`);
+  };
 
   return (
     <div className="space-y-3">
@@ -75,6 +96,24 @@ export function FilterBar() {
             <List className="w-4 h-4" />
           </button>
         </div>
+
+        {/* Hide Offline Toggle */}
+        <button
+          onClick={toggleHideOffline}
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors text-sm ${
+            hideOffline
+              ? "bg-indigo-600 border-indigo-600 text-white"
+              : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"
+          }`}
+          title={hideOffline ? "Showing online servers" : "Hiding servers offline for 24+ hours"}
+        >
+          {hideOffline ? (
+            <EyeOff className="w-4 h-4" />
+          ) : (
+            <Eye className="w-4 h-4" />
+          )}
+          Hide offline
+        </button>
       </div>
 
       {/* Tags */}
@@ -88,6 +127,16 @@ export function FilterBar() {
           }`}
         >
           All
+        </button>
+        <button
+          onClick={showRecentlyOffline}
+          className={`text-xs px-3 py-1.5 rounded-full transition-colors ${
+            showOffline
+              ? "bg-indigo-600 text-white"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+          }`}
+        >
+          Recently Offline
         </button>
         {TAGS.map((tag) => (
           <button
