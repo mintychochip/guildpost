@@ -86,6 +86,7 @@ export async function GET(
           latency_ms: status.latency_ms,
           player_count: status.player_count,
           max_players: status.max_players,
+          version: status.version ?? "",
         }
       : null,
   });
