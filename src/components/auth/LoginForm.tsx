@@ -86,7 +86,7 @@ export function LoginForm() {
       </button>
       <p className="text-center text-sm text-zinc-500">
         {mode === "signin" ? (
-          <>Don't have an account? <button type="button" onClick={() => setMode("signup")} className="text-indigo-400 hover:text-indigo-300">Sign up</button></>
+          <>Don&apos;t have an account? <button type="button" onClick={() => setMode("signup")} className="text-indigo-400 hover:text-indigo-300">Sign up</button></>
         ) : (
           <>Already have an account? <button type="button" onClick={() => setMode("signin")} className="text-indigo-400 hover:text-indigo-300">Sign in</button></>
         )}

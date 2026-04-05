@@ -7,6 +7,7 @@ import { FilterBar } from "@/components/server/FilterBar";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AdBanner } from "@/components/ads/AdBanner";
 import { ContactForm } from "@/components/ui/ContactForm";
+import { Header } from "@/components/layout/Header";
 
 interface ServerWithStatus {
   id: string;
@@ -106,15 +107,7 @@ export default async function HomePage({
     <>
       <JsonLd data={serversListJsonLd} />
       <div className="min-h-screen">
-        <header className="border-b border-zinc-800 py-4">
-          <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-white">PvP Index</h1>
-            <nav className="flex gap-4">
-              <Link href="/top" className="text-sm text-zinc-400 hover:text-white transition-colors">Top Servers</Link>
-              <Link href="/submit" className="text-sm text-zinc-400 hover:text-white transition-colors">Submit</Link>
-            </nav>
-          </div>
-        </header>
+        <Header />
 
         <div className="grid" style={{ gridTemplateColumns: '1fr minmax(0, 1152px) 1fr' }}>
           <div className="hidden xl:flex xl:justify-end xl:pr-4 xl:sticky xl:top-4 xl:self-start xl:pt-8">
