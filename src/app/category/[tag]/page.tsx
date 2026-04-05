@@ -65,7 +65,7 @@ export default async function CategoryPage({
       .from("servers")
       .select(`
         id, ip, port, name, description, version, tags, verified, vote_count,
-  icon,
+  icon, banner,
         server_status (status, latency_ms, player_count, max_players)
       `)
       .contains("tags", [tag])

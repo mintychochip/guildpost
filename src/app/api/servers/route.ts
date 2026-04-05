@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("servers")
     .select(`
-      id, ip, port, name, description, version, tags, verified, vote_count, icon,
+      id, ip, port, name, description, version, tags, verified, vote_count, icon, banner,
       server_status (status, latency_ms, player_count, max_players, last_checked)
     `, { count: "exact" });
 
