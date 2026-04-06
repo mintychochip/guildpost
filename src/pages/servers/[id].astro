@@ -262,7 +262,19 @@ const { id } = Astro.params;
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
   
-  const serverId = window.location.pathname.split('/').pop();
+  // Extract UUID from URL path - handle both /servers/UUID and /servers/UUID.html
+  let serverId = window.location.pathname.split('/').pop();
+  // Remove .html extension if present (GitHub Pages adds this sometimes)
+  if (serverId.endsWith('.html')) {
+    serverId = serverId.slice(0, -5);
+  }
+  // Validate it's a UUID format
+  if (!serverId || serverId === '' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(serverId)) {
+    console.error('Invalid or missing server ID:', serverId);
+    document.getElementById('loading-state').classList.add('hidden');
+    document.getElementById('error-state').classList.remove('hidden');
+    return;
+  }
   let serverData = null;
   
   // Generate simple browser fingerprint
