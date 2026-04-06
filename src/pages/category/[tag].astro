@@ -1,11 +1,14 @@
 ---
 // Redirect old /category/[tag] URLs to new /minecraft/[tag] URLs
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+
 export async function getStaticPaths() {
   const categories = [
     'pvp', 'survival', 'skyblock', 'factions', 'smp', 'minigames', 
     'prison', 'bedwars', 'lifesteal', 'kitpvp', 'creative', 'towny',
     'parkour', 'hardcore', 'anarchy', 'roleplay', 'economy', 'vanilla',
-    'multiplayer', 'rpg', 'modded', 'pixelmon', 'bedwars', 'economy'
+    'multiplayer', 'rpg', 'modded', 'pixelmon'
   ];
   return categories.map(tag => ({
     params: { tag }
@@ -13,6 +16,7 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
+const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
 ---
 
 <meta http-equiv="refresh" content={`0;url=/minecraft/${tag}`} />
