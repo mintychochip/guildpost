@@ -352,6 +352,10 @@ const gameCategories = [
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.FUiWKe-SwTnKEQFmVzN4L46E5gP2qXl1MnEkrzjWfSw';
   
+  // Log for debugging
+  console.log('Supabase URL:', supabaseUrl);
+  console.log('Loading servers...');
+  
   function renderServerCard(server) {
     const isOnline = server.status === 'online';
     return `
@@ -397,43 +401,65 @@ const gameCategories = [
   }
 
   async function loadServers() {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    // Load trending (most voted)
-    const { data: trending } = await supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players')
-      .order('vote_count', { ascending: false })
-      .limit(6);
-    
-    if (trending) {
-      document.getElementById('trending-servers').innerHTML = trending.map(renderServerCard).join('');
+    try {
+      const supabase = createClient(supabaseUrl, supabaseKey);
+      
+      // Load trending (most voted)
+      const { data: trending, error: trendingError } = await supabase
+        .from('servers')
+        .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players')
+        .order('vote_count', { ascending: false })
+        .limit(6);
+      
+      if (trendingError) {
+        console.error('Trending error:', trendingError);
+        document.getElementById('trending-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Error: ${trendingError.message}</div>`;
+      } else if (trending && trending.length > 0) {
+        document.getElementById('trending-servers').innerHTML = trending.map(renderServerCard).join('');
+      } else {
+        document.getElementById('trending-servers').innerHTML = '<div class="col-span-full text-center py-12 text-[#8892b0]">No servers yet</div>';
+      }
+      
+      // Load recently added
+      const { data: recent, error: recentError } = await supabase
+        .from('servers')
+        .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players, created_at')
+        .order('created_at', { ascending: false })
+        .limit(6);
+      
+      if (recentError) {
+        console.error('Recent error:', recentError);
+        document.getElementById('recent-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Error: ${recentError.message}</div>`;
+      } else if (recent && recent.length > 0) {
+        document.getElementById('recent-servers').innerHTML = recent.map(renderServerCard).join('');
+      } else {
+        document.getElementById('recent-servers').innerHTML = '<div class="col-span-full text-center py-12 text-[#8892b0]">No servers yet</div>';
+      }
+      
+      // Load featured (top rated)
+      const { data: featured, error: featuredError } = await supabase
+        .from('servers')
+        .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players')
+        .order('vote_count', { ascending: false })
+        .limit(6);
+      
+      if (featuredError) {
+        console.error('Featured error:', featuredError);
+        document.getElementById('featured-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Error loading servers: ${featuredError.message}</div>`;
+        return;
+      }
+      
+      if (featured && featured.length > 0) {
+        document.getElementById('featured-servers').innerHTML = featured.map(renderServerCard).join('');
+      } else {
+        document.getElementById('featured-servers').innerHTML = '<div class="col-span-full text-center py-12 text-[#8892b0]">No servers found. <a href="/submit" class="text-[#00f5d4] hover:underline">Add the first one!</a></div>';
+      }
+    } catch (err) {
+      console.error('Load servers error:', err);
+      document.getElementById('trending-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Failed to connect to database</div>`;
+      document.getElementById('recent-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Failed to connect to database</div>`;
+      document.getElementById('featured-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Failed to connect to database. Check console for details.</div>`;
     }
-    
-    // Load recently added
-    const { data: recent } = await supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players, created_at')
-      .order('created_at', { ascending: false })
-      .limit(6);
-    
-    if (recent) {
-      document.getElementById('recent-servers').innerHTML = recent.map(renderServerCard).join('');
-    }
-    
-    // Load featured (top rated)
-    const { data: featured, error } = await supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players')
-      .order('vote_count', { ascending: false })
-      .limit(6);
-    
-    if (error) {
-      document.getElementById('featured-servers').innerHTML = `<div class="col-span-full text-center py-12 text-[#8892b0]">Error loading servers</div>`;
-      return;
-    }
-    
-    document.getElementById('featured-servers').innerHTML = featured ? featured.map(renderServerCard).join('') : '<div class="col-span-full text-center py-12 text-[#8892b0]">No servers found</div>';
   }
   
   // Load servers when DOM is ready
