@@ -1,0 +1,27 @@
+---
+// Redirect old /servers/[id] URLs to client-side /servers/index.html
+export async function getStaticPaths() {
+  // Generate a few sample UUIDs to pre-render (most will be handled by 404.html redirect)
+  return [
+    { params: { id: '50953c63-c6e7-4a45-8244-523a4e1ae48a' } }
+  ];
+}
+
+const { id } = Astro.params;
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting...</title>
+  <script>
+    var path = window.location.pathname;
+    var uuid = path.replace(/^\/servers\//, '').replace(/\/$/, '');
+    window.location.replace('/servers/index.html?id=' + uuid);
+  </script>
+</head>
+<body>
+  <p>Redirecting to server...</p>
+</body>
+</html>
