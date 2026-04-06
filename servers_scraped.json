@@ -1,0 +1,27 @@
+{
+  "scraped_at": "2026-04-06T12:49:17.938Z",
+  "total": 0,
+  "sources": [
+    {
+      "source": "minecraft-list.cz",
+      "added": 0,
+      "timestamp": "2026-04-06T12:48:56.535Z"
+    },
+    {
+      "source": "minecraft-server.eu",
+      "added": 0,
+      "timestamp": "2026-04-06T12:49:02.857Z"
+    },
+    {
+      "source": "craftlist.org",
+      "added": 0,
+      "timestamp": "2026-04-06T12:49:17.883Z"
+    },
+    {
+      "source": "mc-lists.org",
+      "added": 0,
+      "timestamp": "2026-04-06T12:49:17.919Z"
+    }
+  ],
+  "servers": []
+}
