@@ -23,4 +23,4 @@ npm run dev
 npm run build
 ```
 
-The site is built for static export to GitHub Pages.
+The site is built for static export to GitHub Pages.# Build Trigger
