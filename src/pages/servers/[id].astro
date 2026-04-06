@@ -3,39 +3,9 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
-// Use fallback mode for server pages (renders on demand)
+// Use SSR mode for server pages (renders on demand)
 export async function getStaticPaths() {
   return [];
-}
-  
-  try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/servers?select=id`, {
-      headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`
-      }
-    });
-    
-    if (!response.ok) {
-      console.error('Failed to fetch server IDs:', response.status);
-      // Fallback to generating 1-2000
-      return Array.from({ length: 2000 }, (_, i) => ({
-        params: { id: (i + 1).toString() }
-      }));
-    }
-    
-    const servers = await response.json();
-    
-    return servers.map(server => ({
-      params: { id: server.id.toString() }
-    }));
-  } catch (err) {
-    console.error('Error fetching server IDs:', err);
-    // Fallback
-    return Array.from({ length: 2000 }, (_, i) => ({
-      params: { id: (i + 1).toString() }
-    }));
-  }
 }
 
 const { id } = Astro.params;
