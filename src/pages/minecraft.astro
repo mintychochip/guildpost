@@ -70,6 +70,14 @@ import Header from '../components/Header.astro';
   async function loadData() {
     const supabase = createClient(supabaseUrl, supabaseKey);
     
+    // Valid game mode categories (not hosting platforms)
+    const VALID_CATEGORIES = [
+      'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
+      'Prison', 'Minigames', 'Creative', 'Hardcore', 
+      'Anarchy', 'RPG', 'Modded', 'Pixelmon', 'Multiplayer',
+      'Bedwars', 'Towny', 'Economy', 'Roleplay'
+    ];
+    
     // Get all tags
     const { data: allServers } = await supabase
       .from('servers')
@@ -78,19 +86,22 @@ import Header from '../components/Header.astro';
     const tagCounts = {};
     allServers?.forEach((server) => {
       server.tags?.forEach((tag) => {
-        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        // Only count valid game mode categories, not hosting platforms
+        if (VALID_CATEGORIES.includes(tag)) {
+          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        }
       });
     });
     
     const sortedTags = Object.entries(tagCounts)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 15);
+      .slice(0, 12);
     
-    // Render categories
+    // Render categories with new URL structure
     const catContainer = document.getElementById('categories');
     catContainer.innerHTML = sortedTags.map(([tag, count]) => `
-      <a href="/category/${tag.toLowerCase()}" 
-         class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-[#8892b0] hover:text-white hover:border-[#00f5d4] transition-colors">
+      <a href="/minecraft/${tag.toLowerCase()}" 
+         class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-[#8892b0] hover:text-white hover:border-[#00f5d4] transition-colors rounded">
         ${tag} <span class="text-[#2a2a3a]">(${count})</span>
       </a>
     `).join('');
