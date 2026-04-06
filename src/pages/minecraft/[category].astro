@@ -5,16 +5,15 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
-// Valid game mode categories (not hosting platforms)
-const VALID_CATEGORIES = [
-  'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
-  'Prison', 'Minigames', 'Creative', 'Hardcore', 
-  'Anarchy', 'RPG', 'Modded', 'Pixelmon', 'Multiplayer',
-  'Bedwars', 'Towny', 'Economy', 'Roleplay'
-];
-
 // Pre-render all valid category pages
 export async function getStaticPaths() {
+  // Valid game mode categories (not hosting platforms)
+  const VALID_CATEGORIES = [
+    'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
+    'Prison', 'Minigames', 'Creative', 'Hardcore', 
+    'Anarchy', 'RPG', 'Modded', 'Pixelmon', 'Multiplayer',
+    'Bedwars', 'Towny', 'Economy', 'Roleplay'
+  ];
   return VALID_CATEGORIES.map(category => ({
     params: { category: category.toLowerCase() },
     props: { category }
