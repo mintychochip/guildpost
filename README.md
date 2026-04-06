@@ -8,31 +8,31 @@
 </p>
 
 <p align="center">
-  <strong>🎮 Find Your Server. The ultimate directory for game servers.</strong>
+  <strong>Find Your Server. The ultimate directory for game servers.</strong>
 </p>
 
 <p align="center">
-  <a href="https://guildpost.tech">🌐 Live Demo</a> •
-  <a href="#features">✨ Features</a> •
-  <a href="#tech-stack">🛠️ Tech Stack</a> •
-  <a href="#development">💻 Development</a>
+  <a href="https://guildpost.tech">Live Demo</a> •
+  <a href="#features">Features</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#development">Development</a>
 </p>
 
 ---
 
-## ✨ Features
+## Features
 
-- **🔍 Server Discovery** — Browse 2,000+ Minecraft servers with advanced search and filtering
-- **📊 Live Status** — Real-time player counts, latency checks, and online/offline status
-- **🏆 Community Rankings** — Vote-based server rankings with no pay-to-win placement
-- **🎯 Game Categories** — Support for Minecraft (PvP, Survival, Skyblock, Factions, SMP)
-- **🔥 Trending Servers** — See what's hot with daily trending and recently added servers
-- **📱 Responsive Design** — Optimized for desktop, tablet, and mobile
-- **🎨 Cyberpunk Aesthetic** — Dark theme with neon accents and retro-futuristic UI
+- **Server Discovery** — Browse 2,000+ Minecraft servers with advanced search and filtering
+- **Live Status** — Real-time player counts, latency checks, and online/offline status
+- **Community Rankings** — Vote-based server rankings with no pay-to-win placement
+- **Game Categories** — Support for Minecraft (PvP, Survival, Skyblock, Factions, SMP)
+- **Trending Servers** — See what's hot with daily trending and recently added servers
+- **Responsive Design** — Optimized for desktop, tablet, and mobile
+- **Cyberpunk Aesthetic** — Dark theme with neon accents and retro-futuristic UI
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -44,7 +44,7 @@
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -83,7 +83,7 @@ The site is built for static export to GitHub Pages.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 guildpost/
@@ -99,7 +99,7 @@ guildpost/
 
 ---
 
-## 🎨 Brand Guidelines
+## Brand Guidelines
 
 | Element | Value |
 |---------|-------|
@@ -111,7 +111,7 @@ guildpost/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -123,7 +123,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
