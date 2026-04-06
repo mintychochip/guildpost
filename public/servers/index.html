@@ -154,16 +154,25 @@
         return;
       }
       
-      const { data: server, error } = await supabase
-        .from('servers')
-        .select('*')
-        .eq('id', serverId)
-        .single();
-      
-      if (error || !server) {
-        document.getElementById('content').innerHTML = '<div class="error">Server not found</div>';
-        return;
-      }
+      try {
+        const { data: servers, error } = await supabase
+          .from('servers')
+          .select('*')
+          .eq('id', serverId)
+          .limit(1);
+        
+        if (error) {
+          document.getElementById('content').innerHTML = '<div class="error">Error: ' + error.message + '</div>';
+          console.error('Supabase error:', error);
+          return;
+        }
+        
+        if (!servers || servers.length === 0) {
+          document.getElementById('content').innerHTML = '<div class="error">Server not found (ID: ' + serverId + ')</div>';
+          return;
+        }
+        
+        const server = servers[0];
       
       const isOnline = server.status === 'online';
       
@@ -204,6 +213,10 @@
           </a>
         </div>
       `;
+      } catch (err) {
+        document.getElementById('content').innerHTML = '<div class="error">Failed to load: ' + err.message + '</div>';
+        console.error('Error:', err);
+      }
     }
     
     loadServer();
