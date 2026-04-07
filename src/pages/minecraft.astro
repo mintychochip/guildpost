@@ -2,6 +2,7 @@
 // Minecraft Servers Page - Enhanced with Search, Filters, and Pagination
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 const VALID_CATEGORIES = [
   'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
@@ -164,14 +165,7 @@ const VALID_CATEGORIES = [
       </div>
     </main>
 
-    <footer class="px-4 py-8 border-t border-[#2a2a3a] mt-12">
-      <div class="max-w-6xl mx-auto text-center text-[#8892b0]">
-        <p>
-          Built for the community. 
-          <a href="https://github.com/mintychochip/guildpost" class="text-[#00f5d4] hover:underline ml-2">Open source</a>
-        </p>
-      </div>
-    </footer>
+    <Footer />
   </div>
 </Layout>
 
