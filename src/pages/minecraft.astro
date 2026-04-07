@@ -41,19 +41,32 @@ const VALID_CATEGORIES = [
       <div class="mb-8 p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
         <div class="flex flex-col md:flex-row gap-4">
           <!-- Search -->
-          <div class="flex-1">
+          <div class="flex-1 relative">
             <input 
               type="text" 
               id="search-input" 
-              placeholder="Search servers by name or IP..." 
-              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4]"
+              placeholder="Search servers by name, IP, or describe what you're looking for (e.g., 'pvp with factions')..." 
+              class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4] pr-24"
             >
+            <!-- AI Search Toggle -->
+            <button 
+              id="ai-search-toggle"
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1.5 bg-[#1a1a25] hover:bg-[#2a2a3a] text-xs text-[#00f5d4] rounded border border-[#00f5d4]/30 transition-colors flex items-center gap-1"
+              title="Toggle AI-powered semantic search"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <span class="ai-label">AI: Off</span>
+            </button>
           </div>
           
           <!-- Sort -->
           <select 
             id="sort-select"
-            class="px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+            class="px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
           >
             <option value="votes">Most Votes</option>
             <option value="players">Most Players</option>
@@ -64,7 +77,7 @@ const VALID_CATEGORIES = [
           <!-- Status Filter -->
           <select 
             id="status-select"
-            class="px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+            class="px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
           >
             <option value="all">All Servers</option>
             <option value="online">Online Only</option>
@@ -310,7 +323,7 @@ const VALID_CATEGORIES = [
     
     // Render servers
     serversList.innerHTML = pageServers.map(server => `
-      <div class="p-4 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-lg transition-all group">
+      <div class="p-4 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-lg transition-all group" data-server-id="${server.id}">
         <a href="/servers/${server.id}" class="block">
           <div class="flex items-start gap-3">
             <div class="relative w-12 h-12 bg-[#1a1a25] rounded-lg flex items-center justify-center flex-shrink-0">
@@ -503,6 +516,126 @@ const VALID_CATEGORIES = [
       timeout = setTimeout(() => fn(...args), delay);
     };
   }
+  
+  // AI-Powered Semantic Search
+  let aiSearchEnabled = false;
+  const aiSearchToggle = document.getElementById('ai-search-toggle');
+  
+  aiSearchToggle?.addEventListener('click', () => {
+    aiSearchEnabled = !aiSearchEnabled;
+    aiSearchToggle.classList.toggle('bg-[#00f5d4]/20');
+    aiSearchToggle.classList.toggle('border-[#00f5d4]');
+    aiSearchToggle.querySelector('.ai-label').textContent = aiSearchEnabled ? 'AI: On' : 'AI: Off';
+    
+    if (aiSearchEnabled) {
+      searchInput.placeholder = "Describe what you're looking for (e.g., 'pvp factions server with economy')...";
+      showToast('AI semantic search enabled', 'info');
+    } else {
+      searchInput.placeholder = "Search servers by name or IP...";
+    }
+  });
+  
+  // Override applyFilters for AI search
+  const originalApplyFilters = applyFilters;
+  applyFilters = async function() {
+    if (!aiSearchEnabled) {
+      return originalApplyFilters();
+    }
+    
+    const query = searchInput.value.trim();
+    
+    if (!query) {
+      return originalApplyFilters();
+    }
+    
+    // Show loading state
+    serversList.innerHTML = Array(6).fill(`
+      <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg animate-pulse">
+        <div class="flex items-start gap-3">
+          <div class="w-12 h-12 bg-[#1a1a25] rounded-lg"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-[#1a1a25] rounded w-3/4"></div>
+            <div class="h-3 bg-[#1a1a25] rounded w-1/2"></div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
+    try {
+      const response = await fetch('/api/search/semantic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, limit: 50 })
+      });
+      
+      if (!response.ok) throw new Error('AI search failed');
+      
+      const data = await response.json();
+      filteredServers = data.results || [];
+      
+      // Apply status filter
+      const statusFilter = statusSelect.value;
+      if (statusFilter !== 'all') {
+        filteredServers = filteredServers.filter(s => s.status === statusFilter);
+      }
+      
+      currentPage = 1;
+      updateDisplay();
+      
+      if (data.semantic) {
+        showToast(`Found ${filteredServers.length} servers semantically matching "${query}"`, 'success');
+      }
+    } catch (err) {
+      console.error('AI search error:', err);
+      showToast('AI search unavailable, using regular search', 'warning');
+      return originalApplyFilters();
+    }
+  };
+  
+  // Click Tracking
+  function trackClick(serverId, type = 'view', source = 'listing') {
+    fetch('/api/track/click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ server_id: serverId, type, source }),
+      keepalive: true
+    }).catch(() => {}); // Silent fail
+  }
+  
+  // Track clicks on server cards
+  serversList.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-server-id]');
+    if (card) {
+      trackClick(card.dataset.serverId, 'click', 'listing');
+    }
+  });
+  
+  // Track search queries
+  let lastTrackedSearch = '';
+  searchInput?.addEventListener('input', debounce(() => {
+    const query = searchInput.value.trim();
+    if (query && query !== lastTrackedSearch && query.length >= 3) {
+      lastTrackedSearch = query;
+      fetch('/api/track/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query }),
+        keepalive: true
+      }).catch(() => {});
+    }
+  }, 1000));
+  
+  // Load trending servers for homepage
+  async function loadTrending() {
+    try {
+      const response = await fetch('/api/analytics/popular');
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('trending_servers', JSON.stringify(data.servers));
+      }
+    } catch (e) {}
+  }
+  loadTrending();
   
   // Load on mount
   loadServers();
