@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+
+Sitemap: https://guildpost.tech/sitemap.xml
 
 # Sitemap location
 Sitemap: https://guildpost.tech/sitemap.xml

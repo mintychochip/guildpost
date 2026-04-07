@@ -2,6 +2,7 @@
 const navItems = [
   { label: 'Minecraft', href: '/minecraft' },
   { label: 'Categories', href: '/minecraft#categories' },
+  { label: 'Favorites', href: '/favorites', icon: '♡' },
   { label: 'Add Server', href: '/submit', highlight: true },
 ];
 ---
@@ -25,6 +26,7 @@ const navItems = [
                 : 'text-[#8892b0] hover:text-white'
             }`}
           >
+            {item.icon && <span class="mr-1">{item.icon}</span>}
             {item.label}
           </a>
         ))}
@@ -57,6 +59,9 @@ const navItems = [
       <nav class="flex flex-col gap-3">
         <a href="/minecraft" class="text-[#8892b0] hover:text-white transition-colors font-medium">
           Minecraft Servers
+        </a>
+        <a href="/favorites" class="text-[#8892b0] hover:text-white transition-colors font-medium flex items-center gap-2">
+          <span>♡</span> Favorites
         </a>
         <a href="/submit" class="text-[#00f5d4] hover:text-[#00d4b8] transition-colors font-medium">
           + Add Your Server
