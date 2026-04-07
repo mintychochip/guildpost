@@ -1,7 +1,14 @@
 ---
-// Minecraft Servers Page
+// Minecraft Servers Page - Enhanced with Search, Filters, and Pagination
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+
+const VALID_CATEGORIES = [
+  'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
+  'Prison', 'Minigames', 'Creative', 'Hardcore', 
+  'Anarchy', 'RPG', 'Modded', 'Pixelmon', 'Multiplayer',
+  'Bedwars', 'Towny', 'Economy', 'Roleplay'
+];
 ---
 
 <Layout 
@@ -25,28 +32,103 @@ import Header from '../components/Header.astro';
         Minecraft Servers
       </h1>
       <p class="text-[#8892b0] text-lg mb-8 max-w-2xl">
-        Discover 2,000+ Minecraft multiplayer servers. Browse by PvP, Survival, 
-        Skyblock, Factions, and more game modes.
+        Discover thousands of Minecraft multiplayer servers. Browse by game mode, 
+        search by name, or filter by player count and version.
       </p>
 
-      <!-- Categories -->
-      <div class="mb-12">
-        <h2 class="text-xl font-bold text-white mb-4">Browse by Category</h2>
-        <div id="categories" class="flex flex-wrap gap-3">
-          <!-- Loading -->
-          <div class="text-[#8892b0]">Loading categories...</div>
+      <!-- Search & Filters -->
+      <div class="mb-8 p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+        <div class="flex flex-col md:flex-row gap-4">
+          <!-- Search -->
+          <div class="flex-1">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Search servers by name or IP..." 
+              class="w-full px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4]"
+            >
+          </div>
+          
+          <!-- Sort -->
+          <select 
+            id="sort-select"
+            class="px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="votes">Most Votes</option>
+            <option value="players">Most Players</option>
+            <option value="newest">Newest First</option>
+            <option value="name">Name A-Z</option>
+          </select>
+          
+          <!-- Status Filter -->
+          <select 
+            id="status-select"
+            class="px-4 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="all">All Servers</option>
+            <option value="online">Online Only</option>
+            <option value="offline">Offline</option>
+          </select>
+        </div>
+        
+        <!-- Active Filters -->
+        <div id="active-filters" class="flex flex-wrap gap-2 mt-4 hidden">
+          <!-- Dynamically populated -->
         </div>
       </div>
 
-      <!-- Servers -->
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold text-white">Popular Servers</h2>
-          <a href="/" class="text-[#00f5d4] hover:underline text-sm">← Back to Home</a>
+      <!-- Categories -->
+      <div class="mb-8">
+        <h2 class="text-lg font-bold text-white mb-3">Browse by Category</h2>
+        <div id="categories" class="flex flex-wrap gap-2">
+          {VALID_CATEGORIES.map(category => (
+            <a 
+              href={`/minecraft/${category.toLowerCase()}`}
+              class="px-3 py-1.5 bg-[#1a1a25] hover:bg-[#00f5d4]/20 hover:text-[#00f5d4] text-[#8892b0] rounded-lg text-sm transition-colors"
+            >
+              {category}
+            </a>
+          ))}
         </div>
-        <div id="servers-list" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="col-span-full text-center py-12 text-[#8892b0]">Loading servers...</div>
+      </div>
+
+      <!-- Servers Count -->
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-white">
+          Servers 
+          <span id="server-count" class="text-[#8892b0] text-sm font-normal ml-2">(Loading...)</span>
+        </h2>
+        <div id="pagination-info" class="text-[#8892b0] text-sm"></div>
+      </div>
+
+      <!-- Servers Grid -->
+      <div id="servers-list" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="col-span-full text-center py-12 text-[#8892b0]">
+          <div class="w-8 h-8 border-2 border-[#2a2a3a] border-t-[#00f5d4] rounded-full animate-spin mx-auto mb-4"></div>
+          Loading servers...
         </div>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="flex items-center justify-center gap-2 mt-8 hidden">
+        <button id="prev-page" class="px-4 py-2 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          ← Prev
+        </button>
+        <div id="page-numbers" class="flex gap-1">
+          <!-- Page numbers -->
+        </div>
+        <button id="next-page" class="px-4 py-2 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+          Next →
+        </button>
+      </div>
+
+      <!-- No Results -->
+      <div id="no-results" class="hidden text-center py-12">
+        <div class="w-16 h-16 bg-[#ff3864]/20 text-[#ff3864] rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">No servers found</h3>
+        <p class="text-[#8892b0]">Try adjusting your search or filters</p>
       </div>
     </main>
 
@@ -67,129 +149,203 @@ import Header from '../components/Header.astro';
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
   
-  async function loadData() {
+  // State
+  let allServers = [];
+  let filteredServers = [];
+  let currentPage = 1;
+  const SERVERS_PER_PAGE = 18;
+  
+  // Elements
+  const searchInput = document.getElementById('search-input');
+  const sortSelect = document.getElementById('sort-select');
+  const statusSelect = document.getElementById('status-select');
+  const serversList = document.getElementById('servers-list');
+  const serverCount = document.getElementById('server-count');
+  const paginationInfo = document.getElementById('pagination-info');
+  const pagination = document.getElementById('pagination');
+  const prevPageBtn = document.getElementById('prev-page');
+  const nextPageBtn = document.getElementById('next-page');
+  const pageNumbers = document.getElementById('page-numbers');
+  const noResults = document.getElementById('no-results');
+  
+  async function loadServers() {
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // Valid game mode categories (not hosting platforms)
-    const VALID_CATEGORIES = [
-      'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
-      'Prison', 'Minigames', 'Creative', 'Hardcore', 
-      'Anarchy', 'RPG', 'Modded', 'Pixelmon', 'Multiplayer',
-      'Bedwars', 'Towny', 'Economy', 'Roleplay'
-    ];
-    
-    // Get all tags
-    const { data: allServers } = await supabase
+    const { data: servers, error } = await supabase
       .from('servers')
-      .select('tags');
+      .select('*')
+      .order('vote_count', { ascending: false });
     
-    const tagCounts = {};
-    allServers?.forEach((server) => {
-      server.tags?.forEach((tag) => {
-        // Only count valid game mode categories, not hosting platforms
-        if (VALID_CATEGORIES.includes(tag)) {
-          tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-        }
-      });
-    });
-    
-    const sortedTags = Object.entries(tagCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 12);
-    
-    // Render categories with new URL structure
-    const catContainer = document.getElementById('categories');
-    catContainer.innerHTML = sortedTags.map(([tag, count]) => `
-      <a href="/minecraft/${tag.toLowerCase()}" 
-         class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-[#8892b0] hover:text-white hover:border-[#00f5d4] transition-colors rounded">
-        ${tag} <span class="text-[#2a2a3a]">(${count})</span>
-      </a>
-    `).join('');
-    
-    // Get popular servers
-    const { data: servers } = await supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players, ping_ms')
-      .order('vote_count', { ascending: false })
-      .limit(12);
-    
-    // Render servers
-    const container = document.getElementById('servers-list');
-    if (!servers || servers.length === 0) {
-      container.innerHTML = '<div class="col-span-full text-center py-12 text-[#8892b0]">No servers found.</div>';
+    if (error) {
+      console.error('Error loading servers:', error);
+      serversList.innerHTML = '<div class="col-span-full text-center py-12 text-[#ff3864]">Error loading servers</div>';
       return;
     }
     
-    container.innerHTML = servers.map(server => {
-      const isOnline = server.status === 'online';
-      const playerCount = server.players_online || 0;
-      const maxPlayers = server.max_players || 0;
-      
-      return `
-      <a href="/servers/${server.id}" class="block p-5 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] transition-colors group rounded-lg">
-        <div class="flex items-start gap-4 mb-4">
-          ${server.icon ? `
-            <div class="relative">
-              <img src="${server.icon}" alt="" class="w-14 h-14 rounded bg-[#1a1a25]" loading="lazy" />
-              <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} border-2 border-[#12121a]"></span>
-            </div>
-          ` : `
-            <div class="relative">
-              <div class="w-14 h-14 rounded bg-[#1a1a25] flex items-center justify-center">
-                <span class="text-[#00f5d4] text-2xl">⛏</span>
-              </div>
-              <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} border-2 border-[#12121a]"></span>
-            </div>
-          `}
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2 mb-1">
-              <h3 class="font-bold text-white group-hover:text-[#00f5d4] transition-colors truncate text-lg">
-                ${server.name}
-              </h3>
-              ${isOnline ? `
-                <span class="px-2 py-0.5 bg-green-500/20 text-green-500 text-xs font-bold rounded">ONLINE</span>
-              ` : `
-                <span class="px-2 py-0.5 bg-red-500/20 text-red-500 text-xs font-bold rounded">OFFLINE</span>
-              `}
-            </div>
-            <p class="text-sm text-[#8892b0] font-mono truncate">${server.ip}:${server.port}</p>
-          </div>
-        </div>
-        
-        <!-- Stats Row -->
-        <div class="flex items-center gap-4 mb-3 text-sm">
-          <span class="flex items-center gap-1 ${isOnline ? 'text-green-500' : 'text-[#8892b0]'}">
-            <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-500'}"></span>
-            ${isOnline ? `${playerCount}/${maxPlayers}` : 'Offline'}
-          </span>
-          <span class="flex items-center gap-1 ${server.ping_ms && server.ping_ms < 100 ? 'text-green-500' : server.ping_ms && server.ping_ms < 200 ? 'text-yellow-500' : 'text-[#8892b0]'}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            ${server.ping_ms ? `${server.ping_ms}ms` : '—'}
-          </span>
-          <span class="flex items-center gap-1 text-[#ff3864]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-            ${server.vote_count || 0}
-          </span>
-        </div>
-        
-        ${server.description ? `
-          <p class="text-[#8892b0] text-sm line-clamp-2 mb-3">${server.description.slice(0, 100)}...</p>
-        ` : ''}
-        
-        <!-- Tags -->
-        <div class="flex flex-wrap gap-1">
-          ${(server.tags || []).slice(0, 3).map(tag => `
-            <span class="text-xs px-2 py-1 bg-[#1a1a25] text-[#8892b0] rounded">${tag}</span>
-          `).join('')}
-          ${server.version ? `<span class="text-xs px-2 py-1 bg-[#00f5d4]/10 text-[#00f5d4] rounded">${server.version}</span>` : ''}
-        </div>
-      </a>
-    `}).join('');
+    allServers = servers || [];
+    filteredServers = [...allServers];
+    
+    applyFilters();
   }
   
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadData);
-  } else {
-    loadData();
+  function applyFilters() {
+    let results = [...allServers];
+    
+    // Search filter
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    if (searchTerm) {
+      results = results.filter(s => 
+        s.name?.toLowerCase().includes(searchTerm) ||
+        s.ip?.toLowerCase().includes(searchTerm) ||
+        s.tags?.some(t => t.toLowerCase().includes(searchTerm))
+      );
+    }
+    
+    // Status filter
+    const statusFilter = statusSelect.value;
+    if (statusFilter !== 'all') {
+      results = results.filter(s => s.status === statusFilter);
+    }
+    
+    // Sort
+    const sortBy = sortSelect.value;
+    results.sort((a, b) => {
+      switch (sortBy) {
+        case 'votes':
+          return (b.vote_count || 0) - (a.vote_count || 0);
+        case 'players':
+          return (b.players_online || 0) - (a.players_online || 0);
+        case 'newest':
+          return new Date(b.created_at) - new Date(a.created_at);
+        case 'name':
+          return (a.name || '').localeCompare(b.name || '');
+        default:
+          return 0;
+      }
+    });
+    
+    filteredServers = results;
+    currentPage = 1;
+    
+    updateDisplay();
   }
+  
+  function updateDisplay() {
+    // Update count
+    serverCount.textContent = `(${filteredServers.length.toLocaleString()} found)`;
+    
+    // Check for no results
+    if (filteredServers.length === 0) {
+      serversList.innerHTML = '';
+      pagination.classList.add('hidden');
+      noResults.classList.remove('hidden');
+      return;
+    }
+    
+    noResults.classList.add('hidden');
+    
+    // Pagination
+    const totalPages = Math.ceil(filteredServers.length / SERVERS_PER_PAGE);
+    const startIndex = (currentPage - 1) * SERVERS_PER_PAGE;
+    const endIndex = startIndex + SERVERS_PER_PAGE;
+    const pageServers = filteredServers.slice(startIndex, endIndex);
+    
+    // Update pagination info
+    paginationInfo.textContent = `Showing ${startIndex + 1}-${Math.min(endIndex, filteredServers.length)} of ${filteredServers.length}`;
+    
+    // Render servers
+    serversList.innerHTML = pageServers.map(server => `
+      <a href="/servers/${server.id}" class="block p-4 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-lg transition-all group">
+        <div class="flex items-start gap-3">
+          <div class="w-12 h-12 bg-[#1a1a25] rounded-lg flex items-center justify-center flex-shrink-0">
+            ${server.icon ? 
+              `<img src="${server.icon}" alt="" class="w-full h-full object-cover rounded-lg">` : 
+              `<span class="text-[#00f5d4] text-xl">⛏</span>`
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white group-hover:text-[#00f5d4] transition-colors truncate">${server.name || 'Unnamed Server'}</h3>
+            <p class="text-[#8892b0] text-sm truncate">${server.ip}:${server.port}</p>
+            
+            <div class="flex items-center gap-3 mt-2 text-xs">
+              <span class="${server.status === 'online' ? 'text-green-500' : 'text-gray-500'}">
+                ${server.status === 'online' ? '● Online' : '○ Offline'}
+              </span>
+              <span class="text-[#8892b0]">
+                ${server.players_online || 0}/${server.max_players || '?'} players
+              </span>
+              <span class="text-[#ff3864]">
+                ▲ ${server.vote_count || 0} votes
+              </span>
+            </div>
+            
+            ${server.tags?.length ? `
+              <div class="flex flex-wrap gap-1 mt-2">
+                ${server.tags.slice(0, 3).map(tag => `
+                  <span class="px-2 py-0.5 bg-[#1a1a25] text-[#8892b0] rounded text-xs">${tag}</span>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </a>
+    `).join('');
+    
+    // Update pagination controls
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+    
+    // Page numbers
+    pageNumbers.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = `w-10 h-10 rounded-lg text-sm transition-colors ${
+        i === currentPage 
+          ? 'bg-[#00f5d4] text-[#0a0a0f] font-bold' 
+          : 'bg-[#1a1a25] hover:bg-[#2a2a3a] text-white'
+      }`;
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        updateDisplay();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      pageNumbers.appendChild(btn);
+    }
+    
+    pagination.classList.remove('hidden');
+  }
+  
+  // Event listeners
+  searchInput?.addEventListener('input', debounce(applyFilters, 300));
+  sortSelect?.addEventListener('change', applyFilters);
+  statusSelect?.addEventListener('change', applyFilters);
+  
+  prevPageBtn?.addEventListener('click', () => {
+    if (currentPage > 1) {
+      currentPage--;
+      updateDisplay();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+  
+  nextPageBtn?.addEventListener('click', () => {
+    const totalPages = Math.ceil(filteredServers.length / SERVERS_PER_PAGE);
+    if (currentPage < totalPages) {
+      currentPage++;
+      updateDisplay();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+  
+  function debounce(fn, delay) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn(...args), delay);
+    };
+  }
+  
+  // Load on mount
+  loadServers();
 </script>
