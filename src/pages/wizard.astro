@@ -143,8 +143,8 @@ const questions = [
   </div>
 </Layout>
 
-<script>
-  const questions = {JSON.stringify(questions)};
+<script define:vars={{ questionsData: questions }}>
+  const questions = questionsData;
   let currentStep = 0;
   const answers = {};
   const selectedTags = [];

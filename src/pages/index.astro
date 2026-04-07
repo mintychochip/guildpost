@@ -73,22 +73,84 @@ const gameCategories = [
           <AnimatedStat value={0} label="Fake Reviews" color="#ff3864" />
         </div>
 
+        <!-- Inline Wizard Search -->
+        <div class="max-w-3xl mx-auto mt-8 mb-4">
+          <div class="relative">
+            <input 
+              type="text" 
+              id="wizard-search"
+              placeholder="Describe what you're looking for (e.g., 'minecraft pvp server with factions')..."
+              class="w-full px-6 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white text-lg placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4] pr-32"
+            />
+            <button 
+              id="wizard-search-btn"
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2.5 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded hover:bg-[#00d4b8] transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              Find
+            </button>
+          </div>
+          <p class="text-[#8892b0] text-sm mt-2 text-left">
+            Or try: <span class="text-[#00f5d4] cursor-pointer hover:underline" onclick="setWizardSearch('survival building smp')">survival building smp</span>, 
+            <span class="text-[#00f5d4] cursor-pointer hover:underline" onclick="setWizardSearch('hardcore pvp')">hardcore pvp</span>, 
+            <span class="text-[#00f5d4] cursor-pointer hover:underline" onclick="setWizardSearch('creative plot world')">creative plot world</span>
+          </p>
+        </div>
+
+        <!-- Wizard Inline Container -->
+        <div id="inline-wizard" class="hidden max-w-3xl mx-auto mt-6">
+          <div class="bg-[#12121a] border border-[#2a2a3a] rounded-lg p-6">
+            <div id="wizard-question" class="mb-6">
+              <h3 class="text-xl font-bold text-white mb-2" id="wizard-q-text"></h3>
+              <p class="text-[#8892b0] text-sm">Select an option to refine your search</p>
+            </div>
+            <div id="wizard-options" class="grid gap-3 grid-cols-1 sm:grid-cols-2">
+              <!-- Options populated by JS -->
+            </div>
+            <div class="mt-4 flex justify-between">
+              <button id="wizard-back" class="text-[#8892b0] hover:text-white text-sm flex items-center gap-1 hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                Back
+              </button>
+              <button id="wizard-skip" class="text-[#8892b0] hover:text-white text-sm">
+                Skip to results
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Results -->
+        <div id="wizard-results" class="hidden max-w-6xl mx-auto mt-8">
+          <h3 class="text-2xl font-bold text-white mb-4">Recommended Servers</h3>
+          <div id="wizard-results-grid" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Results populated by JS -->
+          </div>
+        </div>
+
         <!-- CTA Buttons -->
-        <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
           <a
             href="/minecraft"
             class="inline-flex items-center gap-2 bg-[#00f5d4] text-[#0a0a0f] px-8 py-4 font-bold text-lg hover:bg-[#00d4b8] transition-colors"
             style="clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)"
           >
-            Browse Minecraft
+            Browse All
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a
+            href="/wizard"
+            class="inline-flex items-center gap-2 border-2 border-[#00f5d4] text-[#00f5d4] px-8 py-4 font-bold text-lg hover:bg-[#00f5d4] hover:text-[#0a0a0f] transition-colors"
+            style="clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Full Wizard
           </a>
           <a
             href="/submit"
             class="inline-flex items-center gap-2 border-2 border-[#2a2a3a] text-white px-8 py-4 font-bold text-lg hover:border-[#00f5d4] hover:text-[#00f5d4] transition-colors"
             style="clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)"
           >
-            Add Your Server
+            Add Server
           </a>
         </div>
         
@@ -129,13 +191,48 @@ const gameCategories = [
             >
               <div class="mb-4" style={`color: ${game.iconColor}`}>
                 {game.id === 'minecraft' && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <!-- Minecraft Grass Block SVG -->
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Top face -->
+                    <path d="M24 0L48 12L24 24L0 12L24 0Z" fill="#5D8C3A"/>
+                    <!-- Front face -->
+                    <path d="M24 24L48 12V36L24 48V24Z" fill="#735037"/>
+                    <!-- Left face -->
+                    <path d="M24 24L0 12V36L24 48V24Z" fill="#8B654D"/>
+                    <!-- Dirt top edges -->
+                    <path d="M0 12L24 24L48 12L24 0L0 12Z" fill="#5D8C3A"/>
+                    <!-- Grass highlight -->
+                    <path d="M24 2L44 12L24 22L4 12L24 2Z" fill="#6B9E47"/>
+                  </svg>
                 )}
                 {game.id === 'rust' && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                  <!-- Rust Gear SVG -->
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="12" stroke={game.iconColor} stroke-width="3" fill="none"/>
+                    <circle cx="24" cy="24" r="6" stroke={game.iconColor} stroke-width="2" fill="none"/>
+                    <!-- Gear teeth -->
+                    <path d="M24 4V10" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M24 38V44" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M4 24H10" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M38 24H44" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M10 10L14 14" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M34 34L38 38" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M38 10L34 14" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <path d="M14 34L10 38" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                  </svg>
                 )}
                 {game.id === 'cs2' && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6"/><path d="m16 16 4 4"/><path d="m19 21 2-2"/></svg>
+                  <!-- CS2 Counter-Strike Icon -->
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="22" stroke={game.iconColor} stroke-width="3" fill="none"/>
+                    <path d="M24 10V24L34 30" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="24" cy="24" r="4" fill={game.iconColor}/>
+                    <!-- Crosshair elements -->
+                    <path d="M24 4V8" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
+                    <path d="M24 40V44" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 24H8" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
+                    <path d="M40 24H44" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
+                  </svg>
                 )}
               </div>
               <h3 class="text-2xl font-bold text-white mb-2">
@@ -400,5 +497,177 @@ const gameCategories = [
       `;
       showToast('Try again!', 'error');
     }
+  });
+  
+  // Inline Wizard
+  const wizardSearch = document.getElementById('wizard-search');
+  const wizardSearchBtn = document.getElementById('wizard-search-btn');
+  const inlineWizard = document.getElementById('inline-wizard');
+  const wizardResults = document.getElementById('wizard-results');
+  
+  let wizardStep = 0;
+  let wizardAnswers = [];
+  let searchQuery = '';
+  
+  const wizardQuestions = [
+    {
+      question: "What type of gameplay experience?",
+      options: [
+        { id: 'pvp', label: "PvP & Combat", icon: "⚔️", tags: ['PvP', 'Factions'] },
+        { id: 'survival', label: "Survival & Building", icon: "🏠", tags: ['Survival', 'SMP'] },
+        { id: 'creative', label: "Creative Mode", icon: "🎨", tags: ['Creative'] },
+        { id: 'minigames', label: "Minigames", icon: "🎮", tags: ['Minigames'] },
+      ]
+    },
+    {
+      question: "What difficulty level?",
+      options: [
+        { id: 'hardcore', label: "Hardcore", icon: "💀", tags: ['Hardcore'] },
+        { id: 'hard', label: "Hard", icon: "⚡", tags: ['Hard'] },
+        { id: 'normal', label: "Normal", icon: "⛏️", tags: [] },
+        { id: 'peaceful', label: "Peaceful/Easy", icon: "🌸", tags: ['Peaceful'] },
+      ]
+    },
+    {
+      question: "Preferred community size?",
+      options: [
+        { id: 'small', label: "Small (10-50)", icon: "👥", tags: ['Small'] },
+        { id: 'medium', label: "Medium (50-200)", icon: "👨‍👩‍👧‍👦", tags: ['Medium'] },
+        { id: 'large', label: "Large (200+)", icon: "🌆", tags: ['Large'] },
+        { id: 'any', label: "Any size", icon: "🤷", tags: [] },
+      ]
+    }
+  ];
+  
+  window.setWizardSearch = (text) => {
+    wizardSearch.value = text;
+    startWizard();
+  };
+  
+  function startWizard() {
+    searchQuery = wizardSearch.value.trim();
+    if (!searchQuery) return;
+    
+    wizardStep = 0;
+    wizardAnswers = [];
+    inlineWizard.classList.remove('hidden');
+    wizardResults.classList.add('hidden');
+    renderWizardStep();
+  }
+  
+  function renderWizardStep() {
+    const q = wizardQuestions[wizardStep];
+    document.getElementById('wizard-q-text').textContent = q.question;
+    
+    const optionsContainer = document.getElementById('wizard-options');
+    optionsContainer.innerHTML = q.options.map(opt => `
+      <button 
+        class="wizard-option-btn p-4 bg-[#0a0a0f] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-lg transition-all text-left flex items-center gap-3"
+        onclick="selectWizardOption('${opt.id}')"
+      >
+        <span class="text-2xl">${opt.icon}</span>
+        <span class="font-bold text-white">${opt.label}</span>
+      </button>
+    `).join('');
+    
+    document.getElementById('wizard-back').classList.toggle('hidden', wizardStep === 0);
+  }
+  
+  window.selectWizardOption = (optionId) => {
+    const q = wizardQuestions[wizardStep];
+    const selected = q.options.find(o => o.id === optionId);
+    wizardAnswers.push(selected);
+    
+    if (wizardStep < wizardQuestions.length - 1) {
+      wizardStep++;
+      renderWizardStep();
+    } else {
+      finishWizard();
+    }
+  };
+  
+  document.getElementById('wizard-back')?.addEventListener('click', () => {
+    if (wizardStep > 0) {
+      wizardStep--;
+      wizardAnswers.pop();
+      renderWizardStep();
+    }
+  });
+  
+  document.getElementById('wizard-skip')?.addEventListener('click', finishWizard);
+  
+  async function finishWizard() {
+    inlineWizard.classList.add('hidden');
+    wizardResults.classList.remove('hidden');
+    
+    const resultsGrid = document.getElementById('wizard-results-grid');
+    resultsGrid.innerHTML = `
+      <div class="col-span-full text-center py-12">
+        <div class="w-8 h-8 border-2 border-[#2a2a3a] border-t-[#00f5d4] rounded-full animate-spin mx-auto mb-4"></div>
+        <p class="text-[#8892b0]">Finding perfect matches...</p>
+      </div>
+    `;
+    
+    // Collect all tags from answers
+    const allTags = wizardAnswers.flatMap(a => a.tags || []);
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    let query = supabase.from('servers').select('*');
+    
+    // If we have tags, filter by them
+    if (allTags.length > 0) {
+      query = query.contains('tags', allTags.slice(0, 2));
+    }
+    
+    // Also try to match search query in name/description
+    if (searchQuery) {
+      query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+    }
+    
+    const { data: servers } = await query
+      .order('vote_count', { ascending: false })
+      .limit(6);
+    
+    if (!servers || servers.length === 0) {
+      resultsGrid.innerHTML = `
+        <div class="col-span-full text-center py-12">
+          <p class="text-[#8892b0] mb-4">No exact matches found.</p>
+          <a href="/minecraft" class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg inline-block">
+            Browse All Servers
+          </a>
+        </div>
+      `;
+      return;
+    }
+    
+    resultsGrid.innerHTML = servers.map(server => `
+      <a href="/servers/${server.id}" class="block p-4 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-lg transition-all group">
+        <div class="flex items-start gap-3">
+          <div class="w-12 h-12 bg-[#1a1a25] rounded-lg flex items-center justify-center">
+            ${server.icon ? 
+              `<img src="${server.icon}" alt="" class="w-full h-full object-cover rounded-lg">` : 
+              `<span class="text-[#00f5d4] text-xl">⛏</span>`
+            }
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white group-hover:text-[#00f5d4] transition-colors truncate">${server.name}</h3>
+            <p class="text-[#8892b0] text-sm truncate">${server.ip}:${server.port}</p>
+            <div class="flex items-center gap-3 mt-2 text-xs">
+              <span class="${server.status === 'online' ? 'text-green-500' : 'text-gray-500'}">
+                ${server.status === 'online' ? '● Online' : '○ Offline'}
+              </span>
+              <span class="text-[#8892b0]">${server.players_online || 0} players</span>
+              <span class="text-[#ff3864]">▲ ${server.vote_count || 0}</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    `).join('');
+  }
+  
+  wizardSearchBtn?.addEventListener('click', startWizard);
+  wizardSearch?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') startWizard();
   });
 </script>
