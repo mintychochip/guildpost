@@ -20,6 +20,19 @@ import Header from '../components/Header.astro';
         <div class="col-span-full text-center py-12 text-[#8892b0]">Loading favorites...</div>
       </div>
 
+      <!-- Export Button -->
+      <div class="mb-6 flex justify-end">
+        <button 
+          id="export-favorites"
+          class="px-4 py-2 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg transition-colors flex items-center gap-2 text-sm"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export
+        </button>
+      </div>
+
       <div id="empty-state" class="hidden text-center py-12">
         <div class="w-16 h-16 bg-[#1a1a25] rounded-full flex items-center justify-center mx-auto mb-4">
           <span class="text-[#8892b0] text-3xl">♡</span>
@@ -129,4 +142,47 @@ import Header from '../components/Header.astro';
       });
     });
   }
+  
+  // Export favorites
+  document.getElementById('export-favorites')?.addEventListener('click', async () => {
+    const favoriteIds = JSON.parse(localStorage.getItem('guildpost_favorites') || '[]');
+    if (favoriteIds.length === 0) {
+      showToast('No favorites to export', 'warning');
+      return;
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const { data: servers } = await supabase
+      .from('servers')
+      .select('name, ip, port, website')
+      .in('id', favoriteIds);
+    
+    if (!servers) {
+      showToast('Failed to export', 'error');
+      return;
+    }
+    
+    // Export as CSV
+    const csv = [
+      ['Name', 'IP', 'Port', 'Website'].join(','),
+      ...servers.map(s => [
+        `"${s.name}"`,
+        s.ip,
+        s.port,
+        s.website || ''
+      ].join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `guildpost-favorites-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showToast(`Exported ${servers.length} favorites`, 'success');
+  });
 </script>
