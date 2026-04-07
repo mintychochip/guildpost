@@ -1,0 +1,39 @@
+{
+  "processed": [
+    {
+      "id": "50953c63-c6e7-4a45-8244-523a4e1ae48a",
+      "name": "Minezone",
+      "iconUrl": "https://i.postimg.cc/nh6YwXq4/maz.png",
+      "bannerUrl": null,
+      "website": "https://minezone.net"
+    }
+  ],
+  "failed": [
+    {
+      "id": "f0dee3fc-fd0f-4936-a3e4-9ab5e99683f2",
+      "name": "119",
+      "reason": "no_website"
+    },
+    {
+      "id": "b6c1fe98-84d8-4cb6-a526-b5b1ccd38b2b",
+      "name": "12",
+      "reason": "no_website"
+    },
+    {
+      "id": "0fe0d98e-3eed-4a82-8e9c-7bcd0be16015",
+      "name": "130",
+      "reason": "no_website"
+    },
+    {
+      "id": "82485424-aae7-4a66-a5a6-7fb6a90a0b6c",
+      "name": "130",
+      "reason": "no_website"
+    },
+    {
+      "id": "2eeae5d9-72de-49a8-88fc-48e79aad0947",
+      "name": "130",
+      "reason": "no_website"
+    }
+  ],
+  "lastRun": null
+}
