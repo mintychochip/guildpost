@@ -1,6 +1,6 @@
 ---
 // Reviews Component for Server Detail Page
-const { serverId, reviews = [] } = Astro.props;
+const { serverId, reviews: initialReviews = [] } = Astro.props;
 ---
 
 <div class="mt-8 p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
@@ -62,22 +62,35 @@ const { serverId, reviews = [] } = Astro.props;
 
   <!-- Reviews List -->
   <div id="reviews-list" class="space-y-4">
-    {reviews.length === 0 ? (
-      <p class="text-[#8892b0] text-center py-8">No reviews yet. Be the first to review!</p>
+    {initialReviews.length === 0 ? (
+      <p class="text-[#8892b0] text-center py-8" id="no-reviews-msg">No reviews yet. Be the first to review!</p>
     ) : (
-      reviews.map(review => (
-        <div class="p-4 bg-[#0a0a0f] rounded-lg">
+      initialReviews.map(review => (
+        <div class="p-4 bg-[#0a0a0f] rounded-lg review-item" data-review-id={review.id}>
           <div class="flex items-center justify-between mb-2">
             <div class="flex items-center gap-2">
-              <span class="font-bold text-white">{review.reviewer_name}</span>
+              <span class="font-bold text-white">{review.username || review.reviewer_name}</span>
+              {review.is_verified && (
+                <span class="px-1.5 py-0.5 bg-green-500/20 text-green-500 text-xs rounded">✓ Verified Player</span>
+              )}
               <span class="text-yellow-500">{'★'.repeat(review.rating)}{'☆'.repeat(5-review.rating)}</span>
             </div>
             <span class="text-[#8892b0] text-xs">{new Date(review.created_at).toLocaleDateString()}</span>
           </div>
           <p class="text-[#8892b0] text-sm">{review.review_text}</p>
+          {review.helpful_count > 0 && (
+            <p class="text-[#00f5d4] text-xs mt-2">{review.helpful_count} found this helpful</p>
+          )}
         </div>
       ))
     )}
+  </div>
+  
+  <!-- Load More Button -->
+  <div class="text-center mt-4">
+    <button id="load-more-reviews" class="hidden px-4 py-2 bg-[#1a1a25] text-[#8892b0] rounded text-sm hover:bg-[#2a2a3a] transition-colors">
+      Load More Reviews
+    </button>
   </div>
 </div>
 
@@ -135,7 +148,7 @@ const { serverId, reviews = [] } = Astro.props;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          reviewer_name: name,
+          username: name,
           rating: selectedRating,
           review_text: text
         })

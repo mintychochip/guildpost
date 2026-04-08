@@ -34,7 +34,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
   try {
     // Fetch approved reviews for this server
     const response = await fetch(
-      `${supabaseUrl}/rest/v1/server_reviews?select=id,reviewer_name,rating,review_text,created_at,helpful_count&server_id=eq.${encodeURIComponent(id)}&is_approved=eq.true&order=created_at.desc`,
+      `${supabaseUrl}/rest/v1/server_reviews?select=id,username,reviewer_name,rating,review_text,is_verified,created_at,helpful_count&server_id=eq.${encodeURIComponent(id)}&is_approved=eq.true&order=created_at.desc`,
       {
         headers: {
           'apikey': supabaseKey,
@@ -91,11 +91,12 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
     });
   }
   
-  const { reviewer_name, rating, review_text } = body;
+  const { username, reviewer_name, rating, review_text } = body;
   
-  // Validation
-  if (!reviewer_name || !reviewer_name.trim()) {
-    return new Response(JSON.stringify({ error: 'Name is required' }), {
+  // Validation - support both username and reviewer_name for backwards compatibility
+  const name = username || reviewer_name;
+  if (!name || !name.trim()) {
+    return new Response(JSON.stringify({ error: 'Username is required' }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -137,7 +138,7 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
       },
       body: JSON.stringify({
         server_id: id,
-        reviewer_name: reviewer_name.trim(),
+        username: name.trim(),
         rating: parseInt(rating),
         review_text: review_text.trim(),
         is_approved: false, // Requires moderation

@@ -9,7 +9,13 @@ compatibility_flags = ["nodejs_compat"]
 SUPABASE_URL = "https://wpxutsdbiampnxfgkjwq.supabase.co"
 # SUPABASE_SERVICE_KEY should be set as a secret
 # GEMINI_API_KEY should be set as a secret
+# CRON_SECRET for securing cron endpoints
+
+# Cron Triggers - Ping servers every 5 minutes
+[[triggers]]
+crons = ["*/5 * * * *"]
 
 # Secrets (set these with wrangler secret put)
 # wrangler secret put SUPABASE_SERVICE_KEY
 # wrangler secret put GEMINI_API_KEY
+# wrangler secret put CRON_SECRET
