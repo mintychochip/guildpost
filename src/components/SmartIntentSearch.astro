@@ -312,6 +312,142 @@ const { id = 'smart-search' } = Astro.props;
     messages.scrollTop = messages.scrollHeight;
   }
 
+  // Add multiple choice options to chat
+  function addChoiceButtons(choices, allowOther = true) {
+    const div = document.createElement('div');
+    div.className = 'message ai choice-container';
+    
+    let html = '<div class="choice-grid">';
+    choices.forEach(choice => {
+      html += `<button class="choice-btn" data-value="${escapeHtml(choice.value)}" data-type="${choice.type}">${escapeHtml(choice.label)}</button>`;
+    });
+    if (allowOther) {
+      html += `<button class="choice-btn other" data-value="other">✏️ Other (type below)...</button>`;
+    }
+    html += '</div>';
+    
+    div.innerHTML = `<div class="message-avatar">🤖</div><div class="message-bubble ai">${html}</div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    
+    // Attach click handlers
+    div.querySelectorAll('.choice-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.value;
+        const type = btn.dataset.type;
+        
+        if (value === 'other') {
+          // User wants to type - focus the input and show hint
+          chatInput.placeholder = "Type what you're looking for...";
+          chatInput.focus();
+          btn.classList.add('selected');
+          btn.textContent = '✏️ Type your answer below';
+        } else {
+          // Handle the choice
+          handleChoiceSelection(type, value);
+        }
+      });
+    });
+  }
+
+  // Handle a choice button click
+  function handleChoiceSelection(type, value) {
+    // Add user message showing their choice
+    addMessage(value, true);
+    conversationHistory.push({ role: 'user', content: value });
+    
+    // Update intent based on selection
+    if (type === 'game') {
+      accumulatedIntent.game = value;
+    } else if (type === 'gamemode') {
+      accumulatedIntent.gamemode = value;
+    } else if (type === 'feature') {
+      if (!accumulatedIntent.features.includes(value)) {
+        accumulatedIntent.features.push(value);
+      }
+    } else if (type === 'size') {
+      accumulatedIntent.size = value;
+    }
+    
+    // Check if we can search now
+    if (isIntentClear(accumulatedIntent)) {
+      const confirmation = `Got it! You want a ${accumulatedIntent.gamemode || ''} ${accumulatedIntent.game} server${accumulatedIntent.features.length ? ' with ' + accumulatedIntent.features.join(', ') : ''}${accumulatedIntent.size ? ' (' + accumulatedIntent.size + ' community)' : ''}. Searching now...`;
+      addMessage(confirmation, false);
+      
+      setTimeout(async () => {
+        chat.classList.add('hidden');
+        const searchQuery = buildSearchQuery(accumulatedIntent);
+        await searchServers(searchQuery, accumulatedIntent);
+      }, 600);
+    } else {
+      // Still need more info - ask next question with choices
+      askNextQuestionWithChoices();
+    }
+  }
+
+  // Ask next question with multiple choice options
+  function askNextQuestionWithChoices() {
+    const missing = getMissingInfo(accumulatedIntent);
+    
+    if (missing.includes('game')) {
+      addQuestionWithChoices(
+        "What game are you looking for?",
+        [
+          { value: 'minecraft', label: '🎮 Minecraft', type: 'game' },
+          { value: 'rust', label: '🎮 Rust (Soon)', type: 'game' },
+          { value: 'cs2', label: '🎮 CS2 (Soon)', type: 'game' }
+        ]
+      );
+    } else if (missing.includes('preference')) {
+      const game = accumulatedIntent.game || 'this';
+      addQuestionWithChoices(
+        `What kind of ${game} experience?`,
+        [
+          { value: 'survival', label: '🛡️ Survival', type: 'gamemode' },
+          { value: 'pvp', label: '⚔️ PvP', type: 'gamemode' },
+          { value: 'skyblock', label: '🏝️ Skyblock', type: 'gamemode' },
+          { value: 'creative', label: '🎨 Creative', type: 'gamemode' },
+          { value: 'minigames', label: '🎲 Minigames', type: 'gamemode' },
+          { value: 'hardcore', label: '🔥 Hardcore', type: 'gamemode' },
+          { value: 'smp', label: '🤝 SMP', type: 'gamemode' }
+        ]
+      );
+    }
+  }
+
+  // Combined question + choices in one message
+  function addQuestionWithChoices(question, choices) {
+    const div = document.createElement('div');
+    div.className = 'message ai choice-container';
+    
+    let html = `<p>${escapeHtml(question)}</p><div class="choice-grid">`;
+    choices.forEach(choice => {
+      html += `<button class="choice-btn" data-value="${escapeHtml(choice.value)}" data-type="${choice.type}">${escapeHtml(choice.label)}</button>`;
+    });
+    html += `<button class="choice-btn other" data-value="other">✏️ Other...</button></div>`;
+    
+    div.innerHTML = `<div class="message-avatar">🤖</div><div class="message-bubble ai">${html}</div>`;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    
+    // Attach click handlers
+    div.querySelectorAll('.choice-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.value;
+        const type = btn.dataset.type;
+        
+        if (value === 'other') {
+          chatInput.placeholder = "Type your answer...";
+          chatInput.focus();
+          btn.classList.add('selected');
+          btn.textContent = '✏️ Type below';
+        } else {
+          handleChoiceSelection(type, value);
+        }
+      });
+    });
+  }
+
   // Escape HTML
   function escapeHtml(text) {
     const div = document.createElement('div');
@@ -468,18 +604,14 @@ const { id = 'smart-search' } = Astro.props;
       const searchQuery = buildSearchQuery(accumulatedIntent);
       await searchServers(searchQuery, accumulatedIntent);
     } else {
-      // Need clarification - start chat flow
+      // Need clarification - start chat flow with multiple choice
       chat.classList.remove('hidden');
       results.classList.add('hidden');
       refinements.classList.add('hidden');
       messages.innerHTML = ''; // Clear previous chat
       
-      // Show welcome and first question
-      const question = generateQuestion(accumulatedIntent);
-      addMessage(question, false);
-      conversationHistory.push({ role: 'assistant', content: question });
-      
-      chatInput.focus();
+      // Ask first question with choices (no separate welcome message)
+      askNextQuestionWithChoices();
     }
     
     btn.disabled = false;
@@ -1029,6 +1161,61 @@ const { id = 'smart-search' } = Astro.props;
     color: #0a0a0f;
     border-color: #00f5d4;
     font-weight: 600;
+  }
+
+  /* Choice buttons in chat */
+  .choice-container .message-bubble {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .choice-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .choice-btn {
+    padding: 0.75rem 0.5rem;
+    background: #0a0a0f;
+    border: 1px solid #2a2a3a;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .choice-btn:hover {
+    background: #2a2a3a;
+    border-color: #00f5d4;
+  }
+
+  .choice-btn.selected {
+    background: #00f5d4;
+    color: #0a0a0f;
+    border-color: #00f5d4;
+    font-weight: 600;
+  }
+
+  .choice-btn.other {
+    grid-column: 1 / -1;
+    background: transparent;
+    border-style: dashed;
+    color: #8892b0;
+  }
+
+  .choice-btn.other:hover {
+    background: #1a1a25;
+    color: #fff;
   }
 
   .apply-refinements-btn {
