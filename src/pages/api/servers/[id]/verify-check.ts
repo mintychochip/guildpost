@@ -1,45 +1,11 @@
 import type { APIRoute } from 'astro';
+import { pingMinecraftServerAlt } from '../../../../lib/minecraft-ping';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
-
-// Minecraft server status check - Simple TCP approach without external lib
-async function pingMinecraftServer(ip: string, port: number): Promise<{ online: boolean; motd?: string; players?: number; maxPlayers?: number; version?: string }> {
-  try {
-    // Use a dynamic import for the minecraft-server-util
-    const { status } = await import('minecraft-server-util');
-    const result = await status(ip, port, { timeout: 10000, enableSRV: true });
-    
-    // Extract MOTD text - handle both string and object formats
-    let motd = '';
-    if (typeof result.motd === 'string') {
-      motd = result.motd;
-    } else if (result.motd?.raw) {
-      motd = result.motd.raw;
-    } else if (result.motd?.clean) {
-      motd = result.motd.clean;
-    } else if (result.description) {
-      motd = typeof result.description === 'string' ? result.description : JSON.stringify(result.description);
-    }
-    
-    // Strip Minecraft color codes and formatting
-    motd = motd.replace(/§[0-9a-fk-or]/gi, '').replace(/\u0000/g, '');
-    
-    return {
-      online: true,
-      motd: motd,
-      players: result.players?.online || 0,
-      maxPlayers: result.players?.max || 0,
-      version: result.version?.name || 'Unknown'
-    };
-  } catch (err: any) {
-    console.error('Minecraft ping error:', err.message);
-    return { online: false };
-  }
-}
 
 // GET /api/servers/[id]/verify-check - Check if MOTD contains token
 export const GET: APIRoute = async ({ params, request, locals }) => {
@@ -136,7 +102,7 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
     const server = servers[0];
     
     // Ping the server to check MOTD
-    const pingResult = await pingMinecraftServer(server.ip, server.port || 25565);
+    const pingResult = await pingMinecraftServerAlt(server.ip, server.port || 25565);
     
     if (!pingResult.online) {
       // Update attempts

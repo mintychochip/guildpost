@@ -9,3 +9,6 @@ dist/
 # Legacy build artifacts (project now uses Astro + Cloudflare)
 .next/
 .netlify/
+
+# Documentation
+README_DASHBOARD_UPDATE.md
