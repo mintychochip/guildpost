@@ -1,9 +1,8 @@
-// Votifier Vote Service with Anti-Abuse
+// Vote Service with Anti-Abuse
 // Features: IP tracking, proxy/VPN detection, rate limiting, fingerprinting
+// Note: Votifier support temporarily disabled (needs Deno-compatible crypto)
 
-import { createClient } from '@supabase/supabase-js';
-import * as crypto from 'crypto';
-import * as net from 'net';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 
 interface VoteRequest {
   serverId: string;
@@ -138,114 +137,8 @@ interface VoteResponse {
   };
 }
 
-// Votifier 2.0 packet format
-function createVotifierPacket(
-  serviceName: string,
-  username: string,
-  address: string,
-  timestamp: number,
-  challenge: string
-): string {
-  return JSON.stringify({
-    payload: {
-      serviceName,
-      username,
-      address,
-      timestamp,
-      challenge
-    }
-  });
-}
-
-// Legacy Votifier 1.0 format (still widely used)
-function createLegacyVotifierPacket(
-  serviceName: string,
-  username: string,
-  address: string,
-  timestamp: number
-): string {
-  const delim = '\n';
-  return [
-    'VOTE',
-    serviceName,
-    username,
-    address,
-    timestamp.toString()
-  ].join(delim) + delim;
-}
-
-async function sendVotifierVote(
-  serverIp: string,
-  port: number,
-  publicKey: string,
-  username: string,
-  serviceName: string = 'GuildPost'
-): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    try {
-      // Clean up the public key
-      const keyContent = publicKey
-        .replace('-----BEGIN PUBLIC KEY-----', '')
-        .replace('-----END PUBLIC KEY-----', '')
-        .replace(/\s/g, '');
-      
-      const keyBuffer = Buffer.from(keyContent, 'base64');
-      
-      // Create vote payload
-      const timestamp = Date.now();
-      const address = 'guildpost.tech';
-      const payload = createLegacyVotifierPacket(serviceName, username, address, timestamp);
-      
-      // Encrypt with RSA public key
-      const encrypted = crypto.publicEncrypt(
-        {
-          key: `-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----`,
-          padding: crypto.constants.RSA_PKCS1_PADDING
-        },
-        Buffer.from(payload)
-      );
-      
-      // Send to Votifier
-      const socket = new net.Socket();
-      let connected = false;
-      
-      socket.setTimeout(5000);
-      
-      socket.on('connect', () => {
-        connected = true;
-        socket.write(encrypted);
-      });
-      
-      socket.on('data', (data) => {
-        // Votifier sends "VOTIFIER 1.9" or similar version on success
-        socket.end();
-        resolve(true);
-      });
-      
-      socket.on('error', (err) => {
-        socket.destroy();
-        reject(err);
-      });
-      
-      socket.on('timeout', () => {
-        socket.destroy();
-        reject(new Error('Connection timeout'));
-      });
-      
-      socket.on('close', () => {
-        if (!connected) {
-          reject(new Error('Connection refused'));
-        }
-      });
-      
-      // Connect to server's Votifier port
-      socket.connect(port, serverIp);
-      
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
+// Votifier support temporarily disabled - needs Deno-compatible RSA implementation
+// TODO: Implement Votifier using Web Crypto API or Deno std libraries
 
 export async function handleVote(request: Request): Promise<Response> {
   // CORS headers
@@ -462,29 +355,14 @@ export async function handleVote(request: Request): Promise<Response> {
       }
     }
     
-    // Send Votifier packet (if key is configured)
-    let votifierSent = false;
-    if (server.votifier_key) {
-      try {
-        votifierSent = await sendVotifierVote(
-          server.ip,
-          8192, // Default Votifier port (or use configured port)
-          server.votifier_key,
-          username
-        );
-        console.log('Votifier packet sent successfully');
-      } catch (err) {
-        console.error('Votifier send failed:', err);
-        // Don't fail the vote if Votifier is down
-      }
-    }
+    // Votifier temporarily disabled - needs Deno-compatible implementation
+    // TODO: Re-enable when RSA encryption works in Deno
+    const votifierSent = false;
     
     return new Response(
       JSON.stringify({
         success: true,
-        message: votifierSent 
-          ? 'Vote recorded and reward sent to server!' 
-          : 'Vote recorded! Rewards will be sent when you join the server.',
+        message: 'Vote recorded successfully!',
         vote: {
           id: vote.id,
           timestamp: vote.created_at
