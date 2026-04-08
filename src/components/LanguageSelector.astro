@@ -1,0 +1,203 @@
+---
+// Language Selector Component
+import { locales, defaultLocale, rtlLocales } from '../lib/i18n';
+import type { LocaleCode } from '../lib/i18n';
+
+interface Props {
+  currentLocale?: LocaleCode;
+  variant?: 'dropdown' | 'inline';
+}
+
+const { currentLocale = defaultLocale, variant = 'dropdown' } = Astro.props;
+
+const availableLocales = Object.entries(locales).map(([code, info]) => ({
+  code: code as LocaleCode,
+  ...info,
+}));
+
+const currentLocaleInfo = locales[currentLocale] || locales[defaultLocale];
+---
+
+{variant === 'dropdown' ? (
+  <div class="language-selector relative">
+    <button
+      id="language-dropdown-btn"
+      class="flex items-center gap-2 px-3 py-2 bg-[var(--bg-tertiary)] hover:bg-[var(--border-hover)] border border-[var(--border-color)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors text-sm"
+      aria-label="Select language"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="text-lg">{currentLocaleInfo.flag}</span>
+      <span class="hidden sm:inline">{currentLocaleInfo.name}</span>
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="16" 
+        height="16" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="2"
+        class="transition-transform duration-200"
+        id="language-dropdown-arrow"
+      >
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    </button>
+    
+    <div
+      id="language-dropdown-menu"
+      class="hidden absolute right-0 top-full mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-xl z-50 overflow-hidden"
+      role="menu"
+    >
+      <div class="p-2 space-y-1">
+        {availableLocales.map((locale) => (
+          <button
+            data-locale={locale.code}
+            class={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-left transition-colors ${
+              locale.code === currentLocale
+                ? 'bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]'
+                : 'text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] hover:text-[var(--text-primary)]'
+            }`}
+            role="menuitem"
+          >
+            <span class="text-lg">{locale.flag}</span>
+            <span class="text-sm">{locale.name}</span>
+            {locale.dir === 'rtl' && (
+              <span class="ml-auto text-xs px-1.5 py-0.5 bg-[var(--bg-tertiary)] rounded text-[var(--text-muted)]">RTL</span>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+) : (
+  <div class="language-selector-inline flex items-center gap-2">
+    <span class="text-sm text-[var(--text-muted)]">🌐</span>
+    <select
+      id="language-select-inline"
+      class="bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm focus:outline-none cursor-pointer"
+      aria-label="Select language"
+    >
+      {availableLocales.map((locale) => (
+        <option value={locale.code} selected={locale.code === currentLocale}>
+          {locale.flag} {locale.name}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
+<script define:vars={{ rtlLocales, defaultLocale }}>
+  // Client-side language switching
+  const STORAGE_KEY = 'guildpost-locale';
+  
+  function saveLocale(locale) {
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch (e) {
+      console.warn('Failed to save locale:', e);
+    }
+  }
+  
+  function applyLocale(locale) {
+    const dir = rtlLocales.includes(locale) ? 'rtl' : 'ltr';
+    document.documentElement.lang = locale;
+    document.documentElement.dir = dir;
+    
+    if (dir === 'rtl') {
+      document.documentElement.classList.add('rtl');
+      document.documentElement.classList.remove('ltr');
+    } else {
+      document.documentElement.classList.add('ltr');
+      document.documentElement.classList.remove('rtl');
+    }
+  }
+  
+  function switchLocale(locale) {
+    saveLocale(locale);
+    applyLocale(locale);
+    window.location.reload();
+  }
+  
+  // Dropdown variant
+  const dropdownBtn = document.getElementById('language-dropdown-btn');
+  const dropdownMenu = document.getElementById('language-dropdown-menu');
+  const dropdownArrow = document.getElementById('language-dropdown-arrow');
+  
+  if (dropdownBtn && dropdownMenu) {
+    let isOpen = false;
+    
+    function toggleDropdown() {
+      isOpen = !isOpen;
+      dropdownMenu.classList.toggle('hidden', !isOpen);
+      dropdownBtn.setAttribute('aria-expanded', isOpen.toString());
+      if (dropdownArrow) {
+        dropdownArrow.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    }
+    
+    function closeDropdown() {
+      isOpen = false;
+      dropdownMenu.classList.add('hidden');
+      dropdownBtn.setAttribute('aria-expanded', 'false');
+      if (dropdownArrow) {
+        dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    }
+    
+    dropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleDropdown();
+    });
+    
+    // Handle locale selection
+    const localeButtons = dropdownMenu.querySelectorAll('[data-locale]');
+    localeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const locale = btn.getAttribute('data-locale');
+        if (locale) {
+          switchLocale(locale);
+        }
+      });
+    });
+    
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        closeDropdown();
+      }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closeDropdown();
+      }
+    });
+  }
+  
+  // Inline variant
+  const inlineSelect = document.getElementById('language-select-inline');
+  if (inlineSelect) {
+    inlineSelect.addEventListener('change', (e) => {
+      const locale = e.target.value;
+      switchLocale(locale);
+    });
+  }
+</script>
+
+<style>
+  .language-selector {
+    position: relative;
+  }
+  
+  /* RTL Support Styles */
+  :global(.rtl) .language-selector #language-dropdown-menu {
+    right: auto;
+    left: 0;
+  }
+  
+  :global(.rtl) .language-selector [role="menuitem"] {
+    text-align: right;
+  }
+</style>
