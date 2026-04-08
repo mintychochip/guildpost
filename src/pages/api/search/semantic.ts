@@ -34,8 +34,8 @@ async function generateEmbedding(text: string, apiKey: string) {
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
-  const runtime = locals.runtime;
-  const env = runtime.env;
+  // Get environment from Cloudflare runtime
+  const env = locals?.runtime?.env || {};
   
   try {
     const { query, limit = 10 } = await request.json();
@@ -48,8 +48,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const apiKey = env.GEMINI_API_KEY;
+    
+    // Debug: log available env vars (not values)
+    console.log('Available env keys:', Object.keys(env));
+    console.log('GEMINI_API_KEY present:', !!apiKey);
+    
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), {
+      return new Response(JSON.stringify({ 
+        error: 'GEMINI_API_KEY not configured',
+        debug: {
+          hasRuntime: !!locals?.runtime,
+          envKeys: Object.keys(env)
+        }
+      }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
