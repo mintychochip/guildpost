@@ -8,12 +8,15 @@
   }
   
   body {
-    @apply bg-[#0a0a0f] text-white antialiased;
+    @apply antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
   }
   
   /* Better focus states */
   *:focus-visible {
-    @apply outline-none ring-2 ring-[#00f5d4] ring-offset-2 ring-offset-[#0a0a0f];
+    @apply outline-none;
+    box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent-primary);
   }
   
   /* Smooth transitions for interactive elements */
@@ -23,7 +26,9 @@
   
   /* Better selection color */
   ::selection {
-    @apply bg-[#00f5d4]/30 text-white;
+    background-color: var(--accent-primary);
+    opacity: 0.3;
+    color: var(--text-primary);
   }
 }
 
@@ -32,39 +37,68 @@
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
-  /* Card hover effect */
+  /* Card hover effect - uses theme variables */
   .gp-card {
-    @apply bg-[#12121a] border border-[#2a2a3a] rounded-lg transition-all duration-300 ease-out;
+    @apply rounded-lg transition-all duration-300 ease-out;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
   }
   
   .gp-card:hover {
-    @apply border-[#00f5d4]/50 transform -translate-y-1 shadow-lg shadow-[#00f5d4]/10;
+    border-color: var(--accent-primary);
+    opacity: 0.5;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 245, 212, 0.1);
   }
   
-  /* Button styles */
+  /* Button styles - uses theme variables */
   .gp-btn {
     @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 ease-out;
   }
   
   .gp-btn-primary {
-    @apply gp-btn bg-[#00f5d4] text-[#0a0a0f] hover:bg-[#00d4b8] active:scale-95;
+    @apply gp-btn active:scale-95;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+  }
+  
+  .gp-btn-primary:hover {
+    filter: brightness(1.1);
   }
   
   .gp-btn-secondary {
-    @apply gp-btn bg-[#1a1a25] text-white hover:bg-[#2a2a3a] active:scale-95;
+    @apply gp-btn text-white active:scale-95;
+    background-color: var(--bg-tertiary);
+  }
+  
+  .gp-btn-secondary:hover {
+    background-color: var(--border-hover);
   }
   
   .gp-btn-danger {
-    @apply gp-btn bg-[#ff3864] text-white hover:bg-[#e63357] active:scale-95;
+    @apply gp-btn text-white active:scale-95;
+    background-color: var(--accent-secondary);
+  }
+  
+  .gp-btn-danger:hover {
+    filter: brightness(1.1);
   }
   
   /* Input styles */
   .gp-input {
-    @apply w-full px-4 py-3 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-lg transition-all duration-200;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+  
+  .gp-input::placeholder {
+    color: var(--text-secondary);
   }
   
   .gp-input:focus {
-    @apply border-[#00f5d4] ring-1 ring-[#00f5d4]/50;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.1);
   }
   
   /* Status badges */
@@ -73,16 +107,21 @@
   }
   
   .gp-badge-online {
-    @apply gp-badge bg-green-500/20 text-green-500;
+    @apply gp-badge;
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
   }
   
   .gp-badge-offline {
-    @apply gp-badge bg-gray-500/20 text-gray-500;
+    @apply gp-badge;
+    background-color: rgba(107, 114, 128, 0.2);
+    color: #6b7280;
   }
   
   /* Skeleton shimmer */
   .gp-skeleton {
-    @apply animate-pulse bg-gradient-to-r from-[#1a1a25] via-[#2a2a3a] to-[#1a1a25] bg-[length:200%_100%];
+    @apply animate-pulse bg-[length:200%_100%];
+    background-image: linear-gradient(90deg, var(--bg-tertiary) 0%, var(--border-hover) 50%, var(--bg-tertiary) 100%);
     animation: shimmer 1.5s infinite;
   }
   
@@ -107,35 +146,48 @@
   /* Toast notification */
   .gp-toast {
     @apply fixed bottom-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg transform transition-all duration-300;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
   }
   
   /* Scroll to top button */
   .gp-scroll-top {
-    @apply fixed bottom-4 left-4 z-40 w-10 h-10 bg-[#1a1a25] hover:bg-[#2a2a3a] border border-[#2a2a3a] rounded-full flex items-center justify-center text-white transition-all duration-300 opacity-0 pointer-events-none;
+    @apply fixed bottom-4 left-4 z-40 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
   }
   
   .gp-scroll-top.visible {
     @apply opacity-100 pointer-events-auto;
   }
+  
+  .gp-scroll-top:hover {
+    background-color: var(--border-hover);
+  }
 }
 
 @layer utilities {
+  /* Theme-aware colors */
   .text-gp-cyan {
-    color: #00f5d4;
+    color: var(--accent-primary);
   }
   
   .text-gp-pink {
-    color: #ff3864;
+    color: var(--accent-secondary);
   }
   
   /* Gradient text */
   .text-gradient {
-    @apply bg-gradient-to-r from-[#00f5d4] to-[#ff3864] bg-clip-text text-transparent;
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
   }
   
   /* Glass effect */
   .glass {
-    @apply bg-[#0a0a0f]/80 backdrop-blur-md;
+    @apply backdrop-blur-md;
+    background-color: rgba(var(--bg-primary-rgb, 10, 10, 15), 0.8);
   }
   
   /* Glow effect */
@@ -145,5 +197,30 @@
   
   .glow-pink {
     box-shadow: 0 0 20px rgba(255, 56, 100, 0.3);
+  }
+  
+  /* Theme background utilities */
+  .bg-gp-primary {
+    background-color: var(--bg-primary);
+  }
+  
+  .bg-gp-secondary {
+    background-color: var(--bg-secondary);
+  }
+  
+  .bg-gp-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+  
+  .text-gp-primary {
+    color: var(--text-primary);
+  }
+  
+  .text-gp-secondary {
+    color: var(--text-secondary);
+  }
+  
+  .border-gp {
+    border-color: var(--border-color);
   }
 }

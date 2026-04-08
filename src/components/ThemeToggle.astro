@@ -1,0 +1,123 @@
+---
+// Theme Toggle Component
+---
+
+<div class="relative">
+  <button 
+    id="theme-toggle-btn"
+    class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-colors"
+    aria-label="Change theme"
+  >
+    <span id="theme-icon">🌙</span>
+    <span id="theme-name" class="text-sm hidden sm:inline">Dark</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  
+  <div 
+    id="theme-menu" 
+    class="hidden absolute right-0 top-full mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg z-50 overflow-hidden"
+  >
+    <div class="p-2">
+      <p class="text-[var(--text-muted)] text-xs px-3 py-2 uppercase tracking-wider">Choose Theme</p>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="dark">
+        <span>🌙</span> Dark
+      </button>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="light">
+        <span>☀️</span> Light
+      </button>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="ocean">
+        <span>🌊</span> Ocean
+      </button>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="sunset">
+        <span>🌅</span> Sunset
+      </button>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="forest">
+        <span>🌲</span> Forest
+      </button>
+      
+      <div class="border-t border-[var(--border-color)] my-2"></div>
+      
+      <button class="theme-option w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm flex items-center gap-3 transition-colors" data-theme="contrast">
+        <span>⚡</span> High Contrast
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const themeIcons: Record<string, string> = {
+    dark: '🌙',
+    light: '☀️',
+    ocean: '🌊',
+    sunset: '🌅',
+    forest: '🌲',
+    contrast: '⚡'
+  };
+  
+  const themeNames: Record<string, string> = {
+    dark: 'Dark',
+    light: 'Light',
+    ocean: 'Ocean',
+    sunset: 'Sunset',
+    forest: 'Forest',
+    contrast: 'High Contrast'
+  };
+  
+  // Initialize theme
+  function initTheme() {
+    const savedTheme = localStorage.getItem('guildpost-theme') || 'dark';
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const defaultTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    
+    setTheme(defaultTheme);
+  }
+  
+  function setTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('guildpost-theme', theme);
+    
+    const iconEl = document.getElementById('theme-icon');
+    const nameEl = document.getElementById('theme-name');
+    
+    if (iconEl) iconEl.textContent = themeIcons[theme] || '🌙';
+    if (nameEl) nameEl.textContent = themeNames[theme] || 'Dark';
+  }
+  
+  // Toggle menu
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  const themeMenu = document.getElementById('theme-menu');
+  
+  toggleBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    themeMenu?.classList.toggle('hidden');
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', () => {
+    themeMenu?.classList.add('hidden');
+  });
+  
+  // Theme selection
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.getAttribute('data-theme') || 'dark';
+      setTheme(theme);
+      themeMenu?.classList.add('hidden');
+    });
+  });
+  
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('guildpost-theme')) {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+  
+  // Initialize
+  initTheme();
+</script>

@@ -1,0 +1,162 @@
+/* GuildPost Theme System - CSS Variables */
+
+:root {
+  /* Default Dark Theme (GuildPost Classic) */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a25;
+  --bg-card: #12121a;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #8892b0;
+  --text-muted: #5a6275;
+  
+  --accent-primary: #00f5d4;
+  --accent-secondary: #ff3864;
+  --accent-tertiary: #a855f7;
+  
+  --border-color: #2a2a3a;
+  --border-hover: #3a3a4a;
+  
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
+  
+  --gradient-primary: linear-gradient(135deg, #00f5d4 0%, #00d4b8 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff3864 0%, #e63357 100%);
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: #ffffff;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --accent-primary: #0891b2;
+  --accent-secondary: #e11d48;
+  --accent-tertiary: #7c3aed;
+  
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #dc2626;
+  
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  
+  --gradient-primary: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+}
+
+/* Ocean Theme (Blue/Purple) */
+[data-theme="ocean"] {
+  --bg-primary: #0c1220;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1e293b;
+  --bg-card: #111827;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent-primary: #3b82f6;
+  --accent-secondary: #8b5cf6;
+  --accent-tertiary: #06b6d4;
+  
+  --border-color: #1e293b;
+  --border-hover: #334155;
+  
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+}
+
+/* Sunset Theme (Warm/Orange/Pink) */
+[data-theme="sunset"] {
+  --bg-primary: #1a0b0e;
+  --bg-secondary: #231218;
+  --bg-tertiary: #2d1a1f;
+  --bg-card: #231218;
+  
+  --text-primary: #fff1f2;
+  --text-secondary: #fda4af;
+  --text-muted: #be8f98;
+  
+  --accent-primary: #f97316;
+  --accent-secondary: #ec4899;
+  --accent-tertiary: #fbbf24;
+  
+  --border-color: #3d1f26;
+  --border-hover: #4f2a33;
+  
+  --gradient-primary: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  --gradient-secondary: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+/* Forest Theme (Green/Nature) */
+[data-theme="forest"] {
+  --bg-primary: #0d1912;
+  --bg-secondary: #122919;
+  --bg-tertiary: #1a3d26;
+  --bg-card: #122919;
+  
+  --text-primary: #ecfdf5;
+  --text-secondary: #6ee7b7;
+  --text-muted: #34d399;
+  
+  --accent-primary: #10b981;
+  --accent-secondary: #84cc16;
+  --accent-tertiary: #14b8a6;
+  
+  --border-color: #1f3d28;
+  --border-hover: #2d5c3a;
+  
+  --gradient-primary: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-secondary: linear-gradient(135deg, #84cc16 0%, #a3e635 100%);
+}
+
+/* High Contrast (Accessibility) */
+[data-theme="contrast"] {
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --bg-tertiary: #111111;
+  --bg-card: #000000;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #aaaaaa;
+  
+  --accent-primary: #ffff00;
+  --accent-secondary: #00ffff;
+  --accent-tertiary: #ff00ff;
+  
+  --border-color: #ffffff;
+  --border-hover: #ffff00;
+  
+  --shadow-sm: 0 0 0 1px #ffffff;
+  --shadow-md: 0 0 0 2px #ffffff;
+  --shadow-lg: 0 0 0 3px #ffffff;
+}
+
+/* Smooth transitions between themes */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Disable transitions for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+  }
+}

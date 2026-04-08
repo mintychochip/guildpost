@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
+
 const navItems = [
   { label: 'Minecraft', href: '/minecraft' },
   { label: 'Wizard', href: '/wizard', icon: '🔮' },
@@ -41,6 +43,9 @@ const navItems = [
 
       <!-- CTA & Mobile Menu -->
       <div class="flex items-center gap-4">
+        <!-- Theme Toggle -->
+        <ThemeToggle />
+        
         <a 
           href="/minecraft" 
           class="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-[#ff3864] text-white font-medium rounded-lg hover:bg-[#e63357] transition-colors text-sm"
