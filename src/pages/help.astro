@@ -1,0 +1,224 @@
+---
+// Help Center - One-stop support hub
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const categories = [
+  {
+    title: 'Getting Started',
+    icon: '🚀',
+    articles: [
+      { title: 'How to List Your Server', href: '/help/list-server', description: 'Step-by-step guide to adding your Minecraft server' },
+      { title: 'Server Verification', href: '/help/verification', description: 'Verify ownership and get the verified badge' },
+      { title: 'Setting Up Your Profile', href: '/help/profile', description: 'Customize your server page and branding' },
+    ]
+  },
+  {
+    title: 'Premium Features',
+    icon: '⭐',
+    articles: [
+      { title: 'Upgrading to Premium', href: '/help/premium-upgrade', description: 'Benefits and how to upgrade' },
+      { title: 'Managing Subscription', href: '/help/manage-subscription', description: 'Cancel, update, or change your plan' },
+      { title: 'Featured Placement', href: '/help/featured', description: 'How priority listing works' },
+    ]
+  },
+  {
+    title: 'Voting & Engagement',
+    icon: '🗳️',
+    articles: [
+      { title: 'How Voting Works', href: '/help/voting', description: 'Vote cooldowns, rewards, and tracking' },
+      { title: 'Vote Rewards Setup', href: '/help/vote-rewards', description: 'Configure Votifier for in-game rewards' },
+      { title: 'Discord Notifications', href: '/help/discord-webhooks', description: 'Get vote alerts in your Discord' },
+    ]
+  },
+  {
+    title: 'Account & Billing',
+    icon: '👤',
+    articles: [
+      { title: 'Creating an Account', href: '/help/account', description: 'Sign up with Discord or email' },
+      { title: 'Billing & Payments', href: '/help/billing', description: 'Payment methods and invoices' },
+      { title: 'Refund Policy', href: '/help/refunds', description: 'When and how refunds are processed' },
+    ]
+  },
+  {
+    title: 'Technical',
+    icon: '🔧',
+    articles: [
+      { title: 'API Documentation', href: '/help/api', description: 'Integrate with our public API' },
+      { title: 'Server Status Pings', href: '/help/status-pings', description: 'How we check if servers are online' },
+      { title: 'Troubleshooting', href: '/help/troubleshooting', description: 'Common issues and fixes' },
+    ]
+  },
+  {
+    title: 'Rules & Safety',
+    icon: '🛡️',
+    articles: [
+      { title: 'Community Guidelines', href: '/help/guidelines', description: 'What servers are allowed' },
+      { title: 'Reporting Servers', href: '/help/reporting', description: 'How to report inappropriate content' },
+      { title: 'Security Tips', href: '/help/security', description: 'Protecting your server and players' },
+    ]
+  }
+];
+
+const quickLinks = [
+  { label: 'Submit a Ticket', href: '/contact', icon: '🎫' },
+  { label: 'Browse Servers', href: '/minecraft', icon: '🔍' },
+  { label: 'Premium Plans', href: '/premium', icon: '⭐' },
+  { label: 'Server Status', href: '/status', icon: '📊' },
+];
+
+const faqs = [
+  {
+    q: 'How do I get my server listed?',
+    a: 'Click "Submit Server" in the navigation, fill in your server details (name, IP, description), and your server will be live immediately!'
+  },
+  {
+    q: 'Is GuildPost free to use?',
+    a: 'Yes! Basic server listings are completely free. We offer Premium ($9.99/mo) and Elite ($29.99/mo) plans for enhanced visibility and features.'
+  },
+  {
+    q: 'How does voting work?',
+    a: 'Players can vote for your server once every 24 hours. Votes help increase your server\'s ranking and visibility on the site.'
+  },
+  {
+    q: 'Can I edit my server after submitting?',
+    a: 'Yes! Visit your server dashboard to update details, upload banners, change descriptions, and manage settings anytime.'
+  },
+  {
+    q: 'What is server verification?',
+    a: 'Verification proves you own the server. We check your server\'s MOTD for a unique code to confirm ownership and award the verified badge.'
+  },
+];
+---
+
+<Layout 
+  title="Help Center - GuildPost Support"
+  description="Find answers to common questions about GuildPost. Learn how to list servers, manage your account, upgrade to premium, and more."
+  url="https://guildpost.tech/help"
+>
+  <div class="min-h-screen bg-[#0a0a0f]">
+    <Header />
+    
+    <main class="pt-20 pb-16">
+      <!-- Hero -->
+      <div class="bg-gradient-to-b from-[#00f5d4]/10 to-transparent py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+          <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+            How Can We Help? 💡
+          </h1>
+          <p class="text-[#8892b0] text-lg max-w-2xl mx-auto mb-8">
+            Find answers, guides, and support for everything GuildPost
+          </p>
+          
+          <!-- Search -->
+          <div class="max-w-xl mx-auto relative">
+            <input 
+              type="text" 
+              id="help-search"
+              placeholder="Search for answers..."
+              class="w-full px-6 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-xl text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4] pl-14"
+            />
+            <svg class="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8892b0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="max-w-6xl mx-auto px-4 mb-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {quickLinks.map(link => (
+            <a 
+              href={link.href}
+              class="p-4 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] rounded-xl transition-colors group"
+            >
+              <span class="text-2xl mb-2 block">{link.icon}</span>
+              <span class="text-white font-medium group-hover:text-[#00f5d4] transition-colors">{link.label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Categories Grid -->
+      <div class="max-w-6xl mx-auto px-4 mb-16">
+        <h2 class="text-2xl font-bold text-white mb-8">Browse by Category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map(cat => (
+            <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-xl">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="text-2xl">{cat.icon}</span>
+                <h3 class="text-lg font-bold text-white">{cat.title}</h3>
+              </div>
+              <ul class="space-y-3">
+                {cat.articles.map(article => (
+                  <li>
+                    <a 
+                      href={article.href} 
+                      class="block group"
+                    >
+                      <span class="text-white text-sm group-hover:text-[#00f5d4] transition-colors">{article.title}</span>
+                      <span class="text-[#8892b0] text-xs block mt-0.5">{article.description}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Popular FAQs -->
+      <div class="max-w-3xl mx-auto px-4 mb-16">
+        <h2 class="text-2xl font-bold text-white mb-8 text-center">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          {faqs.map((faq, i) => (
+            <div class="bg-[#12121a] border border-[#2a2a3a] rounded-xl overflow-hidden">
+              <button 
+                class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-[#1a1a25] transition-colors"
+                onclick={`document.getElementById('faq-${i}').classList.toggle('hidden')`}
+              >
+                <span class="text-white font-medium">{faq.q}</span>
+                <svg class="w-5 h-5 text-[#8892b0] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div id={`faq-${i}`} class="hidden px-6 pb-4">
+                <p class="text-[#8892b0]">{faq.a}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <!-- Contact CTA -->
+      <div class="max-w-4xl mx-auto px-4">
+        <div class="p-8 md:p-12 bg-gradient-to-r from-[#00f5d4]/10 to-[#a855f7]/10 border border-[#2a2a3a] rounded-2xl text-center">
+          <h2 class="text-2xl font-bold text-white mb-4">Still Need Help? 🤔</h2>
+          <p class="text-[#8892b0] mb-6 max-w-lg mx-auto">
+            Can't find what you're looking for? Our support team is here to help with any questions or issues.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <a href="/contact" class="px-8 py-4 bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f] font-bold rounded-lg transition-colors">
+              Contact Support
+            </a>
+            <a href="https://discord.gg/clawd" target="_blank" class="px-8 py-4 bg-[#5865F2] hover:bg-[#4752c4] text-white font-bold rounded-lg transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+              </svg>
+              Join Discord
+            </a>
+          </div>
+          <p class="text-[#8892b0] text-sm mt-4">
+            💬 Discord: <a href="https://discord.gg/clawd" class="text-[#00f5d4] hover:underline">discord.gg/clawd</a>
+            <span class="mx-2">•</span>
+            📧 Email: <a href="mailto:support@guildpost.tech" class="text-[#00f5d4] hover:underline">support@guildpost.tech</a>
+          </p>
+        </div>
+      </div>
+    </main>
+    
+    <Footer />
+  </div>
+</Layout>

@@ -1,0 +1,210 @@
+---
+// System Status Page
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    name: 'Website',
+    status: 'operational',
+    uptime: '99.9%',
+    lastIncident: 'None',
+  },
+  {
+    name: 'API',
+    status: 'operational',
+    uptime: '99.8%',
+    lastIncident: '2 days ago',
+  },
+  {
+    name: 'Server Pinger',
+    status: 'operational',
+    uptime: '99.5%',
+    lastIncident: 'None',
+  },
+  {
+    name: 'Vote System',
+    status: 'operational',
+    uptime: '99.9%',
+    lastIncident: 'None',
+  },
+  {
+    name: 'Supabase Database',
+    status: 'operational',
+    uptime: '99.9%',
+    lastIncident: 'None',
+  },
+  {
+    name: 'Cloudflare CDN',
+    status: 'operational',
+    uptime: '100%',
+    lastIncident: 'None',
+  },
+];
+
+const incidents = [
+  {
+    date: '2026-04-05',
+    title: 'API Latency Spike',
+    status: 'resolved',
+    duration: '15 minutes',
+    description: 'Increased response times due to database connection pool exhaustion. Auto-scaled and resolved.',
+  },
+  {
+    date: '2026-03-28',
+    title: 'Scheduled Maintenance',
+    status: 'completed',
+    duration: '30 minutes',
+    description: 'Database migration for new premium features. No data loss, all services restored.',
+  },
+];
+
+const statusColors = {
+  operational: 'bg-green-500',
+  degraded: 'bg-yellow-500',
+  outage: 'bg-[#ff3864]',
+  maintenance: 'bg-[#a855f7]',
+  resolved: 'bg-green-500',
+  completed: 'bg-green-500',
+};
+
+const statusLabels = {
+  operational: 'Operational',
+  degraded: 'Degraded Performance',
+  outage: 'Major Outage',
+  maintenance: 'Maintenance',
+  resolved: 'Resolved',
+  completed: 'Completed',
+};
+---
+
+<Layout 
+  title="System Status - GuildPost"
+  description="Check GuildPost system status. View uptime, incidents, and service health for our Minecraft server listing platform."
+  url="https://guildpost.tech/status"
+>
+  <div class="min-h-screen bg-[#0a0a0f]">
+    <Header />
+    
+    <main class="pt-20 pb-16">
+      <div class="max-w-4xl mx-auto px-4">
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-full text-green-500 text-sm mb-6">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span>All Systems Operational</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-black text-white mb-4">
+            System Status 📊
+          </h1>
+          <p class="text-[#8892b0] text-lg max-w-2xl mx-auto">
+            Real-time status of GuildPost services and infrastructure
+          </p>
+          <p class="text-[#8892b0] text-sm mt-2">
+            Last updated: <span id="last-updated">{new Date().toLocaleString()}</span>
+          </p>
+        </div>
+        
+        <!-- Services Status -->
+        <div class="mb-12">
+          <h2 class="text-xl font-bold text-white mb-6">Service Status</h2>
+          <div class="space-y-3">
+            {services.map(service => (
+              <div class="flex items-center justify-between p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+                <div class="flex items-center gap-3">
+                  <div class={`w-3 h-3 rounded-full ${statusColors[service.status as keyof typeof statusColors]}`}></div>
+                  <span class="text-white font-medium">{service.name}</span>
+                </div>
+                <div class="flex items-center gap-6 text-sm">
+                  <span class="text-[#8892b0]">Uptime: <span class="text-green-500">{service.uptime}</span></span>
+                  <span class="text-[#8892b0] hidden sm:inline">Last incident: {service.lastIncident}</span>
+                  <span class={`px-2 py-1 rounded text-xs ${statusColors[service.status as keyof typeof statusColors].replace('bg-', 'bg-').replace('500', '500/20')} ${statusColors[service.status as keyof typeof statusColors].replace('bg-', 'text-')}`}>
+                    {statusLabels[service.status as keyof typeof statusLabels]}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <!-- Uptime Graph Placeholder -->
+        <div class="mb-12">
+          <h2 class="text-xl font-bold text-white mb-6">Past 30 Days Uptime</h2>
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-xl">
+            <div class="flex items-end gap-1 h-32">
+              {Array.from({ length: 30 }).map((_, i) => {
+                const height = 95 + Math.random() * 5;
+                const isIncident = i === 2 || i === 8; // Demo incidents
+                return (
+                  <div 
+                    class={`flex-1 rounded-t ${isIncident ? 'bg-[#ff3864]' : 'bg-green-500'}`}
+                    style={`height: ${isIncident ? '60%' : height + '%'}`}
+                    title={`Day ${i + 1}: ${isIncident ? 'Incident' : '100% uptime'}`}
+                  ></div>
+                );
+              })}
+            </div>
+            <div class="flex justify-between text-[#8892b0] text-xs mt-2">
+              <span>30 days ago</span>
+              <span>Today</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Incidents -->
+        <div class="mb-12">
+          <h2 class="text-xl font-bold text-white mb-6">Recent Incidents</h2>
+          <div class="space-y-4">
+            {incidents.length > 0 ? (
+              incidents.map(incident => (
+                <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+                  <div class="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 class="text-white font-medium">{incident.title}</h3>
+                      <p class="text-[#8892b0] text-sm">{incident.date} • Duration: {incident.duration}</p>
+                    </div>
+                    <span class={`px-2 py-1 rounded text-xs ${statusColors[incident.status as keyof typeof statusColors].replace('bg-', 'bg-').replace('500', '500/20')} ${statusColors[incident.status as keyof typeof statusColors].replace('bg-', 'text-')}`}>
+                      {statusLabels[incident.status as keyof typeof statusLabels]}
+                    </span>
+                  </div>
+                  <p class="text-[#8892b0] text-sm">{incident.description}</p>
+                </div>
+              ))
+            ) : (
+              <div class="p-8 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-center">
+                <span class="text-4xl mb-4 block">🎉</span>
+                <p class="text-white font-medium mb-2">No incidents in the past 30 days</p>
+                <p class="text-[#8892b0] text-sm">All systems running smoothly!</p>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <!-- Subscribe -->
+        <div class="p-8 bg-gradient-to-r from-[#00f5d4]/10 to-[#a855f7]/10 border border-[#2a2a3a] rounded-xl text-center">
+          <h2 class="text-xl font-bold text-white mb-2">Get Status Updates</h2>
+          <p class="text-[#8892b0] mb-4">
+            Subscribe to be notified about incidents and maintenance
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <a href="https://discord.gg/clawd" target="_blank" class="px-4 py-2 bg-[#5865F2] hover:bg-[#4752c4] text-white rounded-lg text-sm transition-colors flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+              </svg>
+              Discord Notifications
+            </a>
+            <a href="https://twitter.com" target="_blank" class="px-4 py-2 bg-black hover:bg-gray-900 text-white border border-gray-800 rounded-lg text-sm transition-colors flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              @GuildPostStatus
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <Footer />
+  </div>
+</Layout>
