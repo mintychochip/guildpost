@@ -11,4 +11,4 @@ dist/
 .netlify/
 
 # Documentation
-README_DASHBOARD_UPDATE.md
+README_*.md

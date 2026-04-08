@@ -390,7 +390,7 @@ const VALID_CATEGORIES = [
               </div>
               <p class="text-[#8892b0] text-sm truncate">${server.ip}:${server.port}</p>
               
-              <div class="flex items-center gap-3 mt-2 text-xs">
+              <div class="flex items-center gap-3 mt-2 text-xs flex-wrap">
                 <span class="${server.status === 'online' ? 'text-green-500' : 'text-gray-500'}">
                   ${server.status === 'online' ? '● Online' : '○ Offline'}
                 </span>
@@ -402,6 +402,8 @@ const VALID_CATEGORIES = [
                 </span>
                 ${server.version ? `<span class="text-[#00f5d4]">${server.version}</span>` : ''}
                 ${server.country_code ? `<span class="text-[#8892b0]">${getCountryFlag(server.country_code)}</span>` : ''}
+                ${server.tier === 'premium' ? `<span class="px-1.5 py-0.5 bg-[#00f5d4]/20 text-[#00f5d4] rounded text-[10px] font-bold">PREMIUM</span>` : ''}
+                ${server.tier === 'elite' ? `<span class="px-1.5 py-0.5 bg-[#a855f7]/20 text-[#a855f7] rounded text-[10px] font-bold">ELITE</span>` : ''}
               </div>
               
               ${server.tags?.length ? `
