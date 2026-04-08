@@ -45,21 +45,21 @@ const VALID_CATEGORIES = [
             <input 
               type="text" 
               id="search-input" 
-              placeholder="Search servers by name, IP, or describe what you're looking for (e.g., 'pvp with factions')..." 
-              class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4] pr-24"
+              placeholder="Search servers by name, IP, or describe what you're looking for..." 
+              class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4] pr-28"
             >
             <!-- AI Search Toggle -->
             <button 
               id="ai-search-toggle"
-              class="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1.5 bg-[#1a1a25] hover:bg-[#2a2a3a] text-xs text-[#00f5d4] rounded border border-[#00f5d4]/30 transition-colors flex items-center gap-1"
-              title="Toggle AI-powered semantic search"
+              class="absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-1.5 bg-[#1a1a25] hover:bg-[#2a2a3a] text-xs text-[#8892b0] rounded border border-[#2a2a3a] transition-all flex items-center gap-1.5"
+              title="Toggle AI-powered semantic search (powered by Gemini)"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                 <path d="M2 17l10 5 10-5"/>
                 <path d="M2 12l10 5 10-5"/>
               </svg>
-              <span class="ai-label">AI: Off</span>
+              <span class="ai-label">Semantic</span>
             </button>
           </div>
           
@@ -86,8 +86,10 @@ const VALID_CATEGORIES = [
         </div>
         
         <!-- Active Filters -->
-        <div id="active-filters" class="flex flex-wrap gap-2 mt-4 hidden">
-          <!-- Dynamically populated -->
+        <div id="active-filters" class="flex flex-wrap items-center gap-2 mt-4 hidden">
+          <span class="text-[#8892b0] text-sm">Filters:</span>
+          <div id="filter-chips" class="flex flex-wrap gap-2"></div>
+          <button id="clear-filters-inline" class="text-[#ff3864] hover:text-[#e63357] text-sm">Clear all</button>
         </div>
       </div>
 
@@ -105,13 +107,6 @@ const VALID_CATEGORIES = [
             </button>
           ))}
         </div>
-      </div>
-      
-      <!-- Active Filters Display -->
-      <div id="active-filters" class="hidden mb-4 flex items-center gap-2">
-        <span class="text-[#8892b0] text-sm">Active filters:</span>
-        <div id="filter-chips" class="flex flex-wrap gap-2"></div>
-        <button onclick="clearAllFilters()" class="text-[#ff3864] hover:text-[#e63357] text-sm ml-2">Clear all</button>
       </div>
 
       <!-- Servers Count -->
@@ -214,6 +209,8 @@ const VALID_CATEGORIES = [
   const nextPageBtn = document.getElementById('next-page');
   const pageNumbers = document.getElementById('page-numbers');
   const noResults = document.getElementById('no-results');
+  const activeFiltersDiv = document.getElementById('active-filters');
+  const filterChips = document.getElementById('filter-chips');
   
   async function loadServers() {
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -462,19 +459,17 @@ const VALID_CATEGORIES = [
   };
   
   function updateActiveFilters() {
-    const activeFilters = document.getElementById('active-filters');
-    const filterChips = document.getElementById('filter-chips');
     const filters = [];
     
     if (searchInput.value) filters.push({ type: 'search', value: searchInput.value });
     if (statusSelect.value !== 'all') filters.push({ type: 'status', value: statusSelect.value });
     
     if (filters.length === 0) {
-      activeFilters.classList.add('hidden');
+      activeFiltersDiv.classList.add('hidden');
       return;
     }
     
-    activeFilters.classList.remove('hidden');
+    activeFiltersDiv.classList.remove('hidden');
     filterChips.innerHTML = filters.map(f => `
       <span class="px-2 py-1 bg-[#00f5d4]/20 text-[#00f5d4] rounded text-xs flex items-center gap-1">
         ${f.type === 'search' ? '🔍' : '●'} ${f.value}
@@ -482,10 +477,9 @@ const VALID_CATEGORIES = [
     `).join('');
   }
   
-  // Clear filters
-  document.getElementById('clear-filters-btn')?.addEventListener('click', () => {
-    clearAllFilters();
-  });
+  // Clear filters buttons
+  document.getElementById('clear-filters-btn')?.addEventListener('click', clearAllFilters);
+  document.getElementById('clear-filters-inline')?.addEventListener('click', clearAllFilters);
   
   // Event listeners
   searchInput?.addEventListener('input', debounce(applyFilters, 300));
@@ -517,26 +511,37 @@ const VALID_CATEGORIES = [
     };
   }
   
-  // AI-Powered Semantic Search
+  // AI-Powered Semantic Search (Gemini)
   let aiSearchEnabled = false;
   const aiSearchToggle = document.getElementById('ai-search-toggle');
   
+  // Update toggle UI
+  function updateAIToggleUI() {
+    if (aiSearchEnabled) {
+      aiSearchToggle.classList.add('bg-[#00f5d4]/20', 'border-[#00f5d4]', 'text-[#00f5d4]');
+      aiSearchToggle.classList.remove('text-[#8892b0]', 'border-[#2a2a3a]');
+      aiSearchToggle.querySelector('.ai_label') || (aiSearchToggle.querySelector('.ai-label').textContent = 'Semantic');
+      searchInput.placeholder = "Describe what you're looking for (e.g., 'pvp factions with economy')...";
+    } else {
+      aiSearchToggle.classList.remove('bg-[#00f5d4]/20', 'border-[#00f5d4]', 'text-[#00f5d4]');
+      aiSearchToggle.classList.add('text-[#8892b0]', 'border-[#2a2a3a]');
+      searchInput.placeholder = "Search servers by name, IP, or describe what you're looking for...";
+    }
+  }
+  
   aiSearchToggle?.addEventListener('click', () => {
     aiSearchEnabled = !aiSearchEnabled;
-    aiSearchToggle.classList.toggle('bg-[#00f5d4]/20');
-    aiSearchToggle.classList.toggle('border-[#00f5d4]');
-    aiSearchToggle.querySelector('.ai-label').textContent = aiSearchEnabled ? 'AI: On' : 'AI: Off';
+    updateAIToggleUI();
     
     if (aiSearchEnabled) {
-      searchInput.placeholder = "Describe what you're looking for (e.g., 'pvp factions server with economy')...";
-      showToast('AI semantic search enabled', 'info');
-    } else {
-      searchInput.placeholder = "Search servers by name or IP...";
+      showToast('AI semantic search enabled (Gemini)', 'info');
     }
   });
   
-  // Override applyFilters for AI search
+  // Store original applyFilters
   const originalApplyFilters = applyFilters;
+  
+  // Override applyFilters for AI search
   applyFilters = async function() {
     if (!aiSearchEnabled) {
       return originalApplyFilters();
@@ -568,7 +573,10 @@ const VALID_CATEGORIES = [
         body: JSON.stringify({ query, limit: 50 })
       });
       
-      if (!response.ok) throw new Error('AI search failed');
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.error || 'AI search failed');
+      }
       
       const data = await response.json();
       filteredServers = data.results || [];
@@ -582,8 +590,10 @@ const VALID_CATEGORIES = [
       currentPage = 1;
       updateDisplay();
       
-      if (data.semantic) {
-        showToast(`Found ${filteredServers.length} servers semantically matching "${query}"`, 'success');
+      if (data.semantic && filteredServers.length > 0) {
+        showToast(`Found ${filteredServers.length} servers matching "${query}"`, 'success');
+      } else if (filteredServers.length === 0) {
+        showToast('No semantic matches found, try different keywords', 'warning');
       }
     } catch (err) {
       console.error('AI search error:', err);
@@ -591,51 +601,6 @@ const VALID_CATEGORIES = [
       return originalApplyFilters();
     }
   };
-  
-  // Click Tracking
-  function trackClick(serverId, type = 'view', source = 'listing') {
-    fetch('/api/track/click', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ server_id: serverId, type, source }),
-      keepalive: true
-    }).catch(() => {}); // Silent fail
-  }
-  
-  // Track clicks on server cards
-  serversList.addEventListener('click', (e) => {
-    const card = e.target.closest('[data-server-id]');
-    if (card) {
-      trackClick(card.dataset.serverId, 'click', 'listing');
-    }
-  });
-  
-  // Track search queries
-  let lastTrackedSearch = '';
-  searchInput?.addEventListener('input', debounce(() => {
-    const query = searchInput.value.trim();
-    if (query && query !== lastTrackedSearch && query.length >= 3) {
-      lastTrackedSearch = query;
-      fetch('/api/track/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
-        keepalive: true
-      }).catch(() => {});
-    }
-  }, 1000));
-  
-  // Load trending servers for homepage
-  async function loadTrending() {
-    try {
-      const response = await fetch('/api/analytics/popular');
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('trending_servers', JSON.stringify(data.servers));
-      }
-    } catch (e) {}
-  }
-  loadTrending();
   
   // Load on mount
   loadServers();

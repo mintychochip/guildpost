@@ -1,11 +1,14 @@
 /**
- * Cloudflare Worker: Semantic Search API + Click Tracking
+ * Cloudflare Worker: Semantic Search API using Gemini
  * 
  * Routes:
- * - POST /search/semantic - AI-powered semantic search
- * - POST /track/click - Track user clicks
- * - GET /analytics/popular - Get popular servers
- * - POST /embed - Generate embeddings
+ * - POST /search/semantic - AI-powered semantic search using Gemini embeddings
+ * - GET /search/suggestions - AI-powered search suggestions using Gemma 4B
+ * - POST /embed - Generate embeddings using Gemini
+ * 
+ * Uses Gemini API:
+ * - gemini-embedding-001 for embeddings (3072 dimensions)
+ * - gemma-3-4b-it for text generation
  */
 
 // CORS headers
@@ -31,16 +34,6 @@ export default {
         return await handleSemanticSearch(request, env);
       }
 
-      // Click Tracking
-      if (path === '/track/click' && request.method === 'POST') {
-        return await handleClickTrack(request, env);
-      }
-
-      // Get Popular/Trending
-      if (path === '/analytics/popular' && request.method === 'GET') {
-        return await handlePopularServers(request, env);
-      }
-
       // Search Suggestions
       if (path === '/search/suggestions' && request.method === 'GET') {
         return await handleSuggestions(request, env);
@@ -53,6 +46,7 @@ export default {
 
       return new Response('Not Found', { status: 404, headers: corsHeaders });
     } catch (err) {
+      console.error('Worker error:', err);
       return new Response(JSON.stringify({ error: err.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -61,7 +55,29 @@ export default {
   }
 };
 
-// Semantic Search using Cloudflare Workers AI
+// Generate embedding using Gemini gemini-embedding-001
+async function generateEmbedding(text, apiKey) {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: { parts: [{ text }] }
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Gemini embedding API error: ${error}`);
+  }
+
+  const data = await response.json();
+  return data.embedding?.values || data.embedding;
+}
+
+// Semantic Search using Gemini embeddings
 async function handleSemanticSearch(request, env) {
   const { query, limit = 10 } = await request.json();
 
@@ -72,120 +88,59 @@ async function handleSemanticSearch(request, env) {
     });
   }
 
-  // Generate embedding for query using Workers AI
-  const embedding = await env.AI.run('@cf/baai/bge-base-en-v1.5', {
-    text: [query]
-  });
-
-  // Search Supabase for similar embeddings using pgvector
-  const supabaseUrl = env.SUPABASE_URL;
-  const supabaseKey = env.SUPABASE_SERVICE_KEY;
-
-  const response = await fetch(`${supabaseUrl}/rest/v1/rpc/match_servers`, {
-    method: 'POST',
-    headers: {
-      'apikey': supabaseKey,
-      'Authorization': `Bearer ${supabaseKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query_embedding: embedding.data[0],
-      match_threshold: 0.7,
-      match_count: limit
-    })
-  });
-
-  const results = await response.json();
-
-  // Log search query for analytics
-  await logSearch(env, query, results.length);
-
-  return new Response(JSON.stringify({
-    query,
-    results,
-    count: results.length,
-    semantic: true
-  }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
-}
-
-// Track clicks for analytics
-async function handleClickTrack(request, env) {
-  const { server_id, type = 'view', source = 'listing' } = await request.json();
-
-  if (!server_id) {
-    return new Response(JSON.stringify({ error: 'Missing server_id' }), {
-      status: 400,
+  const apiKey = env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), {
+      status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 
-  // Get client info
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const country = request.cf?.country || 'unknown';
-  const userAgent = request.headers.get('User-Agent') || 'unknown';
+  try {
+    // Generate embedding for query using Gemini
+    const embedding = await generateEmbedding(query, apiKey);
 
-  // Create click event
-  const clickEvent = {
-    server_id,
-    type,
-    source,
-    ip_hash: await hashIP(ip), // Hash for privacy
-    country,
-    user_agent_hash: await hashString(userAgent),
-    timestamp: new Date().toISOString(),
-    hour_bucket: new Date().toISOString().slice(0, 13) // For hourly aggregation
-  };
+    // Search Supabase for similar embeddings using pgvector
+    const supabaseUrl = env.SUPABASE_URL;
+    const supabaseKey = env.SUPABASE_SERVICE_KEY;
 
-  // Store in KV for real-time tracking
-  const key = `clicks:${new Date().toISOString().slice(0, 10)}:${server_id}`;
-  const existing = await env.CLICK_ANALYTICS.get(key);
-  const clicks = existing ? JSON.parse(existing) : [];
-  clicks.push(clickEvent);
-  await env.CLICK_ANALYTICS.put(key, JSON.stringify(clicks));
+    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/match_servers`, {
+      method: 'POST',
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query_embedding: embedding,
+        match_threshold: 0.7,
+        match_count: limit
+      })
+    });
 
-  // Also increment counters for popular servers
-  const counterKey = `popular:${new Date().toISOString().slice(0, 10)}`;
-  const counts = await env.CLICK_ANALYTICS.get(counterKey);
-  const countMap = counts ? JSON.parse(counts) : {};
-  countMap[server_id] = (countMap[server_id] || 0) + 1;
-  await env.CLICK_ANALYTICS.put(counterKey, JSON.stringify(countMap));
+    const results = await response.json();
 
-  return new Response(JSON.stringify({ success: true }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
-}
-
-// Get popular/trending servers
-async function handlePopularServers(request, env) {
-  const today = new Date().toISOString().slice(0, 10);
-  const key = `popular:${today}`;
-  
-  const data = await env.CLICK_ANALYTICS.get(key);
-  if (!data) {
-    return new Response(JSON.stringify({ servers: [] }), {
+    return new Response(JSON.stringify({
+      query,
+      results,
+      count: results.length,
+      semantic: true
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  } catch (err) {
+    console.error('Semantic search error:', err);
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
-
-  const counts = JSON.parse(data);
-  const sorted = Object.entries(counts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([id, count]) => ({ server_id: id, clicks: count }));
-
-  return new Response(JSON.stringify({ 
-    servers: sorted,
-    date: today 
-  }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
 }
 
-// AI-powered search suggestions
+// AI-powered search suggestions using Gemma 4B
 async function handleSuggestions(request, env) {
-  const query = request.url.searchParams.get('q') || '';
+  const url = new URL(request.url);
+  const query = url.searchParams.get('q') || '';
 
   if (query.length < 2) {
     return new Response(JSON.stringify({ suggestions: [] }), {
@@ -193,84 +148,73 @@ async function handleSuggestions(request, env) {
     });
   }
 
-  // Use AI to generate suggestions based on query
-  const aiResponse = await env.AI.run('@cf/meta/llama-2-7b-chat-int8', {
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a Minecraft server search assistant. Given a partial search query, suggest 5 relevant completions. Return ONLY a JSON array of strings. Example: ["pvp factions server", "survival smp", "skyblock economy"]'
-      },
-      {
-        role: 'user',
-        content: `Query: "${query}"`
-      }
-    ]
-  });
-
-  // Parse suggestions from AI response
-  let suggestions = [];
-  try {
-    const content = aiResponse.response;
-    // Try to extract JSON array
-    const match = content.match(/\[[\s\S]*\]/);
-    if (match) {
-      suggestions = JSON.parse(match[0]);
-    }
-  } catch (e) {
-    // Fallback to basic suggestions
-    suggestions = generateFallbackSuggestions(query);
+  const apiKey = env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return new Response(JSON.stringify({ suggestions: generateFallbackSuggestions(query) }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 
-  return new Response(JSON.stringify({ 
-    query,
-    suggestions: suggestions.slice(0, 5)
-  }), {
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
+  try {
+    const prompt = `You are a Minecraft server search assistant. Given a partial search query, suggest 5 relevant completions. Return ONLY a JSON array of strings, no other text.
+
+Query: "${query}"
+
+Suggestions (JSON array only):`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemma-3-4b-it:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 200
+          }
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Gemma API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+    // Parse suggestions from response
+    let suggestions = [];
+    try {
+      // Try to extract JSON array
+      const match = content.match(/\[[\s\S]*?\]/);
+      if (match) {
+        suggestions = JSON.parse(match[0]);
+      }
+    } catch (e) {
+      // Fallback to basic suggestions
+      suggestions = generateFallbackSuggestions(query);
+    }
+
+    return new Response(JSON.stringify({ 
+      query,
+      suggestions: suggestions.slice(0, 5)
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  } catch (err) {
+    console.error('Suggestions error:', err);
+    return new Response(JSON.stringify({ 
+      query,
+      suggestions: generateFallbackSuggestions(query)
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
 }
 
-// Helper functions
-async function hashIP(ip) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(ip + 'salt');
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
-}
-
-async function hashString(str) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(str);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
-}
-
-async function logSearch(env, query, resultCount) {
-  const key = `searches:${new Date().toISOString().slice(0, 10)}`;
-  const existing = await env.CLICK_ANALYTICS.get(key);
-  const searches = existing ? JSON.parse(existing) : [];
-  searches.push({
-    query,
-    results: resultCount,
-    timestamp: new Date().toISOString()
-  });
-  await env.CLICK_ANALYTICS.put(key, JSON.stringify(searches.slice(-1000))); // Keep last 1000
-}
-
-function generateFallbackSuggestions(query) {
-  const q = query.toLowerCase();
-  const common = [
-    `${q} pvp server`,
-    `${q} survival smp`,
-    `${q} skyblock`,
-    `${q} factions`,
-    `${q} minigames`
-  ];
-  return common;
-}
-
-// Generate embeddings using Workers AI
+// Generate embeddings using Gemini
 async function handleEmbed(request, env) {
   const { text } = await request.json();
   
@@ -280,15 +224,21 @@ async function handleEmbed(request, env) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
+
+  const apiKey = env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
   
   try {
-    const embedding = await env.AI.run('@cf/baai/bge-base-en-v1.5', {
-      text: [text]
-    });
+    const embedding = await generateEmbedding(text, apiKey);
     
     return new Response(JSON.stringify({
-      embedding: embedding.data[0],
-      dimensions: embedding.data[0].length
+      embedding,
+      dimensions: embedding.length
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -298,4 +248,16 @@ async function handleEmbed(request, env) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
+}
+
+// Fallback suggestions when API unavailable
+function generateFallbackSuggestions(query) {
+  const q = query.toLowerCase();
+  return [
+    `${q} pvp server`,
+    `${q} survival smp`,
+    `${q} skyblock`,
+    `${q} factions`,
+    `${q} minigames`
+  ];
 }

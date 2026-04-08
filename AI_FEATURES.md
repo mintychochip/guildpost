@@ -1,20 +1,20 @@
 # 🤖 AI-Powered Features Setup Guide
 
-This guide explains how to set up the AI semantic search and click tracking features for GuildPost.
+This guide explains how to set up the AI semantic search features for GuildPost.
 
 ## Features
 
 1. **AI Semantic Search** - Users can search by describing what they want (e.g., "pvp factions with economy")
-2. **Click Tracking Analytics** - Track which servers are being viewed/clicked
-3. **Trending Servers** - Real-time popular servers based on click data
-4. **AI Search Suggestions** - Smart autocomplete powered by LLM
+2. **AI Search Suggestions** - Smart autocomplete powered by Gemma 4B
 
 ## Architecture
 
-- **Frontend**: Astro pages with JavaScript for AI toggle and click tracking
-- **Backend**: Cloudflare Workers with AI binding (free tier)
+- **Frontend**: Astro pages with JavaScript for AI toggle
+- **Backend**: Cloudflare Workers calling Gemini API
 - **Database**: Supabase with pgvector extension for embeddings
-- **Analytics**: Cloudflare KV for real-time click tracking
+- **AI Models**:
+  - `text-embedding-004` for embeddings (Gemini)
+  - `gemma-3-4b-it` for text generation (Gemma 4B)
 
 ## Setup Steps
 
@@ -33,7 +33,13 @@ CREATE EXTENSION IF NOT EXISTS vector;
 -- ... (see full SQL in file)
 ```
 
-### 2. Deploy Cloudflare Worker
+### 2. Get a Gemini API Key
+
+1. Go to [Google AI Studio](https://aistudio.google.com/apikey)
+2. Create an API key
+3. Copy the key for the next step
+
+### 3. Deploy Cloudflare Worker
 
 ```bash
 # Install wrangler if not already installed
@@ -42,21 +48,18 @@ npm install -g wrangler
 # Login to Cloudflare
 wrangler login
 
-# Create KV namespace for analytics
-wrangler kv:namespace create "CLICK_ANALYTICS"
-
-# Update wrangler.toml with the KV ID
-# Edit wrangler.toml and replace "your_kv_namespace_id"
-
 # Set secrets
 wrangler secret put SUPABASE_SERVICE_KEY
 # (Enter your Supabase service_role key)
+
+wrangler secret put GEMINI_API_KEY
+# (Enter your Gemini API key)
 
 # Deploy the worker
 wrangler deploy
 ```
 
-### 3. Generate Embeddings for Existing Servers
+### 4. Generate Embeddings for Existing Servers
 
 ```bash
 # Install dependencies
@@ -70,39 +73,38 @@ node generate-embeddings.mjs
 node generate-embeddings.mjs --test
 ```
 
-**Note**: This will use the Cloudflare Workers AI (free tier) to generate 768-dimensional embeddings for each server based on:
+**Note**: This will use the Gemini API to generate embeddings for each server based on:
 - Server name
 - Description
 - Tags
 
-### 4. Configure Frontend
+### 5. Configure Frontend
 
-The frontend is already updated. The AI search toggle will automatically appear on the minecraft page.
+The frontend is already configured. The AI search toggle will appear on the minecraft page.
 
 **API Endpoints**:
-- `POST /api/search/semantic` - AI semantic search
-- `POST /api/track/click` - Track user clicks
-- `GET /api/analytics/popular` - Get trending servers
-- `GET /api/search/suggestions` - AI search suggestions
+- `POST /api/search/semantic` - AI semantic search (uses Gemini embeddings)
+- `GET /api/search/suggestions` - AI search suggestions (uses Gemma 4B)
+- `POST /api/embed` - Generate embeddings for a text string
 
 ## Usage
 
 ### For Users
 
 1. Go to `/minecraft` page
-2. Click the "AI: Off" button to toggle AI search
+2. Click the "Semantic" button to toggle AI search
 3. Type natural language queries like:
    - "pvp factions server with economy"
    - "chill survival smp for building"
    - "competitive bedwars with tournaments"
 
-### For Analytics
+### For Developers
 
-View trending servers in the last 24 hours:
-```javascript
-fetch('/api/analytics/popular')
-  .then(r => r.json())
-  .then(data => console.log(data.servers));
+Test the semantic search endpoint:
+```bash
+curl -X POST https://guildpost-api.your-subdomain.workers.dev/search/semantic \
+  -H "Content-Type: application/json" \
+  -d '{"query": "pvp factions server", "limit": 5}'
 ```
 
 ## How It Works
@@ -110,52 +112,49 @@ fetch('/api/analytics/popular')
 ### Semantic Search
 
 1. User enters natural language query
-2. Worker generates embedding using `@cf/baai/bge-base-en-v1.5` model
+2. Worker calls Gemini `text-embedding-004` to generate embedding
 3. Searches Supabase using pgvector cosine similarity
 4. Returns servers ranked by semantic relevance
 
-### Click Tracking
+### Search Suggestions
 
-1. JavaScript tracks clicks on server cards
-2. Sends data to Worker API
-3. Stored in KV with hourly aggregation
-4. Popular servers calculated in real-time
+1. User types partial query
+2. Worker calls `gemma-3-4b-it` via Gemini API
+3. Returns 5 relevant completions
 
-## Free Tier Limits
+## API Pricing
 
-**Cloudflare Workers AI**:
-- 100,000 requests/day
-- 50,000 AI inference calls/day (more than enough)
+**Gemini API (Google AI Studio)**:
+- Free tier available with generous limits
+- `text-embedding-004`: Free for reasonable use
+- `gemma-3-4b-it`: Free tier available
 
-**Cloudflare KV**:
-- 100,000 reads/day
-- 1,000 writes/day
-- 1,000 deletes/day
-- 1GB storage
+See [Google AI Studio pricing](https://ai.google.dev/pricing) for current limits.
 
 ## Troubleshooting
 
 ### Embeddings not generating
 - Check Worker is deployed and accessible
-- Verify SUPABASE_SERVICE_KEY is set correctly
-- Check pgvector extension is enabled
+- Verify `GEMINI_API_KEY` secret is set correctly
+- Check pgvector extension is enabled in Supabase
 
 ### AI search not working
-- Verify AI binding in wrangler.toml
+- Verify `GEMINI_API_KEY` is set in wrangler secrets
 - Check browser console for errors
-- Ensure worker URL is correct in frontend
+- Check Cloudflare Workers logs for API errors
 
-### Click tracking not recording
-- Check KV namespace binding
-- Verify CORS headers in worker
-- Check browser network tab for failed requests
+### "GEMINI_API_KEY not configured" error
+```bash
+wrangler secret put GEMINI_API_KEY
+# Enter your API key from Google AI Studio
+```
 
 ## Next Steps
 
-1. **Train custom embeddings** - Fine-tune on Minecraft-specific language
+1. **Fine-tune embeddings** - Optimize for Minecraft-specific language
 2. **Add recommendation engine** - "Servers like this" based on embeddings
-3. **Click heatmaps** - Visualize where users click most
-4. **A/B testing** - Test different layouts with analytics
+3. **Cache popular queries** - Reduce API calls for common searches
+4. **Add query expansion** - Automatically expand abbreviations (SMP → Survival Multiplayer)
 
 ## API Reference
 
@@ -177,27 +176,34 @@ Response:
 }
 ```
 
-### POST /api/track/click
-```json
-{
-  "server_id": "uuid",
-  "type": "click",
-  "source": "listing"
-}
-```
-
-### GET /api/analytics/popular
+### GET /api/search/suggestions?q=pvp
 Response:
 ```json
 {
-  "servers": [
-    {"server_id": "uuid", "clicks": 45},
-    ...
-  ],
-  "date": "2026-04-06"
+  "query": "pvp",
+  "suggestions": [
+    "pvp factions server",
+    "pvp anarchy server",
+    "pvp minigames server"
+  ]
+}
+```
+
+### POST /api/embed
+```json
+{
+  "text": "A fun survival server with custom enchants"
+}
+```
+
+Response:
+```json
+{
+  "embedding": [0.123, -0.456, ...],
+  "dimensions": 768
 }
 ```
 
 ---
 
-**Note**: AI features require Cloudflare Workers Paid Plan OR use Workers AI free tier with limits. Regular search still works without AI enabled.
+**Note**: AI features use Gemini API via Cloudflare Workers. Regular search (by name/IP) works without AI enabled.
