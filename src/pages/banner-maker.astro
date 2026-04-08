@@ -63,7 +63,18 @@ const gradients = [
       </div>
 
       <!-- Banner Maker Interface -->
-      <div class="max-w-6xl mx-auto px-4">
+      <!-- Banner Type Tabs -->
+        <div class="flex gap-2 mb-6">
+          <button id="tab-image" class="tab-btn px-4 py-2 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            Static Image
+          </button>
+          <button id="tab-video" class="tab-btn px-4 py-2 bg-[#1a1a25] text-white font-medium rounded-lg hover:bg-[#2a2a3a] transition-colors flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+            Video / Animated
+          </button>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           <!-- Left Panel: Controls -->
@@ -232,6 +243,50 @@ const gradients = [
               </div>
             </div>
 
+            <!-- Video Upload Section (hidden by default) -->
+            <div id="video-section" class="hidden bg-[#12121a] border border-[#2a2a3a] rounded-lg p-5">
+              <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+                Video Background
+              </h3>
+              
+              <div id="video-upload-area" class="border-2 border-dashed border-[#2a2a3a] rounded-lg p-6 text-center hover:border-[#00f5d4] transition-colors">
+                <input type="file" id="video-upload" accept="video/*" class="hidden" />
+                <label for="video-upload" class="cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" class="mx-auto mb-3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                  <p class="text-white font-medium mb-1">Upload Video Background</p>
+                  <p class="text-xs text-[#8892b0]">MP4, WebM, MOV (max 50MB)</p>
+                </label>
+              </div>
+              
+              <div id="video-preview-container" class="hidden mt-4">
+                <video id="video-preview" class="w-full rounded-lg max-h-32 object-cover" loop muted playsinline></video>
+                <button id="remove-video" class="mt-2 text-sm text-[#ff3864] hover:text-[#ff6b6b] transition-colors">Remove video</button>
+              </div>
+              
+              <div class="mt-4">
+                <label class="block text-sm text-[#8892b0] mb-2">Or use animated background</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button class="anim-btn p-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center hover:border-[#00f5d4] transition-all" data-anim="particles">
+                    <span class="text-2xl">✨</span>
+                    <p class="text-xs text-[#8892b0] mt-1">Particles</p>
+                  </button>
+                  <button class="anim-btn p-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center hover:border-[#00f5d4] transition-all" data-anim="rainbow">
+                    <span class="text-2xl">🌈</span>
+                    <p class="text-xs text-[#8892b0] mt-1">Rainbow</p>
+                  </button>
+                  <button class="anim-btn p-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center hover:border-[#00f5d4] transition-all" data-anim="pulse">
+                    <span class="text-2xl">💫</span>
+                    <p class="text-xs text-[#8892b0] mt-1">Pulse</p>
+                  </button>
+                  <button class="anim-btn p-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center hover:border-[#00f5d4] transition-all" data-anim="glitch">
+                    <span class="text-2xl">⚡</span>
+                    <p class="text-xs text-[#8892b0] mt-1">Glitch</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Right Panel: Preview & Download -->
@@ -245,22 +300,27 @@ const gradients = [
                   Live Preview
                 </h3>
                 <div class="flex gap-2">
+                  <button id="play-anim-btn" class="hidden px-3 py-1.5 text-sm text-[#00f5d4] hover:text-white bg-[#0a0a0f] border border-[#00f5d4] rounded-lg transition-colors flex items-center gap-1">
+                    <span id="play-icon">▶</span> <span id="play-text">Play</span>
+                  </button>
                   <button id="reset-btn" class="px-3 py-1.5 text-sm text-[#8892b0] hover:text-white bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg transition-colors">
                     Reset
                   </button>
                 </div>
               </div>
               
-              <div class="bg-[#0a0a0f] rounded-lg p-4 flex items-center justify-center overflow-hidden">
+              <div class="bg-[#0a0a0f] rounded-lg p-4 flex items-center justify-center overflow-hidden relative">
                 <canvas 
                   id="banner-canvas" 
                   width="800" 
                   height="300"
                   class="max-w-full h-auto rounded-lg shadow-lg"
                 ></canvas>
+                <video id="video-background" class="hidden absolute inset-0 w-full h-full object-cover rounded-lg" loop muted playsinline></video>
               </div>
               
-              <div class="mt-4 flex flex-wrap gap-3">
+              <!-- Image Mode Download -->
+              <div id="image-download" class="mt-4 flex flex-wrap gap-3">
                 <button 
                   id="download-btn"
                   class="flex-1 md:flex-none px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors flex items-center justify-center gap-2"
@@ -274,6 +334,31 @@ const gradients = [
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                   Copy to Clipboard
+                </button>
+              </div>
+              
+              <!-- Video Mode Download (hidden by default) -->
+              <div id="video-download" class="hidden mt-4 flex flex-wrap gap-3">
+                <button 
+                  id="record-video-btn"
+                  class="flex-1 md:flex-none px-6 py-3 bg-[#ff3864] text-white font-bold rounded-lg hover:bg-[#e63357] transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span id="record-text">Record 5s Video</span>
+                </button>
+                <button 
+                  id="download-gif-btn"
+                  class="flex-1 md:flex-none px-6 py-3 bg-[#a855f7] text-white font-bold rounded-lg hover:bg-[#9333ea] transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                  Download GIF
+                </button>
+                <button 
+                  id="export-webm-btn"
+                  class="flex-1 md:flex-none px-6 py-3 bg-[#1a1a25] text-white font-medium rounded-lg hover:bg-[#2a2a3a] transition-colors flex items-center justify-center gap-2 border border-[#2a2a3a]"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+                  Export WebM
                 </button>
               </div>
             </div>
@@ -802,6 +887,253 @@ const gradients = [
     } catch (err) {
       window.showToast?.('Could not copy to clipboard', 'error');
     }
+  });
+
+  // Animation state
+  let animationId = null;
+  let isPlaying = false;
+  let mediaRecorder = null;
+  let recordedChunks = [];
+  let videoBackground = null;
+  
+  // Animation effects
+  const animations = {
+    particles: (ctx, width, height, time) => {
+      const particleCount = 20;
+      ctx.save();
+      for (let i = 0; i < particleCount; i++) {
+        const x = ((i * 37 + time * 0.1) % width);
+        const y = ((i * 53 + time * 0.05) % height);
+        const size = 2 + Math.sin(time * 0.01 + i) * 1;
+        const alpha = 0.3 + Math.sin(time * 0.02 + i) * 0.2;
+        ctx.fillStyle = `rgba(0, 245, 212, ${alpha})`;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    },
+    rainbow: (ctx, width, height, time) => {
+      const hue = (time * 0.1) % 360;
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, `hsla(${hue}, 70%, 50%, 0.3)`);
+      gradient.addColorStop(0.5, `hsla(${(hue + 60) % 360}, 70%, 50%, 0.2)`);
+      gradient.addColorStop(1, `hsla(${(hue + 120) % 360}, 70%, 50%, 0.3)`);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    },
+    pulse: (ctx, width, height, time) => {
+      const scale = 1 + Math.sin(time * 0.003) * 0.05;
+      ctx.save();
+      ctx.translate(width / 2, height / 2);
+      ctx.scale(scale, scale);
+      ctx.translate(-width / 2, -height / 2);
+      ctx.strokeStyle = `rgba(0, 245, 212, ${0.1 + Math.sin(time * 0.003) * 0.1})`;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(0, 0, width, height);
+      ctx.restore();
+    },
+    glitch: (ctx, width, height, time) => {
+      if (Math.random() > 0.95) {
+        const offset = (Math.random() - 0.5) * 10;
+        ctx.fillStyle = 'rgba(255, 56, 100, 0.1)';
+        const y = Math.random() * height;
+        const h = Math.random() * 20 + 5;
+        ctx.fillRect(0, y, width, h);
+        ctx.drawImage(canvas, 0, y, width, h, offset, y, width, h);
+      }
+    }
+  };
+
+  // Animation loop
+  function animate(timestamp) {
+    if (!isPlaying) return;
+    
+    // Render base template
+    const renderFn = templates[state.template] || templates.modern;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    renderFn(ctx, state);
+    
+    // Apply animation effect
+    if (state.animation && animations[state.animation]) {
+      animations[state.animation](ctx, canvas.width, canvas.height, timestamp);
+    }
+    
+    animationId = requestAnimationFrame(animate);
+  }
+
+  // Tab switching
+  const tabImage = document.getElementById('tab-image');
+  const tabVideo = document.getElementById('tab-video');
+  const videoSection = document.getElementById('video-section');
+  const imageDownload = document.getElementById('image-download');
+  const videoDownload = document.getElementById('video-download');
+  const playAnimBtn = document.getElementById('play-anim-btn');
+
+  tabImage?.addEventListener('click', () => {
+    tabImage.classList.add('bg-[#00f5d4]', 'text-[#0a0a0f]');
+    tabImage.classList.remove('bg-[#1a1a25]', 'text-white');
+    tabVideo.classList.remove('bg-[#00f5d4]', 'text-[#0a0a0f]');
+    tabVideo.classList.add('bg-[#1a1a25]', 'text-white');
+    videoSection.classList.add('hidden');
+    imageDownload.classList.remove('hidden');
+    videoDownload.classList.add('hidden');
+    playAnimBtn.classList.add('hidden');
+    stopAnimation();
+    renderBanner();
+  });
+
+  tabVideo?.addEventListener('click', () => {
+    tabVideo.classList.add('bg-[#00f5d4]', 'text-[#0a0a0f]');
+    tabVideo.classList.remove('bg-[#1a1a25]', 'text-white');
+    tabImage.classList.remove('bg-[#00f5d4]', 'text-[#0a0a0f]');
+    tabImage.classList.add('bg-[#1a1a25]', 'text-white');
+    videoSection.classList.remove('hidden');
+    imageDownload.classList.add('hidden');
+    videoDownload.classList.remove('hidden');
+    playAnimBtn.classList.remove('hidden');
+  });
+
+  // Play/Pause animation
+  playAnimBtn?.addEventListener('click', () => {
+    if (isPlaying) {
+      stopAnimation();
+      document.getElementById('play-icon').textContent = '▶';
+      document.getElementById('play-text').textContent = 'Play';
+    } else {
+      if (state.animation || state.videoBackground) {
+        isPlaying = true;
+        animate(performance.now());
+        document.getElementById('play-icon').textContent = '⏸';
+        document.getElementById('play-text').textContent = 'Pause';
+      }
+    }
+  });
+
+  function stopAnimation() {
+    isPlaying = false;
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+    // Re-render static
+    renderBanner();
+  }
+
+  // Animation selection
+  document.querySelectorAll('.anim-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.anim-btn').forEach(b => b.classList.remove('border-[#00f5d4]'));
+      btn.classList.add('border-[#00f5d4]');
+      state.animation = btn.dataset.anim;
+      if (isPlaying) {
+        // Restart with new animation
+        cancelAnimationFrame(animationId);
+        animate(performance.now());
+      }
+    });
+  });
+
+  // Video upload
+  const videoUpload = document.getElementById('video-upload');
+  const videoPreview = document.getElementById('video-preview');
+  const videoPreviewContainer = document.getElementById('video-preview-container');
+  const videoBackgroundEl = document.getElementById('video-background');
+  const removeVideoBtn = document.getElementById('remove-video');
+
+  videoUpload?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.size <= 50 * 1024 * 1024) { // 50MB limit
+      const url = URL.createObjectURL(file);
+      videoPreview.src = url;
+      videoBackgroundEl.src = url;
+      videoPreviewContainer.classList.remove('hidden');
+      state.videoBackground = url;
+      
+      // Auto-play
+      videoPreview.play();
+      videoBackgroundEl.play();
+    } else {
+      window.showToast?.('Video must be under 50MB', 'error');
+    }
+  });
+
+  removeVideoBtn?.addEventListener('click', () => {
+    videoPreview.src = '';
+    videoBackgroundEl.src = '';
+    videoPreviewContainer.classList.add('hidden');
+    videoUpload.value = '';
+    state.videoBackground = null;
+    delete state.videoBackground;
+  });
+
+  // Record video from canvas
+  const recordBtn = document.getElementById('record-video-btn');
+  const recordText = document.getElementById('record-text');
+  
+  recordBtn?.addEventListener('click', async () => {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+      return;
+    }
+    
+    const stream = canvas.captureStream(30); // 30 FPS
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    recordedChunks = [];
+    
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) {
+        recordedChunks.push(e.data);
+      }
+    };
+    
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `banner-${state.template}-${Date.now()}.webm`;
+      a.click();
+      URL.revokeObjectURL(url);
+      recordText.textContent = 'Record 5s Video';
+      recordBtn.classList.remove('bg-[#1a1a25]');
+      recordBtn.classList.add('bg-[#ff3864]');
+      window.showToast?.('Video recorded!', 'success');
+    };
+    
+    // Start animation if not playing
+    if (!isPlaying && state.animation) {
+      isPlaying = true;
+      animate(performance.now());
+    }
+    
+    mediaRecorder.start();
+    recordText.textContent = '⏹ Stop Recording';
+    recordBtn.classList.remove('bg-[#ff3864]');
+    recordBtn.classList.add('bg-[#1a1a25]');
+    
+    // Auto stop after 5 seconds
+    setTimeout(() => {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        stopAnimation();
+      }
+    }, 5000);
+  });
+
+  // Export GIF (using simple approach - in production use gif.js library)
+  document.getElementById('download-gif-btn')?.addEventListener('click', () => {
+    window.showToast?.('GIF export requires gif.js library. Use WebM for now!', 'info');
+  });
+
+  // Export WebM from animation
+  document.getElementById('export-webm-btn')?.addEventListener('click', async () => {
+    if (!state.animation && !state.videoBackground) {
+      window.showToast?.('Select an animation or upload video first', 'error');
+      return;
+    }
+    
+    recordBtn.click(); // Trigger recording
   });
 
   // Initialize
