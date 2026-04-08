@@ -27,7 +27,8 @@ const footerLinks = {
 };
 ---
 
-<footer class="border-t border-[#2a2a3a] bg-[#0a0a0f]">
+<footer class="border-t transition-colors duration-300"
+  style="background-color: var(--bg-primary); border-color: var(--border-color);">
   <div class="max-w-6xl mx-auto px-4 py-12">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
       <!-- Brand -->
@@ -35,7 +36,8 @@ const footerLinks = {
         <a href="/" class="flex items-center gap-2 mb-4">
           <img src="/logo.png" alt="GuildPost" class="h-8 w-auto" />
         </a>
-        <p class="text-[#8892b0] text-sm mb-4">
+        <p class="text-sm mb-4 transition-colors"
+          style="color: var(--text-secondary);">
           The best place to find and share Minecraft servers. Join thousands of players discovering their next favorite server.
         </p>
         <div class="flex gap-3">
@@ -44,7 +46,10 @@ const footerLinks = {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="w-10 h-10 bg-[#1a1a25] hover:bg-[#2a2a3a] rounded-lg flex items-center justify-center text-[#8892b0] hover:text-white transition-colors"
+              class="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200"
+              style="background-color: var(--bg-tertiary); color: var(--text-secondary);"
+              onmouseover="this.style.backgroundColor='var(--border-hover)'; this.style.color='var(--text-primary)'"
+              onmouseout="this.style.backgroundColor='var(--bg-tertiary)'; this.style.color='var(--text-secondary)'"
               aria-label={link.label}
             >
               {link.icon === 'twitter' && (
@@ -69,11 +74,14 @@ const footerLinks = {
 
       <!-- Product -->
       <div>
-        <h4 class="text-white font-bold mb-4">Product</h4>
+        <h4 class="font-bold mb-4 transition-colors" style="color: var(--text-primary);">Product</h4>
         <ul class="space-y-2">
           {footerLinks.product.map(link => (
             <li>
-              <a href={link.href} class="text-[#8892b0] hover:text-[#00f5d4] transition-colors text-sm">
+              <a href={link.href} class="text-sm transition-colors"
+                style="color: var(--text-secondary);"
+                onmouseover="this.style.color='var(--accent-primary)'"
+                onmouseout="this.style.color='var(--text-secondary)'">
                 {link.label}
               </a>
             </li>
@@ -83,11 +91,14 @@ const footerLinks = {
 
       <!-- Support -->
       <div>
-        <h4 class="text-white font-bold mb-4">Support</h4>
+        <h4 class="font-bold mb-4 transition-colors" style="color: var(--text-primary);">Support</h4>
         <ul class="space-y-2">
           {footerLinks.support.map(link => (
             <li>
-              <a href={link.href} class="text-[#8892b0] hover:text-[#00f5d4] transition-colors text-sm">
+              <a href={link.href} class="text-sm transition-colors"
+                style="color: var(--text-secondary);"
+                onmouseover="this.style.color='var(--accent-primary)'"
+                onmouseout="this.style.color='var(--text-secondary)'">
                 {link.label}
               </a>
             </li>
@@ -97,11 +108,14 @@ const footerLinks = {
 
       <!-- Legal -->
       <div>
-        <h4 class="text-white font-bold mb-4">Legal</h4>
+        <h4 class="font-bold mb-4 transition-colors" style="color: var(--text-primary);">Legal</h4>
         <ul class="space-y-2">
           {footerLinks.legal.map(link => (
             <li>
-              <a href={link.href} class="text-[#8892b0] hover:text-[#00f5d4] transition-colors text-sm">
+              <a href={link.href} class="text-sm transition-colors"
+                style="color: var(--text-secondary);"
+                onmouseover="this.style.color='var(--accent-primary)'"
+                onmouseout="this.style.color='var(--text-secondary)'">
                 {link.label}
               </a>
             </li>
@@ -111,13 +125,17 @@ const footerLinks = {
     </div>
 
     <!-- Bottom Bar -->
-    <div class="pt-8 border-t border-[#2a2a3a] flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-[#8892b0] text-sm">
+    <div class="pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 transition-colors"
+      style="border-color: var(--border-color);">
+      <p class="text-sm transition-colors" style="color: var(--text-secondary);">
         © {currentYear} GuildPost. Not affiliated with Mojang or Microsoft.
       </p>
-      <p class="text-[#8892b0] text-sm flex items-center gap-1">
-        Made with <span class="text-[#ff3864]">♥</span> by 
-        <a href="https://github.com/mintychochip" class="text-[#00f5d4] hover:underline">mintychochip</a>
+      <p class="text-sm flex items-center gap-1 transition-colors" style="color: var(--text-secondary);">
+        Made with <span style="color: var(--accent-secondary);">♥</span> by 
+        <a href="https://github.com/mintychochip" class="hover:underline transition-colors"
+          style="color: var(--accent-primary);"
+          onmouseover="this.style.textDecoration='underline'"
+          onmouseout="this.style.textDecoration='none'">mintychochip</a>
       </p>
     </div>
   </div>

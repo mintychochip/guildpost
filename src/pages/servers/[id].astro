@@ -138,6 +138,11 @@ const isOnline = server.status === 'online';
                       ✓ VERIFIED
                     </span>
                   )}
+                  {server.claimed && (
+                    <span class="px-2 py-1 bg-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded">
+                      👑 CLAIMED
+                    </span>
+                  )}
                   {/* Platform Badge */}
                   {(() => {
                     const edition = (server.edition || 'java').toLowerCase();
@@ -347,11 +352,27 @@ const isOnline = server.status === 'online';
             
             <button 
               id="favorite-btn"
-              class="block w-full p-3 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+              class="block w-full p-3 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg transition-colors flex items-center justify-center gap-2 mb-2"
             >
               <span id="favorite-icon">♡</span>
               <span id="favorite-text">Add to Favorites</span>
             </button>
+            
+            {!server.claimed && (
+              <a 
+                href={`/claim?server=${server.id}`}
+                class="block w-full p-3 bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 text-[#8b5cf6] rounded-lg transition-colors text-center font-medium"
+              >
+                👑 Claim This Server
+              </a>
+            )}
+            
+            {server.claimed && server.claimed_by && (
+              <div class="p-3 bg-[#8b5cf6]/10 border border-[#8b5cf6]/30 rounded-lg text-center">
+                <p class="text-[#8b5cf6] text-sm font-medium">👑 Server Claimed</p>
+                <p class="text-[#8892b0] text-xs mt-1">Owner verified via {server.claim_verification_method || 'MOTD'}</p>
+              </div>
+            )}
           </div>
 
           <!-- Uptime Stats -->

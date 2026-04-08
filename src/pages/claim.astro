@@ -1,0 +1,639 @@
+---
+// Server Claim Page - Allow server owners to claim their servers
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Get server ID from URL if provided
+const serverId = Astro.url.searchParams.get('server');
+const step = Astro.url.searchParams.get('step') || '1';
+
+// Server-side fetch from Supabase for initial data
+const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
+
+let server = null;
+let initialError = null;
+
+if (serverId) {
+  try {
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&select=id,name,ip,port,claimed,claimed_by,description`,
+      { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }}
+    );
+    
+    if (response.ok) {
+      const data = await response.json();
+      server = data[0] || null;
+    }
+  } catch (e) {
+    initialError = 'Failed to fetch server details';
+  }
+}
+---
+
+<Layout 
+  title="Claim Your Server | GuildPost"
+  description="Verify ownership of your Minecraft server on GuildPost. Add your server to your dashboard and unlock owner features."
+  url="https://guildpost.tech/claim"
+>
+  <div class="min-h-screen bg-[#0a0a0f]">
+    <Header />
+    
+    <main class="max-w-4xl mx-auto px-4 py-8">
+      <!-- Page Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-black text-white mb-4">
+          Claim Your Server
+        </h1>
+        <p class="text-[#8892b0] max-w-2xl mx-auto">
+          Verify ownership of your Minecraft server to access the dashboard, update your listing, and unlock premium features.
+        </p>
+      </div>
+      
+      <!-- Progress Steps -->
+      <div class="flex items-center justify-center gap-4 mb-8">
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-1" class="w-8 h-8 rounded-full bg-[#00f5d4] text-[#0a0a0f] flex items-center justify-center font-bold">1</div>
+          <span class="text-white font-medium hidden sm:block">Server</span>
+        </div>
+        <div class="w-12 h-0.5 bg-[#2a2a3a]" id="step-line-1"></div>
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-2" class="w-8 h-8 rounded-full bg-[#2a2a3a] text-[#8892b0] flex items-center justify-center font-bold">2</div>
+          <span class="text-[#8892b0] font-medium hidden sm:block">Contact</span>
+        </div>
+        <div class="w-12 h-0.5 bg-[#2a2a3a]" id="step-line-2"></div>
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-3" class="w-8 h-8 rounded-full bg-[#2a2a3a] text-[#8892b0] flex items-center justify-center font-bold">3</div>
+          <span class="text-[#8892b0] font-medium hidden sm:block">Verify</span>
+        </div>
+        <div class="w-12 h-0.5 bg-[#2a2a3a]" id="step-line-3"></div>
+        <div class="flex items-center gap-2">
+          <div id="step-indicator-4" class="w-8 h-8 rounded-full bg-[#2a2a3a] text-[#8892b0] flex items-center justify-center font-bold">4</div>
+          <span class="text-[#8892b0] font-medium hidden sm:block">Done</span>
+        </div>
+      </div>
+      
+      <!-- Error Message -->
+      {initialError && (
+        <div class="p-4 mb-6 bg-red-500/10 border border-red-500/30 rounded-lg">
+          <p class="text-red-400">{initialError}</p>
+        </div>
+      )}
+      
+      <!-- Already Claimed Warning -->
+      {server?.claimed && (
+        <div class="p-4 mb-6 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+          <p class="text-yellow-400 font-medium">⚠️ This server has already been claimed</p>
+          <p class="text-[#8892b0] text-sm mt-1">
+            If you believe this is an error or you are the rightful owner, please contact support.
+          </p>
+        </div>
+      )}
+      
+      <!-- Step 1: Select Server -->
+      <div id="step-1" class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+        <h2 class="text-xl font-bold text-white mb-4">Find Your Server</h2>
+        
+        {!serverId ? (
+          <div class="space-y-4">
+            <p class="text-[#8892b0]">Enter your server ID or search by IP address:</p>
+            <div class="flex gap-2">
+              <input 
+                type="text" 
+                id="server-search"
+                placeholder="Server ID or IP address"
+                class="flex-1 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:border-[#00f5d4] focus:outline-none"
+              />
+              <button 
+                id="search-btn"
+                class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors"
+              >
+                Search
+              </button>
+            </div>
+            <div id="search-results" class="hidden space-y-2 mt-4"></div>
+          </div>
+        ) : server ? (
+          <div class="flex items-center gap-4 p-4 bg-[#0a0a0f] rounded-lg">
+            <div class="w-16 h-16 bg-[#1a1a25] rounded-lg flex items-center justify-center">
+              <span class="text-[#00f5d4] text-2xl">⛏</span>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-white">{server.name}</h3>
+              <p class="text-[#8892b0]">{server.ip}:{server.port}</p>
+              {server.description && (
+                <p class="text-[#8892b0] text-sm mt-1 line-clamp-1">{server.description}</p>
+              )}
+            </div>
+            <div class="flex flex-col gap-2">
+              <span class="px-3 py-1 bg-[#00f5d4]/20 text-[#00f5d4] text-xs font-bold rounded">
+                ✓ Selected
+              </span>
+              <a href="/claim" class="text-[#8892b0] text-xs hover:text-white text-center">Change</a>
+            </div>
+          </div>
+        ) : (
+          <div class="text-center py-8">
+            <p class="text-[#8892b0]">Server not found. Please check the ID and try again.</p>
+            <a href="/claim" class="text-[#00f5d4] hover:underline mt-2 inline-block">Start over</a>
+          </div>
+        )}
+        
+        <div class="flex justify-end mt-6">
+          <button 
+            id="step-1-next"
+            class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!server}
+          >
+            Continue →
+          </button>
+        </div>
+      </div>
+      
+      <!-- Step 2: Contact Info -->
+      <div id="step-2" class="hidden p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+        <h2 class="text-xl font-bold text-white mb-4">Your Contact Information</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-[#8892b0] mb-2">Email Address *</label>
+            <input 
+              type="email" 
+              id="owner-email"
+              placeholder="your@email.com"
+              class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:border-[#00f5d4] focus:outline-none"
+              required
+            />
+            <p class="text-[#8892b0] text-xs mt-1">We'll use this to send you dashboard access links.</p>
+          </div>
+          
+          <div>
+            <label class="block text-[#8892b0] mb-2">Your Name (Optional)</label>
+            <input 
+              type="text" 
+              id="owner-name"
+              placeholder="Server Owner"
+              class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:border-[#00f5d4] focus:outline-none"
+            />
+          </div>
+        </div>
+        
+        <div class="flex justify-between mt-6">
+          <button 
+            id="step-2-back"
+            class="px-6 py-3 bg-[#1a1a25] text-[#8892b0] rounded-lg hover:bg-[#2a2a3a] transition-colors"
+          >
+            ← Back
+          </button>
+          <button 
+            id="step-2-next"
+            class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors"
+          >
+            Continue →
+          </button>
+        </div>
+      </div>
+      
+      <!-- Step 3: Verification Method -->
+      <div id="step-3" class="hidden p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+        <h2 class="text-xl font-bold text-white mb-4">Verify Ownership</h2>
+        <p class="text-[#8892b0] mb-4">Choose how you'd like to verify server ownership:</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <!-- MOTD Verification Option -->
+          <label class="cursor-pointer">
+            <input type="radio" name="verification-method" value="motd" class="hidden peer" checked>
+            <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg peer-checked:border-[#00f5d4] peer-checked:bg-[#00f5d4]/5 transition-all">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 bg-[#00f5d4]/20 rounded-lg flex items-center justify-center">
+                  <span class="text-[#00f5d4] text-xl">📝</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white">MOTD Method</h3>
+                  <p class="text-[#8892b0] text-xs">Fastest option</p>
+                </div>
+              </div>
+              <p class="text-[#8892b0] text-sm">Add a verification token to your server's MOTD in server.properties.</p>
+            </div>
+          </label>
+          
+          <!-- DNS Verification Option -->
+          <label class="cursor-pointer">
+            <input type="radio" name="verification-method" value="dns" class="hidden peer">
+            <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg peer-checked:border-[#00f5d4] peer-checked:bg-[#00f5d4]/5 transition-all">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 bg-[#8b5cf6]/20 rounded-lg flex items-center justify-center">
+                  <span class="text-[#8b5cf6] text-xl">🌐</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white">DNS Method</h3>
+                  <p class="text-[#8892b0] text-xs">Most secure</p>
+                </div>
+              </div>
+              <p class="text-[#8892b0] text-sm">Add a TXT record to your domain's DNS settings.</p>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Verification Instructions Container -->
+        <div id="verification-instructions" class="hidden p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg mb-4">
+          <!-- MOTD Instructions -->
+          <div id="motd-instructions" class="space-y-3">
+            <h4 class="font-bold text-white">MOTD Verification Steps:</h4>
+            <ol class="text-[#8892b0] text-sm space-y-2 list-decimal list-inside">
+              <li>Open your server's <code class="bg-[#1a1a25] px-2 py-1 rounded">server.properties</code> file</li>
+              <li>Find the <code class="bg-[#1a1a25] px-2 py-1 rounded">motd=</code> line</li>
+              <li>Add this token to your MOTD: <code id="motd-token" class="bg-[#00f5d4]/20 text-[#00f5d4] px-2 py-1 rounded font-mono">Loading...</code></li>
+              <li>Save the file and restart your server</li>
+              <li>Click "Verify Now" below</li>
+            </ol>
+            <div class="mt-3 p-3 bg-[#1a1a25] rounded border-l-4 border-[#00f5d4]">
+              <p class="text-[#8892b0] text-xs">Example MOTD:</p>
+              <code id="motd-example" class="text-white text-sm block mt-1 font-mono">Loading...</code>
+            </div>
+          </div>
+          
+          <!-- DNS Instructions -->
+          <div id="dns-instructions" class="hidden space-y-3">
+            <h4 class="font-bold text-white">DNS Verification Steps:</h4>
+            <ol class="text-[#8892b0] text-sm space-y-2 list-decimal list-inside">
+              <li>Go to your domain's DNS management panel</li>
+              <li>Add a new TXT record with these settings:</li>
+            </ol>
+            <div class="mt-3 p-3 bg-[#1a1a25] rounded space-y-2">
+              <div class="flex justify-between">
+                <span class="text-[#8892b0] text-xs">Type:</span>
+                <span class="text-white text-sm font-mono">TXT</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8892b0] text-xs">Name/Host:</span>
+                <span class="text-white text-sm font-mono">_minecraft</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8892b0] text-xs">Value:</span>
+                <code id="dns-value" class="text-[#00f5d4] text-sm font-mono">Loading...</code>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#8892b0] text-xs">TTL:</span>
+                <span class="text-white text-sm font-mono">300 (5 minutes)</span>
+              </div>
+            </div>
+            <p class="text-[#8892b0] text-xs mt-2">
+              ⏱ DNS changes can take 5-30 minutes to propagate.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-between items-center">
+          <button 
+            id="step-3-back"
+            class="px-6 py-3 bg-[#1a1a25] text-[#8892b0] rounded-lg hover:bg-[#2a2a3a] transition-colors"
+          >
+            ← Back
+          </button>
+          
+          <div class="flex gap-2">
+            <button 
+              id="start-verification-btn"
+              class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors"
+            >
+              Start Verification
+            </button>
+            <button 
+              id="verify-now-btn"
+              class="hidden px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors flex items-center gap-2"
+            >
+              <span>Verify Now</span>
+              <span id="verify-spinner" class="hidden">⟳</span>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Verification Status -->
+        <div id="verification-status" class="hidden mt-4 p-4 rounded-lg"></div>
+      </div>
+      
+      <!-- Step 4: Success -->
+      <div id="step-4" class="hidden text-center py-12">
+        <div class="w-20 h-20 bg-[#00f5d4]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <span class="text-[#00f5d4] text-4xl">✓</span>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-4">Server Claimed Successfully!</h2>
+        <p class="text-[#8892b0] mb-6 max-w-md mx-auto">
+          Your server ownership has been verified. You now have full access to manage your server listing.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a 
+            id="dashboard-link"
+            href="/dashboard"
+            class="px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors"
+          >
+            Go to Dashboard →
+          </a>
+          <a 
+            id="server-link"
+            href="/minecraft"
+            class="px-6 py-3 bg-[#1a1a25] text-white rounded-lg hover:bg-[#2a2a3a] transition-colors"
+          >
+            View Server Listing
+          </a>
+        </div>
+      </div>
+    </main>
+    
+    <Footer />
+  </div>
+</Layout>
+
+<script define:vars={{ serverId, server, supabaseUrl, supabaseKey }}>
+  // State management
+  let currentStep = 1;
+  let claimData = {
+    serverId: serverId,
+    serverName: server?.name || '',
+    serverIp: server?.ip || '',
+    serverPort: server?.port || 25565,
+    ownerEmail: '',
+    ownerName: '',
+    verificationMethod: 'motd',
+    claimId: null,
+    claimToken: null,
+    shortToken: null
+  };
+  
+  // DOM Elements
+  const steps = {
+    1: document.getElementById('step-1'),
+    2: document.getElementById('step-2'),
+    3: document.getElementById('step-3'),
+    4: document.getElementById('step-4')
+  };
+  
+  const indicators = {
+    1: document.getElementById('step-indicator-1'),
+    2: document.getElementById('step-indicator-2'),
+    3: document.getElementById('step-indicator-3'),
+    4: document.getElementById('step-indicator-4')
+  };
+  
+  // Update step visibility
+  function showStep(step) {
+    currentStep = step;
+    
+    // Hide all steps
+    Object.values(steps).forEach(el => el?.classList.add('hidden'));
+    
+    // Show current step
+    steps[step]?.classList.remove('hidden');
+    
+    // Update indicators
+    for (let i = 1; i <= 4; i++) {
+      const indicator = indicators[i];
+      if (indicator) {
+        if (i < step) {
+          indicator.className = 'w-8 h-8 rounded-full bg-[#00f5d4] text-[#0a0a0f] flex items-center justify-center font-bold';
+          indicator.innerHTML = '✓';
+        } else if (i === step) {
+          indicator.className = 'w-8 h-8 rounded-full bg-[#00f5d4] text-[#0a0a0f] flex items-center justify-center font-bold';
+          indicator.innerHTML = i;
+        } else {
+          indicator.className = 'w-8 h-8 rounded-full bg-[#2a2a3a] text-[#8892b0] flex items-center justify-center font-bold';
+          indicator.innerHTML = i;
+        }
+      }
+    }
+    
+    // Update lines
+    document.getElementById('step-line-1')?.classList.toggle('bg-[#00f5d4]', step >= 2);
+    document.getElementById('step-line-2')?.classList.toggle('bg-[#00f5d4]', step >= 3);
+    document.getElementById('step-line-3')?.classList.toggle('bg-[#00f5d4]', step >= 4);
+  }
+  
+  // Step 1: Server Search
+  document.getElementById('search-btn')?.addEventListener('click', async () => {
+    const searchInput = document.getElementById('server-search');
+    const searchTerm = searchInput.value.trim();
+    
+    if (!searchTerm) return;
+    
+    const resultsDiv = document.getElementById('search-results');
+    resultsDiv.innerHTML = '<p class="text-[#8892b0]">Searching...</p>';
+    resultsDiv.classList.remove('hidden');
+    
+    try {
+      // Search by ID or IP
+      let url = `${supabaseUrl}/rest/v1/servers?`;
+      if (searchTerm.includes('.') || searchTerm.includes(':')) {
+        // IP search
+        const [ip, port] = searchTerm.split(':');
+        url += `ip=eq.${encodeURIComponent(ip)}&limit=5`;
+        if (port) url += `&port=eq.${port}`;
+      } else {
+        // ID search
+        url += `id=eq.${encodeURIComponent(searchTerm)}&limit=5`;
+      }
+      url += '&select=id,name,ip,port,claimed';
+      
+      const response = await fetch(url, {
+        headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
+      });
+      
+      const servers = await response.json();
+      
+      if (servers.length === 0) {
+        resultsDiv.innerHTML = '<p class="text-[#8892b0]">No servers found. Try a different search term.</p>';
+        return;
+      }
+      
+      resultsDiv.innerHTML = servers.map(s => `
+        <div class="flex items-center gap-4 p-3 bg-[#0a0a0f] rounded-lg cursor-pointer hover:bg-[#1a1a25] transition-colors server-result" data-server='${JSON.stringify(s)}'>
+          <div class="w-10 h-10 bg-[#1a1a25] rounded flex items-center justify-center">
+            <span class="text-[#00f5d4]">⛏</span>
+          </div>
+          <div class="flex-1">
+            <h4 class="font-bold text-white">${s.name}</h4>
+            <p class="text-[#8892b0] text-sm">${s.ip}:${s.port}</p>
+          </div>
+          ${s.claimed ? '<span class="text-yellow-500 text-xs">Claimed</span>' : '<span class="text-[#00f5d4] text-xs">Available</span>'}
+        </div>
+      `).join('');
+      
+      // Add click handlers
+      document.querySelectorAll('.server-result').forEach(el => {
+        el.addEventListener('click', () => {
+          const serverData = JSON.parse(el.dataset.server);
+          claimData.serverId = serverData.id;
+          claimData.serverName = serverData.name;
+          claimData.serverIp = serverData.ip;
+          claimData.serverPort = serverData.port;
+          window.location.href = `/claim?server=${serverData.id}`;
+        });
+      });
+      
+    } catch (err) {
+      resultsDiv.innerHTML = '<p class="text-red-400">Error searching servers. Please try again.</p>';
+    }
+  });
+  
+  // Step 1 Next
+  document.getElementById('step-1-next')?.addEventListener('click', () => {
+    if (claimData.serverId) {
+      showStep(2);
+    }
+  });
+  
+  // Step 2: Contact Info
+  document.getElementById('step-2-back')?.addEventListener('click', () => showStep(1));
+  
+  document.getElementById('step-2-next')?.addEventListener('click', () => {
+    const email = document.getElementById('owner-email').value.trim();
+    const name = document.getElementById('owner-name').value.trim();
+    
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    claimData.ownerEmail = email;
+    claimData.ownerName = name;
+    showStep(3);
+  });
+  
+  // Step 3: Verification
+  document.getElementById('step-3-back')?.addEventListener('click', () => showStep(2));
+  
+  // Verification method change
+  document.querySelectorAll('input[name="verification-method"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      claimData.verificationMethod = e.target.value;
+    });
+  });
+  
+  // Start Verification
+  document.getElementById('start-verification-btn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('start-verification-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span>Starting...</span><span>⟳</span>';
+    
+    try {
+      const response = await fetch('/api/servers/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          server_id: claimData.serverId,
+          owner_email: claimData.ownerEmail,
+          owner_name: claimData.ownerName,
+          verification_method: claimData.verificationMethod
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to start verification');
+      }
+      
+      claimData.claimId = data.claim_id;
+      claimData.claimToken = data.claim_token;
+      claimData.shortToken = data.instructions?.token;
+      
+      // Show instructions
+      const instructionsDiv = document.getElementById('verification-instructions');
+      instructionsDiv.classList.remove('hidden');
+      
+      // Update instruction content based on method
+      if (claimData.verificationMethod === 'motd') {
+        document.getElementById('motd-instructions').classList.remove('hidden');
+        document.getElementById('dns-instructions').classList.add('hidden');
+        document.getElementById('motd-token').textContent = claimData.shortToken;
+        document.getElementById('motd-example').textContent = 
+          `motd=A Minecraft Server | Verify: ${claimData.shortToken}`;
+      } else {
+        document.getElementById('motd-instructions').classList.add('hidden');
+        document.getElementById('dns-instructions').classList.remove('hidden');
+        document.getElementById('dns-value').textContent = 
+          data.instructions?.dns?.record_value || `guildpost-verify=${claimData.shortToken}`;
+      }
+      
+      // Show verify button
+      btn.classList.add('hidden');
+      document.getElementById('verify-now-btn').classList.remove('hidden');
+      
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = 'Start Verification';
+      alert(err.message);
+    }
+  });
+  
+  // Verify Now
+  document.getElementById('verify-now-btn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('verify-now-btn');
+    const spinner = document.getElementById('verify-spinner');
+    const statusDiv = document.getElementById('verification-status');
+    
+    spinner.classList.remove('hidden');
+    btn.disabled = true;
+    
+    try {
+      const response = await fetch(`/api/servers/${claimData.serverId}/claim-verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          claim_id: claimData.claimId,
+          verification_method: claimData.verificationMethod
+        })
+      });
+      
+      const data = await response.json();
+      
+      statusDiv.classList.remove('hidden');
+      
+      if (data.verified) {
+        statusDiv.className = 'mt-4 p-4 rounded-lg bg-green-500/10 border border-green-500/30';
+        statusDiv.innerHTML = `
+          <p class="text-green-400 font-bold">✓ ${data.message}</p>
+        `;
+        
+        // Update dashboard link
+        document.getElementById('dashboard-link').href = data.dashboard_url || '/dashboard';
+        document.getElementById('server-link').href = `/servers/${claimData.serverId}`;
+        
+        // Go to success step
+        setTimeout(() => showStep(4), 1500);
+      } else {
+        statusDiv.className = 'mt-4 p-4 rounded-lg bg-red-500/10 border border-red-500/30';
+        statusDiv.innerHTML = `
+          <p class="text-red-400 font-bold">✗ Verification Failed</p>
+          <p class="text-[#8892b0] text-sm mt-1">${data.message}</p>
+          ${data.attempts ? `<p class="text-[#8892b0] text-xs mt-2">Attempt ${data.attempts}${data.remaining_attempts ? ` (${data.remaining_attempts} remaining)` : ''}</p>` : ''}
+        `;
+        
+        btn.disabled = false;
+        spinner.classList.add('hidden');
+      }
+      
+    } catch (err) {
+      statusDiv.classList.remove('hidden');
+      statusDiv.className = 'mt-4 p-4 rounded-lg bg-red-500/10 border border-red-500/30';
+      statusDiv.innerHTML = `<p class="text-red-400">Error: ${err.message}</p>`;
+      
+      btn.disabled = false;
+      spinner.classList.add('hidden');
+    }
+  });
+  
+  // Initialize
+  if (serverId && server) {
+    showStep(1);
+  }
+  
+  // Handle enter key on search
+  document.getElementById('server-search')?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      document.getElementById('search-btn')?.click();
+    }
+  });
+</script>

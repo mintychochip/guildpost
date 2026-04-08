@@ -30,6 +30,7 @@ const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="theme-color" content="#0a0a0f" id="theme-color-meta" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- Theme CSS -->
@@ -42,6 +43,45 @@ const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const theme = savedTheme || (prefersDark ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        
+        // Update meta theme-color based on theme
+        const themeColors = {
+          dark: '#0a0a0f',
+          light: '#f8fafc',
+          ocean: '#0c1220',
+          sunset: '#1a0b0e',
+          forest: '#0d1912',
+          contrast: '#000000'
+        };
+        const metaThemeColor = document.getElementById('theme-color-meta');
+        if (metaThemeColor && themeColors[theme]) {
+          metaThemeColor.setAttribute('content', themeColors[theme]);
+        }
+        
+        // Set RGB values for transparent backgrounds
+        const rgbValues = {
+          dark: '10, 10, 15',
+          light: '248, 250, 252',
+          ocean: '12, 18, 32',
+          sunset: '26, 11, 14',
+          forest: '13, 25, 18',
+          contrast: '0, 0, 0'
+        };
+        document.documentElement.style.setProperty('--bg-primary-rgb', rgbValues[theme] || rgbValues.dark);
+        
+        // Set accent RGB values
+        const accentRgbValues = {
+          dark: { primary: '0, 245, 212', secondary: '255, 56, 100', tertiary: '168, 85, 247' },
+          light: { primary: '8, 145, 178', secondary: '225, 29, 72', tertiary: '124, 58, 237' },
+          ocean: { primary: '59, 130, 246', secondary: '139, 92, 246', tertiary: '6, 182, 212' },
+          sunset: { primary: '249, 115, 22', secondary: '236, 72, 153', tertiary: '251, 191, 36' },
+          forest: { primary: '16, 185, 129', secondary: '132, 204, 22', tertiary: '20, 184, 166' },
+          contrast: { primary: '255, 255, 0', secondary: '0, 255, 255', tertiary: '255, 0, 255' }
+        };
+        const accents = accentRgbValues[theme] || accentRgbValues.dark;
+        document.documentElement.style.setProperty('--accent-primary-rgb', accents.primary);
+        document.documentElement.style.setProperty('--accent-secondary-rgb', accents.secondary);
+        document.documentElement.style.setProperty('--accent-tertiary-rgb', accents.tertiary);
       })();
     </script>
     
@@ -91,6 +131,10 @@ const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- RSS Feeds -->
+    <link rel="alternate" type="application/rss+xml" title="GuildPost - New Minecraft Servers" href="https://guildpost.tech/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="GuildPost - Trending Servers" href="https://guildpost.tech/rss/popular.xml" />
   </head>
   <body class="font-sans antialiased">
     <slot />

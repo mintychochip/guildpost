@@ -16,7 +16,7 @@ const navItems = [
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-[#2a2a3a]">
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-[var(--border-color)] transition-colors duration-300 bg-[var(--bg-primary)]/90">
   <div class="max-w-6xl mx-auto px-4">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
@@ -27,12 +27,12 @@ const navItems = [
       <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center gap-6">
         {navItems.map((item) => (
-          <a 
-            href={item.href} 
-            class={`transition-colors duration-200 font-medium ${
-              item.highlight 
-                ? 'px-4 py-2 bg-[#00f5d4] text-[#0a0a0f] rounded-lg hover:bg-[#00d4b8]' 
-                : 'text-[#8892b0] hover:text-white'
+          <a
+            href={item.href}
+            class={`transition-all duration-200 font-medium hover:opacity-80 ${
+              item.highlight
+                ? 'px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--bg-primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
             }`}
           >
             {item.icon && <span class="mr-1">{item.icon}</span>}
@@ -46,17 +46,17 @@ const navItems = [
         <!-- Theme Toggle -->
         <ThemeToggle />
         
-        <a 
-          href="/minecraft" 
-          class="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-[#ff3864] text-white font-medium rounded-lg hover:bg-[#e63357] transition-colors text-sm"
+        <a
+          href="/minecraft"
+          class="hidden sm:inline-flex items-center gap-2 px-4 py-2 font-medium rounded-lg transition-all duration-200 text-sm bg-[var(--accent-secondary)] text-white hover:opacity-90"
         >
           Browse Servers
         </a>
         
         <!-- Mobile menu button -->
-        <button 
-          id="mobile-menu-btn" 
-          class="md:hidden p-2 text-[#8892b0] hover:text-white"
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,21 +67,21 @@ const navItems = [
     </div>
 
     <!-- Mobile Nav -->
-    <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-[#2a2a3a]">
+    <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-[var(--border-color)] transition-colors">
       <nav class="flex flex-col gap-3">
-        <a href="/minecraft" class="text-[#8892b0] hover:text-white transition-colors font-medium">
+        <a href="/minecraft" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium">
           Minecraft Servers
         </a>
-        <a href="/favorites" class="text-[#8892b0] hover:text-white transition-colors font-medium flex items-center gap-2">
+        <a href="/favorites" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium flex items-center gap-2">
           <span>♡</span> Favorites
         </a>
-        <a href="/dashboard" class="text-[#8892b0] hover:text-white transition-colors font-medium flex items-center gap-2">
+        <a href="/dashboard" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium flex items-center gap-2">
           <span>📊</span> Dashboard
         </a>
-        <a href="/submit" class="text-[#00f5d4] hover:text-[#00d4b8] transition-colors font-medium">
+        <a href="/submit" class="text-[var(--accent-primary)] hover:opacity-80 transition-all font-medium">
           + Add Your Server
         </a>
-        <a href="/minecraft" class="px-4 py-2 bg-[#ff3864] text-white font-medium rounded-lg hover:bg-[#e63357] transition-colors text-center text-sm">
+        <a href="/minecraft" class="px-4 py-2 font-medium rounded-lg transition-all duration-200 text-center text-sm bg-[var(--accent-secondary)] text-white hover:opacity-90">
           Browse All Servers
         </a>
       </nav>

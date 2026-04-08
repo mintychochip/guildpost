@@ -1,0 +1,495 @@
+---
+// Widget Generator Dashboard
+// Server owners can generate HTML embed codes for their servers
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Check for auth token in URL
+const authToken = Astro.url.searchParams.get('token');
+const isAuthenticated = !!authToken;
+
+// Get server ID from query param if provided
+const serverId = Astro.url.searchParams.get('server') || '';
+
+// Mock data - would fetch from API in production
+const ownedServers = [
+  { id: '1', name: 'Test Server', ip: 'play.example.com', port: 25565, vote_count: 42, players_online: 15, status: 'online', description: 'A fun Minecraft server!' },
+  { id: '2', name: 'PvP Arena', ip: 'pvp.guildpost.net', port: 25565, vote_count: 128, players_online: 45, status: 'online', description: 'Best PvP experience' },
+];
+---
+
+<Layout 
+  title="Widget Generator | GuildPost"
+  description="Create embeddable widgets for your Minecraft server. Display server status, player count, and votes on your website."
+  url="https://guildpost.tech/widgets"
+>
+  <div class="min-h-screen bg-[#0a0a0f]">
+    <Header />
+    
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-black text-white mb-2">🎨 Server Widgets</h1>
+        <p class="text-[#8892b0]">Create beautiful embeddable widgets to showcase your server on any website</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Configuration Panel -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Server Selection -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h2 class="text-lg font-bold text-white mb-4">1. Select Your Server</h2>
+            
+            {isAuthenticated ? (
+              <div class="space-y-3" id="server-list">
+                {ownedServers.map(server => (
+                  <label class="flex items-center gap-4 p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg cursor-pointer hover:border-[#00f5d4] transition-colors server-option" data-server-id={server.id}>
+                    <input 
+                      type="radio" 
+                      name="server" 
+                      value={server.id}
+                      class="w-5 h-5 accent-[#00f5d4]"
+                      checked={serverId === server.id || ownedServers[0].id === server.id}
+                    />
+                    <div class="flex-1">
+                      <div class="flex items-center gap-2">
+                        <span class="font-bold text-white">{server.name}</span>
+                        <span class={`px-2 py-0.5 text-xs rounded ${server.status === 'online' ? 'bg-green-500/20 text-green-500' : 'bg-gray-500/20 text-gray-500'}`}>
+                          {server.status}
+                        </span>
+                      </div>
+                      <p class="text-sm text-[#8892b0]">{server.ip}:{server.port}</p>
+                    </div>
+                    <div class="text-right text-sm">
+                      <p class="text-[#00f5d4] font-bold">{server.players_online} players</p>
+                      <p class="text-[#8892b0]">{server.vote_count} votes</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <div class="p-8 bg-[#0a0a0f] rounded-lg text-center">
+                <div class="w-16 h-16 bg-[#1a1a25] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <h3 class="text-white font-bold mb-2">Sign in to create widgets</h3>
+                <p class="text-[#8892b0] mb-4">You need to verify ownership to generate widgets for your servers.</p>
+                <a 
+                  href="/dashboard"
+                  class="inline-flex items-center gap-2 px-6 py-3 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg hover:bg-[#00d4b8] transition-colors"
+                >
+                  Go to Dashboard
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              </div>
+            )}
+          </div>
+
+          <!-- Widget Customization -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h2 class="text-lg font-bold text-white mb-4">2. Customize Widget</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Size Selection -->
+              <div>
+                <label class="block text-sm font-medium text-[#8892b0] mb-3">Widget Size</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button 
+                    class="size-btn p-3 bg-[#0a0a0f] border-2 border-[#00f5d4] rounded-lg text-center transition-all"
+                    data-size="small"
+                  >
+                    <div class="text-lg mb-1">📱</div>
+                    <div class="text-sm font-medium text-white">Small</div>
+                    <div class="text-xs text-[#8892b0]">240px</div>
+                  </button>
+                  <button 
+                    class="size-btn p-3 bg-[#0a0a0f] border-2 border-[#2a2a3a] rounded-lg text-center transition-all"
+                    data-size="medium"
+                  >
+                    <div class="text-lg mb-1">💻</div>
+                    <div class="text-sm font-medium text-white">Medium</div>
+                    <div class="text-xs text-[#8892b0]">300px</div>
+                  </button>
+                  <button 
+                    class="size-btn p-3 bg-[#0a0a0f] border-2 border-[#2a2a3a] rounded-lg text-center transition-all"
+                    data-size="large"
+                  >
+                    <div class="text-lg mb-1">🖥️</div>
+                    <div class="text-sm font-medium text-white">Large</div>
+                    <div class="text-xs text-[#8892b0]">380px</div>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Theme Selection -->
+              <div>
+                <label class="block text-sm font-medium text-[#8892b0] mb-3">Theme</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button 
+                    class="theme-btn p-3 bg-[#0a0a0f] border-2 border-[#00f5d4] rounded-lg text-center transition-all"
+                    data-theme="dark"
+                  >
+                    <div class="w-full h-8 bg-[#12121a] border border-[#2a2a3a] rounded mb-2"></div>
+                    <div class="text-sm font-medium text-white">🌙 Dark</div>
+                  </button>
+                  <button 
+                    class="theme-btn p-3 bg-[#0a0a0f] border-2 border-[#2a2a3a] rounded-lg text-center transition-all"
+                    data-theme="light"
+                  >
+                    <div class="w-full h-8 bg-white border border-gray-200 rounded mb-2"></div>
+                    <div class="text-sm font-medium text-white">☀️ Light</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="mt-6 pt-6 border-t border-[#2a2a3a]">
+              <button id="toggle-advanced" class="flex items-center gap-2 text-[#8892b0] hover:text-white transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                Advanced Options
+              </button>
+              <div id="advanced-options" class="hidden mt-4 space-y-4">
+                <div class="flex items-center justify-between p-3 bg-[#0a0a0f] rounded-lg">
+                  <div>
+                    <p class="text-white font-medium">Auto-refresh</p>
+                    <p class="text-sm text-[#8892b0]">Update widget data every 5 minutes</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="auto-refresh" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-[#2a2a3a] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00f5d4]"></div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-[#0a0a0f] rounded-lg">
+                  <div>
+                    <p class="text-white font-medium">Show branding</p>
+                    <p class="text-sm text-[#8892b0]">Display "Powered by GuildPost" link</p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="show-branding" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-[#2a2a3a] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#00f5d4]"></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Embed Codes -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h2 class="text-lg font-bold text-white mb-4">3. Get Embed Code</h2>
+            
+            <!-- HTML Embed -->
+            <div class="mb-6">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-[#8892b0]">HTML (Iframe)</label>
+                <button class="copy-btn px-3 py-1 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#00f5d4] text-xs rounded transition-colors flex items-center gap-1" data-target="html-code">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <textarea 
+                id="html-code"
+                readonly
+                class="w-full h-24 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-[#8892b0] font-mono text-sm resize-none focus:outline-none focus:border-[#00f5d4]"
+              ></textarea>
+              <p class="text-xs text-[#8892b0] mt-2">Paste this code into your website's HTML where you want the widget to appear.</p>
+            </div>
+
+            <!-- BBCode (for forums) -->
+            <div class="mb-6">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-[#8892b0]">BBCode (Forums)</label>
+                <button class="copy-btn px-3 py-1 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#00f5d4] text-xs rounded transition-colors flex items-center gap-1" data-target="bbcode-code">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <textarea 
+                id="bbcode-code"
+                readonly
+                class="w-full h-16 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-[#8892b0] font-mono text-sm resize-none focus:outline-none focus:border-[#00f5d4]"
+              ></textarea>
+            </div>
+
+            <!-- Markdown -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-[#8892b0]">Markdown (GitHub, Reddit)</label>
+                <button class="copy-btn px-3 py-1 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#00f5d4] text-xs rounded transition-colors flex items-center gap-1" data-target="markdown-code">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <textarea 
+                id="markdown-code"
+                readonly
+                class="w-full h-16 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-[#8892b0] font-mono text-sm resize-none focus:outline-none focus:border-[#00f5d4]"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- JSON API -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h2 class="text-lg font-bold text-white mb-2">JSON API</h2>
+            <p class="text-sm text-[#8892b0] mb-4">Want to build your own widget? Use our JSON API to get server data.</p>
+            <div class="flex items-center gap-2">
+              <code id="api-url" class="flex-1 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-[#8892b0] font-mono text-sm truncate"></code>
+              <button class="copy-btn px-4 py-3 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#00f5d4] rounded-lg transition-colors flex items-center gap-2" data-target="api-url">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-4 space-y-4">
+            <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+              <h2 class="text-lg font-bold text-white mb-4">Live Preview</h2>
+              <div id="widget-preview" class="flex justify-center">
+                <!-- Widget will be rendered here -->
+              </div>
+            </div>
+
+            <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+              <h3 class="text-md font-bold text-white mb-3">Widget Features</h3>
+              <ul class="space-y-3 text-sm text-[#8892b0]">
+                <li class="flex items-start gap-2">
+                  <svg class="w-5 h-5 text-[#00f5d4] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Real-time server status
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-5 h-5 text-[#00f5d4] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Live player count with progress bar
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-5 h-5 text-[#00f5d4] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Vote button integration
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-5 h-5 text-[#00f5d4] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Responsive design
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-5 h-5 text-[#00f5d4] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Works on any website
+                </li>
+              </ul>
+            </div>
+
+            <div class="p-6 bg-gradient-to-br from-[#00f5d4]/10 to-[#ff3864]/10 border border-[#2a2a3a] rounded-lg">
+              <h3 class="text-md font-bold text-white mb-2">💡 Pro Tip</h3>
+              <p class="text-sm text-[#8892b0]">
+                Add widgets to your server's website, forum signature, or Discord server description to attract more players!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <Footer />
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-4 right-4 px-6 py-4 bg-[#00f5d4] text-[#0a0a0f] font-bold rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+</Layout>
+
+<script define:vars={{ serverId, ownedServers }}>
+  // Widget configuration state
+  let config = {
+    serverId: serverId || (ownedServers[0]?.id || '1'),
+    size: 'small',
+    theme: 'dark',
+    autoRefresh: true,
+    showBranding: true
+  };
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeEventListeners();
+    updateWidget();
+  });
+
+  function initializeEventListeners() {
+    // Server selection
+    document.querySelectorAll('input[name="server"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        config.serverId = e.target.value;
+        updateWidget();
+      });
+    });
+
+    // Size selection
+    document.querySelectorAll('.size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.size-btn').forEach(b => {
+          b.classList.remove('border-[#00f5d4]');
+          b.classList.add('border-[#2a2a3a]');
+        });
+        btn.classList.remove('border-[#2a2a3a]');
+        btn.classList.add('border-[#00f5d4]');
+        config.size = btn.dataset.size;
+        updateWidget();
+      });
+    });
+
+    // Theme selection
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-btn').forEach(b => {
+          b.classList.remove('border-[#00f5d4]');
+          b.classList.add('border-[#2a2a3a]');
+        });
+        btn.classList.remove('border-[#2a2a3a]');
+        btn.classList.add('border-[#00f5d4]');
+        config.theme = btn.dataset.theme;
+        updateWidget();
+      });
+    });
+
+    // Advanced options toggle
+    const toggleAdvanced = document.getElementById('toggle-advanced');
+    const advancedOptions = document.getElementById('advanced-options');
+    toggleAdvanced?.addEventListener('click', () => {
+      advancedOptions?.classList.toggle('hidden');
+      const svg = toggleAdvanced.querySelector('svg');
+      svg?.classList.toggle('rotate-180');
+    });
+
+    // Auto-refresh toggle
+    document.getElementById('auto-refresh')?.addEventListener('change', (e) => {
+      config.autoRefresh = e.target.checked;
+      updateWidget();
+    });
+
+    // Show branding toggle
+    document.getElementById('show-branding')?.addEventListener('change', (e) => {
+      config.showBranding = e.target.checked;
+      updateWidget();
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const target = document.getElementById(targetId);
+        if (target) {
+          navigator.clipboard.writeText(target.value || target.textContent);
+          showToast('Copied to clipboard!');
+        }
+      });
+    });
+  }
+
+  function updateWidget() {
+    const server = ownedServers.find(s => s.id === config.serverId) || ownedServers[0];
+    if (!server) return;
+
+    const baseUrl = window.location.origin;
+    const widgetUrl = `${baseUrl}/api/widgets/${config.serverId}?format=html&size=${config.size}&theme=${config.theme}`;
+    
+    // Update preview
+    const preview = document.getElementById('widget-preview');
+    const width = config.size === 'small' ? 240 : config.size === 'medium' ? 300 : 380;
+    const height = config.size === 'small' ? 180 : config.size === 'medium' ? 220 : 260;
+    
+    if (preview) {
+      preview.innerHTML = `
+        <iframe 
+          src="${widgetUrl}"
+          width="${width}"
+          height="${height}"
+          frameborder="0"
+          style="border-radius: 8px; max-width: 100%;"
+        ></iframe>
+      `;
+    }
+
+    // Update embed codes
+    const autoRefreshParam = config.autoRefresh ? '' : '&refresh=false';
+    const brandingParam = config.showBranding ? '' : '&branding=false';
+    const fullWidgetUrl = `${widgetUrl}${autoRefreshParam}${brandingParam}`;
+    
+    // HTML code
+    const htmlCode = document.getElementById('html-code');
+    if (htmlCode) {
+      htmlCode.value = `<!-- GuildPost Server Widget -->
+<iframe 
+  src="${fullWidgetUrl}"
+  width="${width}"
+  height="${height}"
+  frameborder="0"
+  style="border-radius: 12px;"
+  title="${server.name} - Minecraft Server Status"
+></iframe>`;
+    }
+
+    // BBCode
+    const bbcodeCode = document.getElementById('bbcode-code');
+    if (bbcodeCode) {
+      bbcodeCode.value = `[url=${baseUrl}/servers/${config.serverId}][img]${baseUrl}/api/widgets/${config.serverId}?format=png&size=${config.size}&theme=${config.theme}[/img][/url]`;
+    }
+
+    // Markdown
+    const markdownCode = document.getElementById('markdown-code');
+    if (markdownCode) {
+      markdownCode.value = `[![${server.name} Server Status](${baseUrl}/api/widgets/${config.serverId}?format=png&size=${config.size}&theme=${config.theme})](${baseUrl}/servers/${config.serverId})`;
+    }
+
+    // API URL
+    const apiUrl = document.getElementById('api-url');
+    if (apiUrl) {
+      apiUrl.textContent = `${baseUrl}/api/widgets/${config.serverId}?format=json`;
+    }
+  }
+
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    if (toast && toastMessage) {
+      toastMessage.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+  }
+</script>

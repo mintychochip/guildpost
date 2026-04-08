@@ -95,18 +95,12 @@ const faqs = [
   },
   {
     q: 'Is there a free trial?',
-    a: 'We don\'t offer free trials, but you can upgrade for a month and cancel anytime if you\'re not satisfied.',
+    a: "We don't offer free trials, but you can upgrade for a month and cancel anytime if you're not satisfied.",
   },
 ];
 
 // Server ID from URL params for pre-filling
-default export async function getServerSideProps({ request }: { request: Request }) {
-  const url = new URL(request.url);
-  const serverId = url.searchParams.get('server') || '';
-  return { props: { serverId } };
-}
-
-const { serverId: initialServerId = '' } = Astro.props;
+const initialServerId = Astro.url.searchParams.get('server') || '';
 
 const testimonials = [
   {

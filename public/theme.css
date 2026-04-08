@@ -3,6 +3,7 @@
 :root {
   /* Default Dark Theme (GuildPost Classic) */
   --bg-primary: #0a0a0f;
+  --bg-primary-rgb: 10, 10, 15;
   --bg-secondary: #12121a;
   --bg-tertiary: #1a1a25;
   --bg-card: #12121a;
@@ -12,8 +13,11 @@
   --text-muted: #5a6275;
   
   --accent-primary: #00f5d4;
+  --accent-primary-rgb: 0, 245, 212;
   --accent-secondary: #ff3864;
+  --accent-secondary-rgb: 255, 56, 100;
   --accent-tertiary: #a855f7;
+  --accent-tertiary-rgb: 168, 85, 247;
   
   --border-color: #2a2a3a;
   --border-hover: #3a3a4a;
@@ -33,6 +37,7 @@
 /* Light Theme */
 [data-theme="light"] {
   --bg-primary: #f8fafc;
+  --bg-primary-rgb: 248, 250, 252;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
   --bg-card: #ffffff;
@@ -42,8 +47,11 @@
   --text-muted: #94a3b8;
   
   --accent-primary: #0891b2;
+  --accent-primary-rgb: 8, 145, 178;
   --accent-secondary: #e11d48;
+  --accent-secondary-rgb: 225, 29, 72;
   --accent-tertiary: #7c3aed;
+  --accent-tertiary-rgb: 124, 58, 237;
   
   --border-color: #e2e8f0;
   --border-hover: #cbd5e1;
@@ -63,6 +71,7 @@
 /* Ocean Theme (Blue/Purple) */
 [data-theme="ocean"] {
   --bg-primary: #0c1220;
+  --bg-primary-rgb: 12, 18, 32;
   --bg-secondary: #111827;
   --bg-tertiary: #1e293b;
   --bg-card: #111827;
@@ -72,8 +81,11 @@
   --text-muted: #64748b;
   
   --accent-primary: #3b82f6;
+  --accent-primary-rgb: 59, 130, 246;
   --accent-secondary: #8b5cf6;
+  --accent-secondary-rgb: 139, 92, 246;
   --accent-tertiary: #06b6d4;
+  --accent-tertiary-rgb: 6, 182, 212;
   
   --border-color: #1e293b;
   --border-hover: #334155;
@@ -85,6 +97,7 @@
 /* Sunset Theme (Warm/Orange/Pink) */
 [data-theme="sunset"] {
   --bg-primary: #1a0b0e;
+  --bg-primary-rgb: 26, 11, 14;
   --bg-secondary: #231218;
   --bg-tertiary: #2d1a1f;
   --bg-card: #231218;
@@ -94,8 +107,11 @@
   --text-muted: #be8f98;
   
   --accent-primary: #f97316;
+  --accent-primary-rgb: 249, 115, 22;
   --accent-secondary: #ec4899;
+  --accent-secondary-rgb: 236, 72, 153;
   --accent-tertiary: #fbbf24;
+  --accent-tertiary-rgb: 251, 191, 36;
   
   --border-color: #3d1f26;
   --border-hover: #4f2a33;
@@ -107,6 +123,7 @@
 /* Forest Theme (Green/Nature) */
 [data-theme="forest"] {
   --bg-primary: #0d1912;
+  --bg-primary-rgb: 13, 25, 18;
   --bg-secondary: #122919;
   --bg-tertiary: #1a3d26;
   --bg-card: #122919;
@@ -116,8 +133,11 @@
   --text-muted: #34d399;
   
   --accent-primary: #10b981;
+  --accent-primary-rgb: 16, 185, 129;
   --accent-secondary: #84cc16;
+  --accent-secondary-rgb: 132, 204, 22;
   --accent-tertiary: #14b8a6;
+  --accent-tertiary-rgb: 20, 184, 166;
   
   --border-color: #1f3d28;
   --border-hover: #2d5c3a;
@@ -129,6 +149,7 @@
 /* High Contrast (Accessibility) */
 [data-theme="contrast"] {
   --bg-primary: #000000;
+  --bg-primary-rgb: 0, 0, 0;
   --bg-secondary: #000000;
   --bg-tertiary: #111111;
   --bg-card: #000000;
@@ -138,8 +159,11 @@
   --text-muted: #aaaaaa;
   
   --accent-primary: #ffff00;
+  --accent-primary-rgb: 255, 255, 0;
   --accent-secondary: #00ffff;
+  --accent-secondary-rgb: 0, 255, 255;
   --accent-tertiary: #ff00ff;
+  --accent-tertiary-rgb: 255, 0, 255;
   
   --border-color: #ffffff;
   --border-hover: #ffff00;
