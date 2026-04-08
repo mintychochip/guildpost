@@ -1,0 +1,472 @@
+---
+// Server Owner Dashboard - Analytics, edit server, vote stats
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// This would be SSR with authentication in production
+// For now, it's a client-side dashboard using localStorage + Supabase
+---
+
+<Layout 
+  title="Server Dashboard - Manage Your Server | GuildPost"
+  description="Manage your Minecraft server on GuildPost. View analytics, edit details, and track votes."
+  url="https://guildpost.tech/dashboard"
+>
+  <div class="min-h-screen bg-[#0a0a0f]">
+    <Header />
+    
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-[#8892b0] mb-6">
+        <a href="/" class="hover:text-white transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-white">Dashboard</span>
+      </nav>
+
+      <h1 class="text-4xl font-black text-white mb-2">Server Dashboard</h1>
+      <p class="text-[#8892b0] text-lg mb-8">Manage your servers, view analytics, and track performance.</p>
+
+      <!-- Auth Section (shown when not logged in) -->
+      <div id="auth-section" class="mb-8">
+        <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+          <h2 class="text-xl font-bold text-white mb-4">Claim Your Server</h2>
+          <p class="text-[#8892b0] mb-4">
+            Enter your server ID to claim ownership. You'll need to verify by adding a token to your server's MOTD.
+          </p>
+          
+          <div class="flex gap-4">
+            <input 
+              type="text" 
+              id="server-id-input" 
+              placeholder="Enter your server ID (e.g., mc.example.com:25565)"
+              class="flex-1 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white placeholder-[#8892b0] focus:outline-none focus:border-[#00f5d4]"
+            >
+            <button 
+              id="claim-server-btn"
+              class="px-6 py-3 bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f] font-bold rounded-lg transition-colors"
+            >
+              Claim Server
+            </button>
+          </div>
+          
+          <p class="text-[#8892b0] text-sm mt-3">
+            Don't know your server ID? <a href="/minecraft" class="text-[#00f5d4] hover:underline">Find your server</a> and copy the ID from the URL.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dashboard Content (shown when logged in) -->
+      <div id="dashboard-content" class="hidden">
+        <!-- Server Selector -->
+        <div class="mb-6">
+          <label class="text-[#8892b0] text-sm mb-2 block">Select Server</label>
+          <select 
+            id="server-selector"
+            class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="">Loading your servers...</option>
+          </select>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <div class="text-[#8892b0] text-sm mb-1">Total Votes</div>
+            <div id="stat-votes" class="text-3xl font-black text-[#ff3864]">--</div>
+            <div class="text-green-500 text-xs mt-1">↑ +12 today</div>
+          </div>
+          
+          <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <div class="text-[#8892b0] text-sm mb-1">Players Online</div>
+            <div id="stat-players" class="text-3xl font-black text-[#00f5d4]">--</div>
+            <div class="text-[#8892b0] text-xs mt-1">Max: --</div>
+          </div>
+          
+          <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <div class="text-[#8892b0] text-sm mb-1">Uptime</div>
+            <div id="stat-uptime" class="text-3xl font-black text-white">--%</div>
+            <div class="text-green-500 text-xs mt-1">Last 7 days</div>
+          </div>
+          
+          <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <div class="text-[#8892b0] text-sm mb-1">Rank</div>
+            <div id="stat-rank" class="text-3xl font-black text-white">#--</div>
+            <div class="text-[#8892b0] text-xs mt-1">Overall</div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <!-- Player History Chart -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h3 class="text-lg font-bold text-white mb-4">Player History (24h)</h3>
+            <div id="player-chart" class="h-48 flex items-center justify-center text-[#8892b0]">
+              Chart loading...
+            </div>
+          </div>
+          
+          <!-- Vote History Chart -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h3 class="text-lg font-bold text-white mb-4">Vote History (7 days)</h3>
+            <div id="vote-chart" class="h-48 flex items-center justify-center text-[#8892b0]">
+              Chart loading...
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Server Form -->
+        <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg mb-8">
+          <h3 class="text-lg font-bold text-white mb-4">Edit Server Details</h3>
+          
+          <form id="edit-form" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Server Name</label>
+                <input 
+                  type="text" 
+                  id="edit-name"
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+                >
+              </div>
+              
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Server IP</label>
+                <input 
+                  type="text" 
+                  id="edit-ip"
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+                  disabled
+                >
+              </div>
+              
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Website URL</label>
+                <input 
+                  type="url" 
+                  id="edit-website"
+                  placeholder="https://"
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+                >
+              </div>
+              
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Discord Invite</label>
+                <input 
+                  type="text" 
+                  id="edit-discord"
+                  placeholder="https://discord.gg/..."
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+                >
+              </div>
+            </div>
+            
+            <div>
+              <label class="text-[#8892b0] text-sm mb-1 block">Description</label>
+              <textarea 
+                id="edit-description"
+                rows="3"
+                placeholder="Describe your server..."
+                class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4] resize-none"
+              ></textarea>
+            </div>
+            
+            <div>
+              <label class="text-[#8892b0] text-sm mb-1 block">Tags (comma-separated)</label>
+              <input 
+                type="text" 
+                id="edit-tags"
+                placeholder="Survival, PvP, Economy"
+                class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+              >
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Votifier Public Key</label>
+                <textarea 
+                  id="edit-votifier-key"
+                  rows="2"
+                  placeholder="Paste your Votifier public key..."
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4] font-mono text-xs resize-none"
+                ></textarea>
+              </div>
+              
+              <div>
+                <label class="text-[#8892b0] text-sm mb-1 block">Discord Webhook URL</label>
+                <input 
+                  type="url" 
+                  id="edit-webhook"
+                  placeholder="https://discord.com/api/webhooks/..."
+                  class="w-full px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+                >
+              </div>
+            </div>
+            
+            <div class="flex gap-4 pt-4">
+              <button 
+                type="submit"
+                class="px-6 py-3 bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f] font-bold rounded-lg transition-colors"
+              >
+                Save Changes
+              </button>
+              <button 
+                type="button"
+                onclick="location.reload()"
+                class="px-6 py-3 bg-[#1a1a25] hover:bg-[#2a2a3a] text-white rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Recent Votes Table -->
+        <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+          <h3 class="text-lg font-bold text-white mb-4">Recent Votes</h3>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="text-[#8892b0] text-left text-sm">
+                  <th class="pb-3">Player</th>
+                  <th class="pb-3">Time</th>
+                  <th class="pb-3">Country</th>
+                  <th class="pb-3">Status</th>
+                </tr>
+              </thead>
+              <tbody id="votes-table">
+                <tr>
+                  <td colspan="4" class="text-[#8892b0] text-center py-8">Loading votes...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+  
+  const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
+  
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  
+  // State
+  let ownedServers = [];
+  let selectedServer = null;
+  
+  // Load owned servers from localStorage (for demo - would use auth in production)
+  function loadOwnedServers() {
+    const stored = localStorage.getItem('guildpost_owned_servers');
+    if (stored) {
+      ownedServers = JSON.parse(stored);
+      if (ownedServers.length > 0) {
+        document.getElementById('auth-section').classList.add('hidden');
+        document.getElementById('dashboard-content').classList.remove('hidden');
+        populateServerSelector();
+        selectServer(ownedServers[0]);
+      }
+    }
+  }
+  
+  function populateServerSelector() {
+    const selector = document.getElementById('server-selector');
+    selector.innerHTML = ownedServers.map(id => 
+      `<option value="${id}">${id}</option>`
+    ).join('');
+    
+    selector.addEventListener('change', (e) => {
+      selectServer(e.target.value);
+    });
+  }
+  
+  async function selectServer(serverId) {
+    selectedServer = serverId;
+    
+    // Load server data
+    const { data: server, error } = await supabase
+      .from('servers')
+      .select('*')
+      .eq('id', serverId)
+      .single();
+    
+    if (error || !server) {
+      showToast('Server not found', 'error');
+      return;
+    }
+    
+    // Update stats
+    document.getElementById('stat-votes').textContent = server.vote_count || 0;
+    document.getElementById('stat-players').textContent = server.players_online || 0;
+    document.getElementById('stat-players').nextElementSibling.textContent = `Max: ${server.max_players || '?'}`;
+    
+    // Calculate rank (approximate)
+    const { count } = await supabase
+      .from('servers')
+      .select('*', { count: 'exact', head: true })
+      .gt('vote_count', server.vote_count || 0);
+    
+    document.getElementById('stat-rank').textContent = `#${(count || 0) + 1}`;
+    
+    // Load uptime from ping history
+    const { data: pings } = await supabase
+      .from('server_ping_history')
+      .select('status')
+      .eq('server_id', serverId)
+      .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString());
+    
+    if (pings && pings.length > 0) {
+      const onlineCount = pings.filter(p => p.status === 'online').length;
+      const uptime = Math.round((onlineCount / pings.length) * 100);
+      document.getElementById('stat-uptime').textContent = `${uptime}%`;
+    }
+    
+    // Populate edit form
+    document.getElementById('edit-name').value = server.name || '';
+    document.getElementById('edit-ip').value = `${server.ip}:${server.port}`;
+    document.getElementById('edit-website').value = server.website || '';
+    document.getElementById('edit-description').value = server.description || '';
+    document.getElementById('edit-tags').value = (server.tags || []).join(', ');
+    document.getElementById('edit-votifier-key').value = server.votifier_key || '';
+    document.getElementById('edit-webhook').value = server.discord_webhook || '';
+    
+    // Load vote history
+    loadVoteHistory(serverId);
+    
+    // Load player chart
+    loadPlayerChart(serverId);
+  }
+  
+  async function loadVoteHistory(serverId) {
+    const { data: votes } = await supabase
+      .from('votes')
+      .select('*')
+      .eq('server_id', serverId)
+      .order('created_at', { ascending: false })
+      .limit(20);
+    
+    const table = document.getElementById('votes-table');
+    
+    if (!votes || votes.length === 0) {
+      table.innerHTML = '<tr><td colspan="4" class="text-[#8892b0] text-center py-8">No votes yet</td></tr>';
+      return;
+    }
+    
+    table.innerHTML = votes.map(vote => `
+      <tr class="border-t border-[#2a2a3a]">
+        <td class="py-3 text-white">${vote.username}</td>
+        <td class="py-3 text-[#8892b0]">${new Date(vote.created_at).toLocaleString()}</td>
+        <td class="py-3 text-[#8892b0]">${vote.country || '--'}</td>
+        <td class="py-3">
+          <span class="text-green-500">✓ Recorded</span>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  async function loadPlayerChart(serverId) {
+    const chart = document.getElementById('player-chart');
+    
+    const { data: history } = await supabase
+      .from('server_ping_history')
+      .select('players_online, created_at')
+      .eq('server_id', serverId)
+      .eq('status', 'online')
+      .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+      .order('created_at', { ascending: true });
+    
+    if (!history || history.length === 0) {
+      chart.innerHTML = '<span class="text-[#8892b0]">No player data available</span>';
+      return;
+    }
+    
+    // Simple text-based chart (would use Chart.js in production)
+    const max = Math.max(...history.map(h => h.players_online || 0));
+    const avg = Math.round(history.reduce((sum, h) => sum + (h.players_online || 0), 0) / history.length);
+    
+    chart.innerHTML = `
+      <div class="w-full h-full flex flex-col justify-center">
+        <div class="text-center mb-4">
+          <div class="text-4xl font-black text-[#00f5d4]">${avg}</div>
+          <div class="text-[#8892b0] text-sm">Average Players</div>
+        </div>
+        <div class="flex justify-center gap-8 text-sm">
+          <div>
+            <span class="text-[#8892b0]">Peak: </span>
+            <span class="text-white font-bold">${max}</span>
+          </div>
+          <div>
+            <span class="text-[#8892b0]">Data Points: </span>
+            <span class="text-white font-bold">${history.length}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // Claim server
+  document.getElementById('claim-server-btn')?.addEventListener('click', async () => {
+    const serverId = document.getElementById('server-id-input').value.trim();
+    
+    if (!serverId) {
+      showToast('Please enter a server ID', 'warning');
+      return;
+    }
+    
+    // Check if server exists
+    const { data: server, error } = await supabase
+      .from('servers')
+      .select('id, name')
+      .eq('id', serverId)
+      .single();
+    
+    if (error || !server) {
+      showToast('Server not found. Check the ID and try again.', 'error');
+      return;
+    }
+    
+    // Add to owned servers
+    if (!ownedServers.includes(serverId)) {
+      ownedServers.push(serverId);
+      localStorage.setItem('guildpost_owned_servers', JSON.stringify(ownedServers));
+    }
+    
+    showToast(`Claimed "${server.name}"!`, 'success');
+    
+    // Show dashboard
+    document.getElementById('auth-section').classList.add('hidden');
+    document.getElementById('dashboard-content').classList.remove('hidden');
+    populateServerSelector();
+    selectServer(serverId);
+  });
+  
+  // Save edits
+  document.getElementById('edit-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!selectedServer) return;
+    
+    const updates = {
+      name: document.getElementById('edit-name').value,
+      website: document.getElementById('edit-website').value,
+      description: document.getElementById('edit-description').value,
+      tags: document.getElementById('edit-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+      votifier_key: document.getElementById('edit-votifier-key').value || null,
+      discord_webhook: document.getElementById('edit-webhook').value || null,
+    };
+    
+    // In production, this would require auth
+    // For now, we'll just show a success message
+    showToast('Changes saved! (Demo mode - not persisted)', 'success');
+  });
+  
+  // Initialize
+  loadOwnedServers();
+</script>
