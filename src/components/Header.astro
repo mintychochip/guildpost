@@ -1,18 +1,26 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 
-const navItems = [
+// Main nav - core actions only
+const mainNavItems = [
   { label: 'Minecraft', href: '/minecraft' },
   { label: 'Wizard', href: '/wizard', icon: '🔮' },
   { label: 'Discover', href: '/discover' },
+  { label: 'Premium', href: '/premium', icon: '⭐' },
+];
+
+// Secondary nav items (dropdown or condensed)
+const moreNavItems = [
   { label: 'Uptime', href: '/uptime', icon: '⏱️' },
   { label: 'Events', href: '/events', icon: '📅' },
   { label: 'Banner Maker', href: '/banner-maker', icon: '🎨' },
-  { label: 'Premium', href: '/premium', icon: '⭐' },
   { label: 'Categories', href: '/minecraft#categories' },
+];
+
+// User-related items
+const userNavItems = [
   { label: 'Favorites', href: '/favorites', icon: '♡' },
   { label: 'Dashboard', href: '/dashboard', icon: '📊' },
-  { label: 'Add Server', href: '/submit', highlight: true },
 ];
 ---
 
@@ -25,38 +33,70 @@ const navItems = [
       </a>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-6">
-        {navItems.map((item) => (
+      <nav class="hidden lg:flex items-center gap-1">
+        {mainNavItems.map((item) => (
           <a
             href={item.href}
-            class={`transition-all duration-200 font-medium hover:opacity-80 ${
-              item.highlight
-                ? 'px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--bg-primary)]'
-                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-            }`}
+            class="px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-200 font-medium text-sm"
           >
             {item.icon && <span class="mr-1">{item.icon}</span>}
             {item.label}
           </a>
         ))}
+        
+        <!-- More dropdown -->
+        <div class="relative group">
+          <button class="px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-200 font-medium text-sm flex items-center gap-1">
+            More
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div class="absolute top-full left-0 mt-1 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            {moreNavItems.map((item) => (
+              <a
+                href={item.href}
+                class="block px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors text-sm first:rounded-t-lg last:rounded-b-lg"
+              >
+                {item.icon && <span class="mr-2">{item.icon}</span>}
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
       </nav>
 
-      <!-- CTA & Mobile Menu -->
-      <div class="flex items-center gap-4">
+      <!-- Right side: User actions -->
+      <div class="flex items-center gap-2">
         <!-- Theme Toggle -->
         <ThemeToggle />
         
+        <!-- User nav (hidden on mobile) -->
+        <nav class="hidden md:flex items-center gap-1">
+          {userNavItems.map((item) => (
+            <a
+              href={item.href}
+              class="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all duration-200"
+              title={item.label}
+            >
+              <span>{item.icon}</span>
+            </a>
+          ))}
+        </nav>
+        
+        <!-- Add Server CTA -->
         <a
-          href="/minecraft"
-          class="hidden sm:inline-flex items-center gap-2 px-4 py-2 font-medium rounded-lg transition-all duration-200 text-sm bg-[var(--accent-secondary)] text-white hover:opacity-90"
+          href="/submit"
+          class="hidden sm:inline-flex items-center gap-1 px-3 py-2 font-medium rounded-lg transition-all duration-200 text-sm bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:opacity-90"
         >
-          Browse Servers
+          <span>+</span>
+          <span class="hidden sm:inline">Add Server</span>
         </a>
         
         <!-- Mobile menu button -->
         <button
           id="mobile-menu-btn"
-          class="md:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+          class="lg:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors"
           aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,22 +107,22 @@ const navItems = [
     </div>
 
     <!-- Mobile Nav -->
-    <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-[var(--border-color)] transition-colors">
-      <nav class="flex flex-col gap-3">
-        <a href="/minecraft" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium">
-          Minecraft Servers
-        </a>
-        <a href="/favorites" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium flex items-center gap-2">
-          <span>♡</span> Favorites
-        </a>
-        <a href="/dashboard" class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors font-medium flex items-center gap-2">
-          <span>📊</span> Dashboard
-        </a>
-        <a href="/submit" class="text-[var(--accent-primary)] hover:opacity-80 transition-all font-medium">
+    <div id="mobile-menu" class="hidden lg:hidden py-4 border-t border-[var(--border-color)] transition-colors">
+      <nav class="flex flex-col gap-1">
+        {[...mainNavItems, ...moreNavItems, ...userNavItems].map((item) => (
+          <a 
+            href={item.href}
+            class="px-3 py-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors font-medium"
+          >
+            {item.icon && <span class="mr-2">{item.icon}</span>}
+            {item.label}
+          </a>
+        ))}
+        <a 
+          href="/submit" 
+          class="mt-2 px-3 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--bg-primary)] font-medium text-center"
+        >
           + Add Your Server
-        </a>
-        <a href="/minecraft" class="px-4 py-2 font-medium rounded-lg transition-all duration-200 text-center text-sm bg-[var(--accent-secondary)] text-white hover:opacity-90">
-          Browse All Servers
         </a>
       </nav>
     </div>
