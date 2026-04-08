@@ -116,6 +116,9 @@ const categories = [
                     <button class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#1a1a25] text-[#8892b0] hover:text-white" data-tab="edit" data-server-id={server.id}>
                       Edit
                     </button>
+                    <button class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#1a1a25] text-[#8892b0] hover:text-white" data-tab="rules" data-server-id={server.id}>
+                      Rules
+                    </button>
                     <button class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#1a1a25] text-[#8892b0] hover:text-white" data-tab="events" data-server-id={server.id}>
                       Events
                     </button>
@@ -167,6 +170,114 @@ const categories = [
                   <div class="tab-content hidden" data-tab="edit" data-server-id={server.id}>
                     <div class="p-8 bg-[#0a0a0f] rounded text-center">
                       <p class="text-[#8892b0]">✏️ Server editor coming soon</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Rules Tab -->
+                  <div class="tab-content hidden" data-tab="rules" data-server-id={server.id}>
+                    <div class="rules-container" data-server-id={server.id}>
+                      <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                          </svg>
+                          Server Rules
+                        </h3>
+                        <div class="flex gap-2">
+                          <a 
+                            href={`/rules/${server.id}`}
+                            target="_blank"
+                            class="px-3 py-1.5 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#8892b0] rounded transition-colors text-sm flex items-center gap-1"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                              <polyline points="15 3 21 3 21 9"></polyline>
+                              <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            Preview
+                          </a>
+                          <button 
+                            class="save-rules-btn px-4 py-1.5 bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f] font-bold rounded transition-colors text-sm flex items-center gap-1"
+                            data-server-id={server.id}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                              <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                              <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            Save Rules
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <!-- Rules Editor -->
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <!-- Editor -->
+                        <div class="space-y-3">
+                          <div class="flex items-center justify-between">
+                            <label class="text-sm font-medium text-[#8892b0]">Markdown Editor</label>
+                            <span class="text-xs text-[#8892b0]">Supports: **bold**, *italic*, `code`, # headers</span>
+                          </div>
+                          <textarea 
+                            class="rules-editor w-full h-96 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white font-mono text-sm resize-none focus:outline-none focus:border-[#00f5d4] transition-colors"
+                            data-server-id={server.id}
+                            placeholder="# Server Rules
+
+## General Rules
+1. Be respectful to all players
+2. No griefing or stealing
+3. No cheating or exploits
+4. Keep chat family-friendly
+
+## Building Guidelines
+- Build at least 100 blocks from spawn
+- No lag machines or excessive redstone
+- Label your builds with signs
+
+## Punishments
+- 1st offense: Warning
+- 2nd offense: 1 day ban
+- 3rd offense: Permanent ban
+
+## Contact
+Discord: discord.gg/yourserver
+Email: admin@yourserver.com"
+                          ></textarea>
+                          <div class="flex items-center justify-between text-xs text-[#8892b0]">
+                            <span class="rules-char-count" data-server-id={server.id}>0 / 50,000 characters</span>
+                            <span>Last saved: <span class="rules-last-saved" data-server-id={server.id}>Never</span></span>
+                          </div>
+                        </div>
+                        
+                        <!-- Preview -->
+                        <div class="space-y-3">
+                          <label class="text-sm font-medium text-[#8892b0]">Live Preview</label>
+                          <div class="rules-preview h-96 px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg overflow-y-auto">
+                            <div class="prose prose-invert prose-sm max-w-none">
+                              <p class="text-[#8892b0] italic">Start typing to see preview...</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Help Section -->
+                      <div class="mt-6 p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg">
+                        <h4 class="text-sm font-bold text-white mb-2">Markdown Quick Reference</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-[#8892b0]">
+                          <div><code class="text-[#ff7b72]"># Heading 1</code></div>
+                          <div><code class="text-[#ff7b72]">## Heading 2</code></div>
+                          <div><code class="text-[#ff7b72]">**bold**</code></div>
+                          <div><code class="text-[#ff7b72]">*italic*</code></div>
+                          <div><code class="text-[#ff7b72]">`code`</code></div>
+                          <div><code class="text-[#ff7b72]">[link](url)</code></div>
+                          <div><code class="text-[#ff7b72]">- bullet</code></div>
+                          <div><code class="text-[#ff7b72]">1. numbered</code></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   

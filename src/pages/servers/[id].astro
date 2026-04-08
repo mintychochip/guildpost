@@ -3,6 +3,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Reviews from '../../components/Reviews.astro';
+import MarkdownRenderer from '../../components/MarkdownRenderer.astro';
 
 const { id } = Astro.params;
 
@@ -14,6 +15,8 @@ let server = null;
 let relatedServers = [];
 let reviews = [];
 let uptimeStats = null;
+let serverRules = null;
+let hasRules = false;
 let error = null;
 
 try {
@@ -59,6 +62,19 @@ try {
       if (uptimeRes.ok) {
         const uptimeData = await uptimeRes.json();
         uptimeStats = uptimeData[0] || null;
+      }
+      
+      // Fetch server rules
+      const rulesRes = await fetch(
+        `${supabaseUrl}/rest/v1/server_rules?server_id=eq.${id}&select=*`,
+        { headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }}
+      );
+      if (rulesRes.ok) {
+        const rulesData = await rulesRes.json();
+        if (rulesData.length > 0) {
+          serverRules = rulesData[0];
+          hasRules = true;
+        }
       }
     }
   } else {
@@ -115,13 +131,39 @@ const isOnline = server.status === 'online';
                 )}
               </div>
               <div class="flex-1">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-wrap">
                   <h1 class="text-2xl font-bold text-white">{server.name}</h1>
                   {server.verified && (
                     <span class="px-2 py-1 bg-[#00f5d4]/20 text-[#00f5d4] text-xs font-bold rounded">
                       ✓ VERIFIED
                     </span>
                   )}
+                  {/* Platform Badge */}
+                  {(() => {
+                    const edition = (server.edition || 'java').toLowerCase();
+                    if (edition === 'bedrock') {
+                      return (
+                        <span class="px-2 py-1 bg-[#8b5cf6]/20 text-[#8b5cf6] text-xs font-bold rounded flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><path d="M12 16l-4 4 4 4"/><path d="M8 20h8"/><path d="m6 6 6 6 6-6"/></svg>
+                          BEDROCK
+                        </span>
+                      );
+                    } else if (edition === 'crossplay' || edition === 'both' || edition === 'java+bedrock') {
+                      return (
+                        <span class="px-2 py-1 bg-[#f59e0b]/20 text-[#f59e0b] text-xs font-bold rounded flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                          CROSS-PLAY
+                        </span>
+                      );
+                    } else {
+                      return (
+                        <span class="px-2 py-1 bg-[#f59e0b]/20 text-[#f59e0b] text-xs font-bold rounded flex items-center gap-1.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+                          JAVA
+                        </span>
+                      );
+                    }
+                  })()}
                 </div>
                 <code class="text-[#8892b0]">{server.ip}:{server.port}</code>
               </div>
@@ -382,6 +424,58 @@ const isOnline = server.status === 'online';
             </div>
           </div>
 
+          <!-- Version Compatibility -->
+          <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+            <h3 class="font-bold text-white mb-3">Version Compatibility</h3>
+            {(() => {
+              const edition = (server.edition || 'java').toLowerCase();
+              const isBedrock = edition === 'bedrock';
+              const isCrossplay = edition === 'crossplay' || edition === 'both' || edition === 'java+bedrock';
+              const isJava = edition === 'java' || (!edition && !isBedrock && !isCrossplay);
+              
+              return (
+                <div class="space-y-3">
+                  {/* Java Edition */}
+                  <div class={`flex items-center gap-3 p-2 rounded-lg ${isJava || isCrossplay ? 'bg-[#f59e0b]/10' : 'bg-[#1a1a25] opacity-50'}`}>
+                    <div class={`w-10 h-10 rounded-lg flex items-center justify-center ${isJava || isCrossplay ? 'bg-[#f59e0b]/20' : 'bg-[#1a1a25]'}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={isJava || isCrossplay ? '#f59e0b' : '#8892b0'} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+                    </div>
+                    <div class="flex-1">
+                      <p class={`font-bold text-sm ${isJava || isCrossplay ? 'text-[#f59e0b]' : 'text-[#8892b0]'}`}>
+                        Java Edition
+                      </p>
+                      <p class="text-xs text-[#8892b0]">
+                        {isJava ? '✓ Supported' : isCrossplay ? '✓ Supported via Geyser' : '✗ Not supported'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Bedrock Edition */}
+                  <div class={`flex items-center gap-3 p-2 rounded-lg ${isBedrock || isCrossplay ? 'bg-[#8b5cf6]/10' : 'bg-[#1a1a25] opacity-50'}`}>
+                    <div class={`w-10 h-10 rounded-lg flex items-center justify-center ${isBedrock || isCrossplay ? 'bg-[#8b5cf6]/20' : 'bg-[#1a1a25]'}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={isBedrock || isCrossplay ? '#8b5cf6' : '#8892b0'} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                    </div>
+                    <div class="flex-1">
+                      <p class={`font-bold text-sm ${isBedrock || isCrossplay ? 'text-[#8b5cf6]' : 'text-[#8892b0]'}`}>
+                        Bedrock Edition
+                      </p>
+                      <p class="text-xs text-[#8892b0]">
+                        {isBedrock ? '✓ Native Support' : isCrossplay ? '✓ Supported via Geyser' : '✗ Not supported'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Console/Mobile Note */}
+                  {(isBedrock || isCrossplay) && (
+                    <p class="text-xs text-[#8892b0] mt-2">
+                      💡 Console (Xbox/PlayStation/Switch) and mobile players can join using Bedrock Edition
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
           <!-- Share -->
           <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
             <h3 class="font-bold text-white mb-3">Share</h3>
@@ -410,6 +504,42 @@ const isOnline = server.status === 'online';
         </div>
       </div>
       
+      <!-- Server Rules Section -->
+      {hasRules && (
+        <div class="mt-8 mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+              <div class="w-10 h-10 bg-[#00f5d4]/10 rounded-lg flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              Server Rules
+            </h2>
+            <a 
+              href={`/rules/${id}`}
+              class="px-4 py-2 bg-[#1a1a25] hover:bg-[#2a2a3a] text-[#8892b0] rounded-lg transition-colors text-sm flex items-center gap-2"
+            >
+              View Full Page
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+          <div class="bg-[#12121a] border border-[#2a2a3a] rounded-lg p-6">
+            <div class="max-h-96 overflow-y-auto pr-2">
+              <MarkdownRenderer content={serverRules.content} />
+            </div>
+          </div>
+        </div>
+      )}
+
       <!-- Reviews Section -->
       <Reviews serverId={id} reviews={reviews} />
     </main>
