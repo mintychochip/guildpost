@@ -11,26 +11,40 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// Generate embedding using Gemini text-embedding-004 (768 dimensions)
+// Generate embedding using Gemini embedding model
 async function generateEmbedding(text: string, apiKey: string) {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: { parts: [{ text }] }
-      })
+  // Try multiple Gemini embedding models (in order of preference)
+  const models = [
+    'text-embedding-004',  // 768 dims
+    'gemini-embedding-001', // 768 dims
+    'embedding-001',        // 768 dims
+  ];
+  
+  for (const model of models) {
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:embedContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            content: { parts: [{ text }] }
+          })
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const embedding = data.embedding?.values || data.embedding;
+        // Return first 768 dimensions if larger
+        return embedding.slice(0, 768);
+      }
+    } catch (err) {
+      console.log(`Model ${model} failed, trying next...`);
     }
-  );
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Gemini embedding API error: ${error}`);
   }
-
-  const data = await response.json();
-  return data.embedding?.values || data.embedding;
+  
+  throw new Error('No Gemini embedding model available');
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
