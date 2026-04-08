@@ -1,0 +1,506 @@
+---
+// ServerMediaUploader - Multi-file upload component for server media (banner, icon, screenshots)
+
+export interface Props {
+  serverId: string;
+  onUploadComplete?: (urls: string[]) => void;
+}
+
+const { serverId, onUploadComplete } = Astro.props;
+---
+
+<div id="media-uploader" class="media-uploader" data-server-id={serverId}>
+  <!-- Banner Upload -->
+  <div class="upload-section">
+    <label class="section-label">Server Banner <span class="recommended">1200×400 recommended</span></label>
+    <div class="drop-zone" id="banner-drop" data-type="banner" data-max-files="1">
+      <input type="file" id="banner-input" accept="image/jpeg,image/png,image/webp" class="file-input" />
+      <div class="drop-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" x2="12" y1="3" y2="15"/>
+        </svg>
+        <p>Drop banner image or click to upload</p>
+        <span class="file-types">JPG, PNG, WebP · Max 2MB</span>
+      </div>
+      <div class="preview-container hidden" id="banner-preview"></div>
+    </div>
+  </div>
+
+  <!-- Icon Upload -->
+  <div class="upload-section">
+    <label class="section-label">Server Icon <span class="optional">Optional</span> <span class="recommended">256×256 recommended</span></label>
+    <div class="drop-zone icon-zone" id="icon-drop" data-type="icon" data-max-files="1">
+      <input type="file" id="icon-input" accept="image/jpeg,image/png" class="file-input" />
+      <div class="drop-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <p>Upload icon</p>
+        <span class="file-types">PNG, JPG · Max 500KB</span>
+      </div>
+      <div class="preview-container hidden" id="icon-preview"></div>
+    </div>
+  </div>
+
+  <!-- Screenshots Upload -->
+  <div class="upload-section">
+    <label class="section-label">Screenshots <span class="optional">Optional</span> <span class="recommended">Up to 6 images</span></label>
+    <div class="drop-zone" id="screenshots-drop" data-type="screenshot" data-max-files="6">
+      <input type="file" id="screenshots-input" accept="image/jpeg,image/png,image/webp" multiple class="file-input" />
+      <div class="drop-content">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <p>Drop screenshots or click to upload multiple</p>
+        <span class="file-types">JPG, PNG, WebP · Max 3MB each</span>
+      </div>
+      <div class="screenshots-grid" id="screenshots-preview"></div>
+    </div>
+  </div>
+
+  <!-- Video URL -->
+  <div class="upload-section">
+    <label class="section-label">Trailer Video <span class="optional">Optional</span></label>
+    <input 
+      type="url" 
+      id="video-url" 
+      placeholder="https://youtube.com/watch?v=..." 
+      class="video-input"
+    />
+    <p class="help-text">Paste a YouTube link to showcase your server</p>
+  </div>
+
+  <!-- Upload Progress -->
+  <div class="upload-progress hidden" id="upload-progress">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <span class="progress-text" id="progress-text">Uploading...</span>
+  </div>
+
+  <!-- Actions -->
+  <div class="upload-actions">
+    <button id="upload-btn" class="upload-button" disabled>Upload Media</button>
+    <button id="skip-btn" class="skip-button">Skip for now</button>
+  </div>
+</div>
+
+<style>
+  .media-uploader {
+    --primary: #00f5d4;
+    --bg-card: #12121a;
+    --bg-hover: #1a1a25;
+    --border: #2a2a3a;
+    --text: #ffffff;
+    --text-muted: #8892b0;
+    font-family: system-ui, -apple-system, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .upload-section {
+    margin-bottom: 24px;
+  }
+
+  .section-label {
+    display: block;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .section-label .optional {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.9em;
+  }
+
+  .section-label .recommended {
+    font-weight: 400;
+    color: var(--primary);
+    font-size: 0.85em;
+    margin-left: 8px;
+  }
+
+  .drop-zone {
+    position: relative;
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.drag-over {
+    border-color: var(--primary);
+    background: rgba(0, 245, 212, 0.05);
+  }
+
+  .drop-zone.has-files {
+    border-style: solid;
+    border-color: var(--primary);
+  }
+
+  .icon-zone {
+    max-width: 200px;
+  }
+
+  .file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .drop-content {
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .drop-content svg {
+    margin-bottom: 12px;
+    opacity: 0.6;
+  }
+
+  .drop-content p {
+    margin: 0 0 8px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .file-types {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .preview-container {
+    padding: 16px;
+  }
+
+  .preview-container img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .preview-container .remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 56, 100, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .screenshots-grid:empty {
+    display: none;
+  }
+
+  .screenshot-item {
+    position: relative;
+    aspect-ratio: 16/10;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-hover);
+  }
+
+  .screenshot-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .video-input:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .upload-progress {
+    margin: 24px 0;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    transition: width 0.3s ease;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .upload-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .upload-button {
+    padding: 12px 24px;
+    background: var(--primary);
+    border: none;
+    border-radius: 8px;
+    color: #0a0a0f;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .upload-button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  .upload-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .skip-button {
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .skip-button:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script define:vars={{ serverId, onUploadComplete }}>
+  const uploader = document.getElementById('media-uploader');
+  if (!uploader) return;
+
+  const files = {
+    banner: null,
+    icon: null,
+    screenshots: [],
+    video: null
+  };
+
+  // Setup drop zones
+  ['banner', 'icon', 'screenshots'].forEach(type => {
+    const dropZone = document.getElementById(`${type}-drop`);
+    const input = document.getElementById(`${type}-input`);
+    const preview = document.getElementById(`${type === 'screenshots' ? 'screenshots-preview' : type + '-preview'}`);
+
+    if (!dropZone || !input) return;
+
+    // Drag events
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      handleFiles(type, e.dataTransfer.files);
+    });
+
+    input.addEventListener('change', () => {
+      handleFiles(type, input.files);
+    });
+  });
+
+  function handleFiles(type, fileList) {
+    const maxFiles = type === 'screenshots' ? 6 : 1;
+    const validFiles = Array.from(fileList).slice(0, maxFiles);
+
+    if (type === 'screenshots') {
+      files.screenshots = [...files.screenshots, ...validFiles].slice(0, 6);
+    } else {
+      files[type] = validFiles[0] || null;
+    }
+
+    updatePreviews();
+    updateUploadButton();
+  }
+
+  function updatePreviews() {
+    // Banner preview
+    const bannerPreview = document.getElementById('banner-preview');
+    if (files.banner && bannerPreview) {
+      bannerPreview.innerHTML = `
+        <div style="position:relative">
+          <img src="${URL.createObjectURL(files.banner)}" alt="Banner preview" />
+          <button class="remove-btn" onclick="removeFile('banner')">×</button>
+        </div>
+      `;
+      bannerPreview.classList.remove('hidden');
+      document.getElementById('banner-drop')?.querySelector('.drop-content')?.classList.add('hidden');
+    }
+
+    // Icon preview
+    const iconPreview = document.getElementById('icon-preview');
+    if (files.icon && iconPreview) {
+      iconPreview.innerHTML = `
+        <div style="position:relative;max-width:200px;margin:0 auto">
+          <img src="${URL.createObjectURL(files.icon)}" alt="Icon preview" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px" />
+          <button class="remove-btn" onclick="removeFile('icon')">×</button>
+        </div>
+      `;
+      iconPreview.classList.remove('hidden');
+      document.getElementById('icon-drop')?.querySelector('.drop-content')?.classList.add('hidden');
+    }
+
+    // Screenshots preview
+    const screenshotsPreview = document.getElementById('screenshots-preview');
+    if (screenshotsPreview) {
+      screenshotsPreview.innerHTML = files.screenshots.map((file, i) => `
+        <div class="screenshot-item">
+          <img src="${URL.createObjectURL(file)}" alt="Screenshot ${i + 1}" />
+          <button class="remove-btn" style="position:absolute;top:4px;right:4px;width:24px;height:24px" onclick="removeScreenshot(${i})">×</button>
+        </div>
+      `).join('');
+      if (files.screenshots.length > 0) {
+        document.getElementById('screenshots-drop')?.classList.add('has-files');
+      }
+    }
+  }
+
+  window.removeFile = (type) => {
+    files[type] = null;
+    const preview = document.getElementById(`${type}-preview`);
+    if (preview) {
+      preview.innerHTML = '';
+      preview.classList.add('hidden');
+    }
+    const dropZone = document.getElementById(`${type}-drop`);
+    dropZone?.querySelector('.drop-content')?.classList.remove('hidden');
+    dropZone?.classList.remove('has-files');
+    updateUploadButton();
+  };
+
+  window.removeScreenshot = (index) => {
+    files.screenshots.splice(index, 1);
+    updatePreviews();
+    if (files.screenshots.length === 0) {
+      document.getElementById('screenshots-drop')?.classList.remove('has-files');
+    }
+    updateUploadButton();
+  };
+
+  function updateUploadButton() {
+    const hasFiles = files.banner || files.icon || files.screenshots.length > 0;
+    document.getElementById('upload-btn').disabled = !hasFiles;
+  }
+
+  // Video URL
+  document.getElementById('video-url')?.addEventListener('input', (e) => {
+    files.video = e.target.value || null;
+  });
+
+  // Upload handler
+  document.getElementById('upload-btn')?.addEventListener('click', async () => {
+    const progressEl = document.getElementById('upload-progress');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const btn = document.getElementById('upload-btn');
+
+    progressEl?.classList.remove('hidden');
+    btn.disabled = true;
+
+    const formData = new FormData();
+    if (files.banner) formData.append('banner', files.banner);
+    if (files.icon) formData.append('icon', files.icon);
+    files.screenshots.forEach((file, i) => formData.append(`screenshot_${i}`, file));
+    if (files.video) formData.append('video', files.video);
+
+    try {
+      const response = await fetch(`/api/servers/${serverId}/media`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Upload-Progress': 'true'
+        }
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        progressText.textContent = 'Upload complete!';
+        progressFill.style.width = '100%';
+        
+        if (onUploadComplete) {
+          onUploadComplete(result.urls);
+        }
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (err) {
+      progressText.textContent = 'Upload failed. Please try again.';
+      progressText.style.color = '#ff3864';
+      btn.disabled = false;
+    }
+  });
+
+  // Skip button
+  document.getElementById('skip-btn')?.addEventListener('click', () => {
+    if (onUploadComplete) {
+      onUploadComplete([]);
+    }
+  });
+</script>
