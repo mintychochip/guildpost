@@ -64,6 +64,29 @@ export default {
         return await handleEmbeddingsBatch(request, env);
       }
 
+      // Dashboard APIs - Server Edit
+      const editMatch = path.match(/^\/api\/servers\/([^\/]+)\/edit$/);
+      if (editMatch && request.method === 'POST') {
+        return await handleServerEdit(editMatch[1], request, env);
+      }
+
+      // Dashboard APIs - Server Posts
+      const postsMatch = path.match(/^\/api\/servers\/([^\/]+)\/posts$/);
+      if (postsMatch) {
+        if (request.method === 'GET') {
+          return await handleServerPostsGet(postsMatch[1], env);
+        }
+        if (request.method === 'POST') {
+          return await handleServerPostsCreate(postsMatch[1], request, env);
+        }
+      }
+
+      // Dashboard APIs - Server Analytics
+      const analyticsMatch = path.match(/^\/api\/servers\/([^\/]+)\/analytics$/);
+      if (analyticsMatch && request.method === 'GET') {
+        return await handleServerAnalytics(analyticsMatch[1], request, env);
+      }
+
       return new Response('Not Found', { status: 404, headers: corsHeaders });
     } catch (err) {
       console.error('Worker error:', err);
@@ -678,4 +701,408 @@ async function pingServerInternal(env, serverId) {
   }
   
   return { serverId, latency: Date.now() - startTime };
+}
+
+// Dashboard API: Edit Server Details
+async function handleServerEdit(serverId, request, env) {
+  const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  
+  if (!supabaseKey) {
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    const body = await request.json();
+    const { description, website, tags, owner_email, discord_invite } = body;
+    
+    // Verify the server is claimed by this email
+    const verifyResponse = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&claimed=eq.true&select=id,claimed_by`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    if (!verifyResponse.ok) {
+      throw new Error('Failed to verify server ownership');
+    }
+    
+    const servers = await verifyResponse.json();
+    if (servers.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Server not found or not claimed' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const server = servers[0];
+    
+    // Check if the owner_email matches the claimed_by email
+    if (owner_email && server.claimed_by !== owner_email) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized - you do not own this server' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // Build update object
+    const updates = {};
+    if (description !== undefined) updates.description = description;
+    if (website !== undefined) updates.website = website;
+    if (tags !== undefined) updates.tags = tags;
+    if (discord_invite !== undefined) updates.discord_invite = discord_invite;
+    updates.updated_at = new Date().toISOString();
+    
+    // Update the server
+    const updateResponse = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(updates)
+      }
+    );
+    
+    if (!updateResponse.ok) {
+      const errorText = await updateResponse.text();
+      throw new Error(`Update failed: ${errorText}`);
+    }
+    
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'Server updated successfully',
+        updated_fields: Object.keys(updates).filter(k => k !== 'updated_at')
+      }),
+      { 
+        status: 200, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
+    );
+    
+  } catch (err) {
+    console.error('Server edit error:', err);
+    return new Response(
+      JSON.stringify({ error: err.message || 'Failed to update server' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+// Dashboard API: Get Server Posts
+async function handleServerPostsGet(serverId, env) {
+  const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  
+  if (!supabaseKey) {
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/server_posts?server_id=eq.${serverId}&order=created_at.desc&select=*`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+    
+    const posts = await response.json();
+    
+    const CATEGORIES = {
+      tournament: { name: 'Tournament', icon: '🏆' },
+      drop: { name: 'Drop/Giveaway', icon: '🎁' },
+      update: { name: 'Server Update', icon: '🚀' },
+      pvp: { name: 'PvP Event', icon: '⚔️' },
+      building: { name: 'Building Contest', icon: '🏗️' },
+      social: { name: 'Social Event', icon: '🎉' },
+      other: { name: 'Other', icon: '✨' }
+    };
+    
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        posts: posts.map(post => ({
+          ...post,
+          category_info: CATEGORIES[post.category] || CATEGORIES.other
+        }))
+      }),
+      { 
+        status: 200, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
+    );
+    
+  } catch (err) {
+    console.error('Get posts error:', err);
+    return new Response(
+      JSON.stringify({ error: err.message || 'Failed to fetch posts' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+// Dashboard API: Create Server Post
+async function handleServerPostsCreate(serverId, request, env) {
+  const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  
+  if (!supabaseKey) {
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    const body = await request.json();
+    const { category, title, content, author } = body;
+    
+    // Validate required fields
+    if (!category || !title || !content) {
+      return new Response(
+        JSON.stringify({ error: 'Category, title, and content are required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    // Verify server is claimed
+    const verifyResponse = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&claimed=eq.true&select=id,claimed_by,name`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    if (!verifyResponse.ok) {
+      throw new Error('Failed to verify server');
+    }
+    
+    const servers = await verifyResponse.json();
+    if (servers.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Server not found or not claimed' }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    const server = servers[0];
+    
+    // Create the post
+    const postData = {
+      server_id: serverId,
+      category,
+      title: title.slice(0, 200),
+      content: content.slice(0, 2000),
+      author: author || server.claimed_by || 'Server Owner',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    const createResponse = await fetch(
+      `${supabaseUrl}/rest/v1/server_posts`,
+      {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(postData)
+      }
+    );
+    
+    if (!createResponse.ok) {
+      const errorText = await createResponse.text();
+      throw new Error(`Failed to create post: ${errorText}`);
+    }
+    
+    const createdPost = await createResponse.json();
+    
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        message: 'Post created successfully',
+        post: createdPost[0]
+      }),
+      { 
+        status: 201, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
+    );
+    
+  } catch (err) {
+    console.error('Create post error:', err);
+    return new Response(
+      JSON.stringify({ error: err.message || 'Failed to create post' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+// Dashboard API: Server Analytics
+async function handleServerAnalytics(serverId, request, env) {
+  const url = new URL(request.url);
+  const days = parseInt(url.searchParams.get('days') || '30', 10);
+  const ownerEmail = url.searchParams.get('email');
+  
+  const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  
+  if (!supabaseKey) {
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    // Verify ownership if email provided
+    if (ownerEmail) {
+      const verifyResponse = await fetch(
+        `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&claimed=eq.true&claimed_by=eq.${encodeURIComponent(ownerEmail)}&select=id`,
+        {
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`
+          }
+        }
+      );
+      
+      if (!verifyResponse.ok) {
+        throw new Error('Failed to verify ownership');
+      }
+      
+      const servers = await verifyResponse.json();
+      if (servers.length === 0) {
+        return new Response(
+          JSON.stringify({ error: 'Unauthorized or server not found' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
+    
+    // Calculate date range
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    
+    // Fetch vote history
+    const votesResponse = await fetch(
+      `${supabaseUrl}/rest/v1/votes?server_id=eq.${serverId}&created_at=gte.${startDate.toISOString()}&order=created_at.desc&select=created_at,voter_ip`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    // Get current server stats
+    const serverResponse = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&select=vote_count,players_online,max_players,avg_rating,review_count,views`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    let serverStats = {};
+    if (serverResponse.ok) {
+      const servers = await serverResponse.json();
+      if (servers.length > 0) {
+        serverStats = servers[0];
+      }
+    }
+    
+    // Process vote data into daily buckets
+    const votes = votesResponse.ok ? await votesResponse.json() : [];
+    const dailyVotes = new Map();
+    
+    // Initialize all days with 0
+    for (let i = 0; i < days; i++) {
+      const d = new Date(endDate);
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      dailyVotes.set(key, { date: key, votes: 0, unique_voters: new Set() });
+    }
+    
+    // Aggregate votes
+    votes.forEach((vote) => {
+      const date = vote.created_at.split('T')[0];
+      if (dailyVotes.has(date)) {
+        const day = dailyVotes.get(date);
+        day.votes++;
+        day.unique_voters.add(vote.voter_ip);
+      }
+    });
+    
+    // Convert to array and calculate unique counts
+    const voteHistory = Array.from(dailyVotes.values())
+      .sort((a, b) => a.date.localeCompare(b.date))
+      .map((day) => ({
+        date: day.date,
+        votes: day.votes,
+        unique_voters: day.unique_voters.size
+      }));
+    
+    // Calculate summary stats
+    const totalVotes = voteHistory.reduce((sum, day) => sum + day.votes, 0);
+    const avgVotesPerDay = totalVotes / days;
+    const peakVotes = Math.max(...voteHistory.map((d) => d.votes));
+    const peakDay = voteHistory.find((d) => d.votes === peakVotes)?.date;
+    
+    return new Response(
+      JSON.stringify({
+        success: true,
+        period: { days, start: startDate.toISOString(), end: endDate.toISOString() },
+        summary: {
+          total_votes: totalVotes,
+          avg_votes_per_day: parseFloat(avgVotesPerDay.toFixed(1)),
+          peak_votes: peakVotes,
+          peak_day: peakDay
+        },
+        current_stats: serverStats,
+        vote_history: voteHistory
+      }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
+    
+  } catch (err) {
+    console.error('Analytics error:', err);
+    return new Response(
+      JSON.stringify({ error: err.message || 'Failed to fetch analytics' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
 }
