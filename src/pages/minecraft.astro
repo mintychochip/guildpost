@@ -83,6 +83,39 @@ const VALID_CATEGORIES = [
             <option value="online">Online Only</option>
             <option value="offline">Offline</option>
           </select>
+          
+          <!-- Version Filter -->
+          <select 
+            id="version-select"
+            class="px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="all">All Versions</option>
+            <option value="1.21">1.21.x</option>
+            <option value="1.20">1.20.x</option>
+            <option value="1.19">1.19.x</option>
+            <option value="1.18">1.18.x</option>
+            <option value="1.17">1.17.x</option>
+            <option value="1.16">1.16.x</option>
+            <option value="1.12">1.12.x</option>
+          </select>
+          
+          <!-- Country Filter -->
+          <select 
+            id="country-select"
+            class="px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="all">All Countries</option>
+            <option value="US">🇺🇸 USA</option>
+            <option value="DE">🇩🇪 Germany</option>
+            <option value="GB">🇬🇧 UK</option>
+            <option value="CA">🇨🇦 Canada</option>
+            <option value="AU">🇦🇺 Australia</option>
+            <option value="NL">🇳🇱 Netherlands</option>
+            <option value="FR">🇫🇷 France</option>
+            <option value="BR">🇧🇷 Brazil</option>
+            <option value="RU">🇷🇺 Russia</option>
+            <option value="JP">🇯🇵 Japan</option>
+          </select>
         </div>
         
         <!-- Active Filters -->
@@ -201,6 +234,8 @@ const VALID_CATEGORIES = [
   const searchInput = document.getElementById('search-input');
   const sortSelect = document.getElementById('sort-select');
   const statusSelect = document.getElementById('status-select');
+  const versionSelect = document.getElementById('version-select');
+  const countrySelect = document.getElementById('country-select');
   const serversList = document.getElementById('servers-list');
   const serverCount = document.getElementById('server-count');
   const paginationInfo = document.getElementById('pagination-info');
@@ -270,6 +305,21 @@ const VALID_CATEGORIES = [
     const statusFilter = statusSelect.value;
     if (statusFilter !== 'all') {
       results = results.filter(s => s.status === statusFilter);
+    }
+    
+    // Version filter
+    const versionFilter = versionSelect.value;
+    if (versionFilter !== 'all') {
+      results = results.filter(s => {
+        const v = s.version_normalized || s.version || '';
+        return v.startsWith(versionFilter);
+      });
+    }
+    
+    // Country filter
+    const countryFilter = countrySelect.value;
+    if (countryFilter !== 'all') {
+      results = results.filter(s => s.country_code === countryFilter);
     }
     
     // Sort
@@ -350,6 +400,8 @@ const VALID_CATEGORIES = [
                 <span class="text-[#ff3864]">
                   ▲ ${server.vote_count || 0}
                 </span>
+                ${server.version ? `<span class="text-[#00f5d4]">${server.version}</span>` : ''}
+                ${server.country_code ? `<span class="text-[#8892b0]">${getCountryFlag(server.country_code)}</span>` : ''}
               </div>
               
               ${server.tags?.length ? `
@@ -454,6 +506,8 @@ const VALID_CATEGORIES = [
     searchInput.value = '';
     sortSelect.value = 'votes';
     statusSelect.value = 'all';
+    versionSelect.value = 'all';
+    countrySelect.value = 'all';
     applyFilters();
     updateActiveFilters();
   };
@@ -463,6 +517,11 @@ const VALID_CATEGORIES = [
     
     if (searchInput.value) filters.push({ type: 'search', value: searchInput.value });
     if (statusSelect.value !== 'all') filters.push({ type: 'status', value: statusSelect.value });
+    if (versionSelect.value !== 'all') filters.push({ type: 'version', value: `${versionSelect.value}.x` });
+    if (countrySelect.value !== 'all') {
+      const countryOption = countrySelect.options[countrySelect.selectedIndex];
+      filters.push({ type: 'country', value: countryOption.text.replace(/[^\w\s]/g, '').trim() });
+    }
     
     if (filters.length === 0) {
       activeFiltersDiv.classList.add('hidden');
@@ -485,6 +544,8 @@ const VALID_CATEGORIES = [
   searchInput?.addEventListener('input', debounce(applyFilters, 300));
   sortSelect?.addEventListener('change', applyFilters);
   statusSelect?.addEventListener('change', applyFilters);
+  versionSelect?.addEventListener('change', applyFilters);
+  countrySelect?.addEventListener('change', applyFilters);
   
   prevPageBtn?.addEventListener('click', () => {
     if (currentPage > 1) {
@@ -509,6 +570,16 @@ const VALID_CATEGORIES = [
       clearTimeout(timeout);
       timeout = setTimeout(() => fn(...args), delay);
     };
+  }
+  
+  // Country flag emoji helper
+  function getCountryFlag(countryCode) {
+    if (!countryCode) return '';
+    const codePoints = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
   }
   
   // AI-Powered Semantic Search (Gemini)

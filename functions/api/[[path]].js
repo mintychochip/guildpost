@@ -30,17 +30,17 @@ export default {
 
     try {
       // Semantic Search
-      if (path === '/search/semantic' && request.method === 'POST') {
+      if (path === '/api/search/semantic' && request.method === 'POST') {
         return await handleSemanticSearch(request, env);
       }
 
       // Search Suggestions
-      if (path === '/search/suggestions' && request.method === 'GET') {
+      if (path === '/api/search/suggestions' && request.method === 'GET') {
         return await handleSuggestions(request, env);
       }
       
       // Generate Embedding
-      if (path === '/embed' && request.method === 'POST') {
+      if (path === '/api/embed' && request.method === 'POST') {
         return await handleEmbed(request, env);
       }
 
