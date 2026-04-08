@@ -1,5 +1,5 @@
 ---
-// SmartIntentSearch - AI extracts intent from natural language, clarifies if needed
+// SmartIntentSearch - AI extracts intent from natural language, clarifies until clear, then refines results
 
 export interface Props {
   id?: string;
@@ -58,6 +58,77 @@ const { id = 'smart-search' } = Astro.props;
 
   <!-- Results Container -->
   <div id={`${id}-results`} class="results-container"></div>
+  
+  <!-- Refinement Options (shown AFTER search) -->
+  <div id={`${id}-refinements`} class="refinements-container hidden">
+    <div class="refinements-header">
+      <h4>🔍 Refine Your Results</h4>
+      <button id={`${id}-clear-refinements`} class="clear-refinements">Clear all</button>
+    </div>
+    
+    <!-- Game Filter -->
+    <div class="refinement-section">
+      <span class="refinement-label">Game:</span>
+      <div class="refinement-chips" data-refine="game">
+        <button class="refine-chip" data-value="minecraft">🎮 Minecraft</button>
+        <button class="refine-chip" data-value="rust">🎮 Rust</button>
+        <button class="refine-chip" data-value="cs2">🎮 CS2</button>
+      </div>
+    </div>
+    
+    <!-- Gamemode Filter -->
+    <div class="refinement-section">
+      <span class="refinement-label">Gamemode:</span>
+      <div class="refinement-chips" data-refine="gamemode">
+        <button class="refine-chip" data-value="survival">🛡️ Survival</button>
+        <button class="refine-chip" data-value="pvp">⚔️ PvP</button>
+        <button class="refine-chip" data-value="skyblock">🏝️ Skyblock</button>
+        <button class="refine-chip" data-value="factions">🏰 Factions</button>
+        <button class="refine-chip" data-value="creative">🎨 Creative</button>
+        <button class="refine-chip" data-value="minigames">🎲 Minigames</button>
+        <button class="refine-chip" data-value="hardcore">🔥 Hardcore</button>
+        <button class="refine-chip" data-value="modded">⚙️ Modded</button>
+        <button class="refine-chip" data-value="smp">🤝 SMP</button>
+        <button class="refine-chip" data-value="prison">⛓️ Prison</button>
+        <button class="refine-chip" data-value="rp">🎭 Roleplay</button>
+      </div>
+    </div>
+    
+    <!-- Features Filter -->
+    <div class="refinement-section">
+      <span class="refinement-label">Features:</span>
+      <div class="refinement-chips" data-refine="features">
+        <button class="refine-chip" data-value="economy">💰 Economy</button>
+        <button class="refine-chip" data-value="claims">🏠 Land Claims</button>
+        <button class="refine-chip" data-value="community">👥 Discord</button>
+        <button class="refine-chip" data-value="anticheat">🔒 Anti-Cheat</button>
+        <button class="refine-chip" data-value="mmo">🏛️ McMMO</button>
+        <button class="refine-chip" data-value="events">🌍 Events</button>
+        <button class="refine-chip" data-value="bedrock">📱 Bedrock</button>
+        <button class="refine-chip" data-value="voice">🎤 Voice Chat</button>
+        <button class="refine-chip" data-value="custom">🧙 Custom Items</button>
+        <button class="refine-chip" data-value="shops">🏪 Player Shops</button>
+        <button class="refine-chip" data-value="towny">🏘️ Towny</button>
+        <button class="refine-chip" data-value="quests">📜 Quests</button>
+        <button class="refine-chip" data-value="crates">🎁 Crates</button>
+        <button class="refine-chip" data-value="kits">🎒 Starter Kits</button>
+        <button class="refine-chip" data-value="parkour">🏃 Parkour</button>
+        <button class="refine-chip" data-value="vanilla">🌿 Vanilla</button>
+      </div>
+    </div>
+    
+    <!-- Size Filter -->
+    <div class="refinement-section">
+      <span class="refinement-label">Server Size:</span>
+      <div class="refinement-chips" data-refine="size">
+        <button class="refine-chip" data-value="small">🌱 Small (1-50)</button>
+        <button class="refine-chip" data-value="medium">🌳 Medium (50-200)</button>
+        <button class="refine-chip" data-value="large">🌲 Large (200+)</button>
+      </div>
+    </div>
+    
+    <button id={`${id}-apply-refinements`} class="apply-refinements-btn">Apply Filters</button>
+  </div>
 </div>
 
 <link rel="stylesheet" href="/styles/smart-search.css" />
@@ -74,91 +145,156 @@ const { id = 'smart-search' } = Astro.props;
   const messages = document.getElementById(`${id}-messages`);
   const chatInput = document.getElementById(`${id}-chat-input`);
   const chatSend = document.getElementById(`${id}-chat-send`);
+  const refinements = document.getElementById(`${id}-refinements`);
 
   let conversationHistory = [];
-  let currentIntent = null;
+  let accumulatedIntent = {
+    game: null,
+    gamemode: null,
+    features: [],
+    size: null
+  };
+  let currentSearchQuery = '';
+  let hasSearched = false;
 
-  // Parse intent locally first (fast path)
-  function parseIntentLocal(query) {
-    const lower = query.toLowerCase();
-    const intent = {
-      game: 'minecraft', // default
+  // Knowledge bases for parsing
+  const GAME_KEYWORDS = {
+    minecraft: ['minecraft', 'mc', 'mine craft'],
+    rust: ['rust', 'rusty'],
+    cs2: ['cs2', 'csgo', 'counter strike', 'counter-strike']
+  };
+
+  const GAMEMODE_KEYWORDS = {
+    survival: ['survival', 'smp', 'vanilla survival'],
+    pvp: ['pvp', 'factions', 'raid', 'raiding', 'kitpvp'],
+    skyblock: ['skyblock', 'sky block', 'island'],
+    creative: ['creative', 'build', 'plots', 'plot'],
+    minigames: ['minigame', 'minigames', 'bedwars', 'skywars', 'hunger games', 'hg'],
+    hardcore: ['hardcore', 'death ban', 'hard core'],
+    prison: ['prison', 'mines', 'rankup'],
+    modded: ['modded', 'mods', 'forge', 'fabric', 'modpack', 'mod pack'],
+    smp: ['smp', 'survival multiplayer', 'vanilla smp'],
+    rp: ['roleplay', 'rp', 'lore', 'role play', 'role-play']
+  };
+
+  const FEATURE_KEYWORDS = {
+    economy: ['economy', 'money', 'trading', 'trade', 'shop', 'shops', 'currency'],
+    claims: ['claim', 'claims', 'land protect', 'grief protection', 'protection', 'protected'],
+    community: ['community', 'discord', 'friendly', 'social', 'active community'],
+    anticheat: ['anticheat', 'anti-cheat', 'no hackers', 'cheat protection'],
+    mmo: ['mmo', 'mcmmo', 'mcmmo', 'rpg', 'skills', 'leveling'],
+    events: ['events', 'event', 'bosses', 'seasons', 'tournaments'],
+    bedrock: ['bedrock', 'console', 'mobile', 'pe', 'pocket edition', 'crossplay'],
+    voice: ['voice chat', 'proximity voice', 'voicechat', 'proximity chat'],
+    custom: ['custom items', 'custom weapons', 'unique items', 'custom', 'custom enchant'],
+    shops: ['player shops', 'player economy', 'player shop', 'chestshop'],
+    towny: ['towny', 'town', 'nation', 'nations', 'towns'],
+    quests: ['quests', 'quest', 'missions', 'mission', 'story', 'storyline'],
+    crates: ['crates', 'crate', 'lootbox', 'loot crate', 'key', 'keys'],
+    kits: ['starter kit', 'starter kits', 'free items', 'daily kit', 'kit'],
+    parkour: ['parkour', 'parkour map', 'jumping', 'jump'],
+    vanilla: ['vanilla', 'no plugins', 'pure vanilla', 'plain']
+  };
+
+  const SIZE_KEYWORDS = {
+    small: ['small', 'tiny', 'close knit', 'close-knit', 'few players', 'intimate', 'cozy'],
+    medium: ['medium', 'mid size', 'mid-size', 'moderate', '50 players', '100 players'],
+    large: ['large', 'big', 'huge', 'massive', '200 players', '500 players', '1000 players']
+  };
+
+  // Parse intent from text - extracts all known entities
+  function parseIntent(text, existingIntent = null) {
+    const lower = text.toLowerCase();
+    const intent = existingIntent ? { ...existingIntent } : {
+      game: null,
       gamemode: null,
       features: [],
-      size: null,
-      confidence: 0
+      size: null
     };
 
-    // Gamemodes
-    const gamemodes = {
-      survival: ['survival', 'smp', 'vanilla'],
-      pvp: ['pvp', 'factions', 'raid', 'raiding'],
-      skyblock: ['skyblock', 'island'],
-      creative: ['creative', 'build', 'plot'],
-      minigames: ['minigame', 'bedwars', 'skywars', 'hunger games'],
-      hardcore: ['hardcore', 'death ban'],
-      prison: ['prison', 'mines'],
-      modded: ['modded', 'forge', 'fabric', 'modpack'],
-      rp: ['roleplay', 'rp', 'lore']
-    };
-
-    for (const [mode, keywords] of Object.entries(gamemodes)) {
+    // Parse game
+    for (const [game, keywords] of Object.entries(GAME_KEYWORDS)) {
       if (keywords.some(k => lower.includes(k))) {
-        intent.gamemode = mode;
-        intent.confidence += 30;
+        intent.game = game;
         break;
       }
     }
 
-    // Features
-    const features = {
-      economy: ['economy', 'money', 'trading', 'shop'],
-      claims: ['claim', 'land protect', 'grief protection'],
-      community: ['community', 'discord', 'friendly', 'social'],
-      anticheat: ['anticheat', 'no hackers'],
-      mmo: ['mmo', 'mcmmo', 'rpg', 'skills'],
-      events: ['events', 'bosses', 'seasons'],
-      bedrock: ['bedrock', 'console', 'mobile', 'pe'],
-      voice: ['voice chat', 'proximity voice'],
-      custom: ['custom items', 'custom weapons', 'unique'],
-      shops: ['player shops', 'player economy'],
-      towny: ['towny', 'town', 'nation'],
-      quests: ['quests', 'missions', 'story'],
-      kits: ['starter kit', 'free items'],
-      vanilla: ['vanilla', 'no plugins', 'pure']
-    };
-
-    for (const [feature, keywords] of Object.entries(features)) {
+    // Parse gamemode
+    for (const [mode, keywords] of Object.entries(GAMEMODE_KEYWORDS)) {
       if (keywords.some(k => lower.includes(k))) {
-        intent.features.push(feature);
-        intent.confidence += 15;
+        intent.gamemode = mode;
+        break;
       }
     }
 
-    // Size
-    if (/\b(small|tiny|close.knit|few players)\b/.test(lower)) {
-      intent.size = 'small';
-      intent.confidence += 20;
-    } else if (/\b(medium|mid.size|50.*players|100.*players)\b/.test(lower)) {
-      intent.size = 'medium';
-      intent.confidence += 20;
-    } else if (/\b(large|big|huge|massive|200.*players)\b/.test(lower)) {
-      intent.size = 'large';
-      intent.confidence += 20;
+    // Parse features (can have multiple)
+    for (const [feature, keywords] of Object.entries(FEATURE_KEYWORDS)) {
+      if (keywords.some(k => lower.includes(k)) && !intent.features.includes(feature)) {
+        intent.features.push(feature);
+      }
+    }
+
+    // Parse size
+    for (const [size, keywords] of Object.entries(SIZE_KEYWORDS)) {
+      if (keywords.some(k => lower.includes(k))) {
+        intent.size = size;
+        break;
+      }
     }
 
     return intent;
   }
 
-  // Check if intent is clear enough
+  // Check what information is still needed
+  function getMissingInfo(intent) {
+    const missing = [];
+    
+    if (!intent.game) missing.push('game');
+    // Need at least gamemode OR features OR size in addition to game
+    if (!intent.gamemode && intent.features.length === 0 && !intent.size) {
+      missing.push('preference'); // gamemode, feature, or size
+    }
+    
+    return missing;
+  }
+
+  // Check if intent is clear enough to search
   function isIntentClear(intent) {
-    // Need at least gamemode OR 2+ features
-    return intent.gamemode || intent.features.length >= 2 || intent.confidence >= 50;
+    const missing = getMissingInfo(intent);
+    return missing.length === 0;
+  }
+
+  // Generate next question based on what's missing
+  function generateQuestion(intent) {
+    const missing = getMissingInfo(intent);
+    
+    if (missing.includes('game')) {
+      const questions = [
+        "What game are you looking for? I can help you find **Minecraft**, **Rust**, or **CS2** servers.",
+        "Which game? Minecraft, Rust, or CS2?",
+        "Are you looking for a Minecraft server, Rust server, or CS2 server?"
+      ];
+      return questions[Math.floor(Math.random() * questions.length)];
+    }
+    
+    if (missing.includes('preference')) {
+      const game = intent.game || 'this game';
+      const questions = [
+        `What kind of ${game} experience are you after? Survival, PvP, creative building, or something else?`,
+        `Any specific features you want in a ${game} server? Economy, claims protection, events, etc.?`,
+        `What matters most to you? Gamemode (survival, PvP, etc.), features (economy, Discord), or community size?`
+      ];
+      return questions[Math.floor(Math.random() * questions.length)];
+    }
+    
+    return null;
   }
 
   // Build search query from intent
-  function buildQuery(intent, original) {
-    const parts = [intent.game];
+  function buildSearchQuery(intent) {
+    const parts = [];
+    if (intent.game) parts.push(intent.game);
     if (intent.gamemode) parts.push(intent.gamemode);
     parts.push(...intent.features);
     if (intent.size) parts.push(intent.size);
@@ -170,10 +306,17 @@ const { id = 'smart-search' } = Astro.props;
     const div = document.createElement('div');
     div.className = `message ${isUser ? 'user' : 'ai'}`;
     div.innerHTML = isUser 
-      ? `<div class="message-bubble user">${text}</div>`
+      ? `<div class="message-bubble user">${escapeHtml(text)}</div>`
       : `<div class="message-avatar">🤖</div><div class="message-bubble ai">${text}</div>`;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
+  }
+
+  // Escape HTML
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   // Show AI thinking
@@ -190,23 +333,29 @@ const { id = 'smart-search' } = Astro.props;
     document.getElementById(`${id}-thinking`)?.remove();
   }
 
-  // Search servers
-  async function searchServers(query) {
+  // Search servers and show results
+  async function searchServers(query, intent) {
     results.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Finding servers...</p></div>';
+    results.classList.remove('hidden');
+    refinements.classList.add('hidden');
     
     try {
       const res = await fetch('/api/search/semantic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, limit: 9 })
+        body: JSON.stringify({ query, limit: 12 })
       });
       const data = await res.json();
 
+      currentSearchQuery = query;
+      hasSearched = true;
+
+      // Show results
       if (data.results?.length) {
         results.innerHTML = `
           <div class="results-header">
             <h3>Found ${data.results.length} servers</h3>
-            <span class="search-terms">${query}</span>
+            <span class="search-terms">${escapeHtml(query)}</span>
           </div>
           <div class="results-grid">
             ${data.results.map(s => `
@@ -214,7 +363,7 @@ const { id = 'smart-search' } = Astro.props;
                 <div class="server-header">
                   <div class="server-icon">${s.icon ? `<img src="${s.icon}" alt="" />` : '⛏️'}</div>
                   <div class="server-info">
-                    <h4>${s.name}</h4>
+                    <h4>${escapeHtml(s.name)}</h4>
                     <p>${s.ip}:${s.port}</p>
                   </div>
                 </div>
@@ -222,50 +371,122 @@ const { id = 'smart-search' } = Astro.props;
                   <span class="status ${s.status || 'offline'}">${s.status === 'online' ? '●' : '○'} ${s.players_online || 0}/${s.max_players || '?'}</span>
                   <span class="votes">▲ ${s.vote_count || 0}</span>
                 </div>
-                ${s.tags?.length ? `<div class="server-tags">${s.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
+                ${s.tags?.length ? `<div class="server-tags">${s.tags.slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
               </a>
             `).join('')}
           </div>
-          <div class="results-footer">
-            <button class="new-search-btn" onclick="location.reload()">New Search</button>
-            <a href="/minecraft?q=${encodeURIComponent(query)}" class="view-all-link">View all results →</a>
-          </div>
         `;
+        
+        // Show refinement options
+        updateRefinementUI(intent);
+        refinements.classList.remove('hidden');
+        
+        // Scroll to results
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
         results.innerHTML = `
           <div class="empty-state">
-            <p>No servers found for "${query}"</p>
-            <button class="retry-btn" onclick="document.getElementById('${id}-input').focus()">Try different keywords</button>
+            <p>No servers found for "${escapeHtml(query)}"</p>
+            <button class="retry-btn" id="${id}-retry-btn">Try different keywords</button>
           </div>
         `;
+        document.getElementById(`${id}-retry-btn`)?.addEventListener('click', () => {
+          input.value = '';
+          input.focus();
+          resetSearch();
+        });
+        refinements.classList.add('hidden');
       }
     } catch (e) {
       results.innerHTML = '<div class="empty-state"><p>Search failed. Please try again.</p></div>';
+      refinements.classList.add('hidden');
     }
   }
 
-  // AI clarification flow
-  async function askAIForClarification(query, intent) {
-    chat.classList.remove('hidden');
-    results.classList.add('hidden');
-    
-    // Show what we understood
-    let understood = [];
-    if (intent.gamemode) understood.push(intent.gamemode);
-    understood.push(...intent.features.map(f => f.replace(/_/g, ' ')));
-    if (intent.size) understood.push(intent.size + ' community');
-    
-    const clarificationMsg = understood.length > 0 
-      ? `I see you want ${understood.join(', ')}. What else matters to you?` 
-      : `I didn't quite catch what you're looking for. What gamemode do you prefer? (survival, pvp, skyblock, creative, etc.)`;
-    
-    addMessage(clarificationMsg, false);
-    conversationHistory.push({ role: 'assistant', content: clarificationMsg });
-    
-    chatInput.focus();
+  // Update refinement UI based on current intent
+  function updateRefinementUI(intent) {
+    // Mark currently selected values
+    container.querySelectorAll('.refine-chip').forEach(chip => {
+      const type = chip.closest('.refinement-chips')?.dataset.refine;
+      const value = chip.dataset.value;
+      
+      chip.classList.remove('active');
+      
+      if (type === 'game' && intent.game === value) {
+        chip.classList.add('active');
+      } else if (type === 'gamemode' && intent.gamemode === value) {
+        chip.classList.add('active');
+      } else if (type === 'features' && intent.features.includes(value)) {
+        chip.classList.add('active');
+      } else if (type === 'size' && intent.size === value) {
+        chip.classList.add('active');
+      }
+    });
   }
 
-  // Handle chat response
+  // Handle refinement click
+  function handleRefinement(type, value) {
+    // Toggle the value in accumulated intent
+    if (type === 'game') {
+      accumulatedIntent.game = accumulatedIntent.game === value ? null : value;
+    } else if (type === 'gamemode') {
+      accumulatedIntent.gamemode = accumulatedIntent.gamemode === value ? null : value;
+    } else if (type === 'features') {
+      if (accumulatedIntent.features.includes(value)) {
+        accumulatedIntent.features = accumulatedIntent.features.filter(f => f !== value);
+      } else {
+        accumulatedIntent.features.push(value);
+      }
+    } else if (type === 'size') {
+      accumulatedIntent.size = accumulatedIntent.size === value ? null : value;
+    }
+    
+    updateRefinementUI(accumulatedIntent);
+    
+    // Re-run search with updated intent
+    const newQuery = buildSearchQuery(accumulatedIntent);
+    if (newQuery) {
+      searchServers(newQuery, accumulatedIntent);
+    }
+  }
+
+  // Handle main search input
+  async function handleSearch() {
+    const query = input.value.trim();
+    if (!query) return;
+    
+    btn.disabled = true;
+    btn.querySelector('.btn-text').textContent = '...';
+    
+    // Parse intent from this query
+    accumulatedIntent = parseIntent(query);
+    
+    // Check if intent is clear
+    if (isIntentClear(accumulatedIntent)) {
+      // Intent is clear - search immediately
+      chat.classList.add('hidden');
+      const searchQuery = buildSearchQuery(accumulatedIntent);
+      await searchServers(searchQuery, accumulatedIntent);
+    } else {
+      // Need clarification - start chat flow
+      chat.classList.remove('hidden');
+      results.classList.add('hidden');
+      refinements.classList.add('hidden');
+      messages.innerHTML = ''; // Clear previous chat
+      
+      // Show welcome and first question
+      const question = generateQuestion(accumulatedIntent);
+      addMessage(question, false);
+      conversationHistory.push({ role: 'assistant', content: question });
+      
+      chatInput.focus();
+    }
+    
+    btn.disabled = false;
+    btn.querySelector('.btn-text').textContent = 'Find';
+  }
+
+  // Handle chat response during clarification
   async function handleChatResponse() {
     const text = chatInput.value.trim();
     if (!text) return;
@@ -276,47 +497,42 @@ const { id = 'smart-search' } = Astro.props;
     
     showThinking();
     
-    // Combine original query + clarification
-    const combinedQuery = conversationHistory.map(m => m.content).join(' ');
-    const newIntent = parseIntentLocal(combinedQuery);
+    // Parse new info from response
+    accumulatedIntent = parseIntent(text, accumulatedIntent);
     
-    hideThinking();
-    
-    if (isIntentClear(newIntent)) {
-      const searchQuery = buildQuery(newIntent, combinedQuery);
-      addMessage(`Got it! Searching for servers matching "${searchQuery}"...`, false);
-      setTimeout(() => searchServers(searchQuery), 500);
+    // Check if intent is now clear
+    if (isIntentClear(accumulatedIntent)) {
+      // Intent is clear - proceed to search
+      hideThinking();
+      const confirmation = `Got it! You want a ${accumulatedIntent.gamemode || ''} ${accumulatedIntent.game} server${accumulatedIntent.features.length ? ' with ' + accumulatedIntent.features.join(', ') : ''}${accumulatedIntent.size ? ' (' + accumulatedIntent.size + ' community)' : ''}. Searching now...`;
+      addMessage(confirmation, false);
+      
+      setTimeout(async () => {
+        chat.classList.add('hidden');
+        const searchQuery = buildSearchQuery(accumulatedIntent);
+        await searchServers(searchQuery, accumulatedIntent);
+      }, 800);
     } else {
-      // Still unclear, ask another question
-      const followUp = newIntent.gamemode 
-        ? "Any specific features you want? (economy, claims, events, etc.)"
-        : "And what size community do you prefer? (small, medium, large)";
-      addMessage(followUp, false);
-      conversationHistory.push({ role: 'assistant', content: followUp });
+      // Still unclear - ask another question
+      hideThinking();
+      const question = generateQuestion(accumulatedIntent);
+      addMessage(question, false);
+      conversationHistory.push({ role: 'assistant', content: question });
     }
   }
 
-  // Main search handler
-  async function handleSearch() {
-    const query = input.value.trim();
-    if (!query) return;
-    
-    btn.disabled = true;
-    btn.querySelector('.btn-text').textContent = '...';
-    
-    const intent = parseIntentLocal(query);
-    
-    if (isIntentClear(intent)) {
-      // Intent is clear, search immediately
-      const searchQuery = buildQuery(intent, query);
-      searchServers(searchQuery);
-    } else {
-      // Need clarification
-      await askAIForClarification(query, intent);
-    }
-    
-    btn.disabled = false;
-    btn.querySelector('.btn-text').textContent = 'Find';
+  // Reset search state
+  function resetSearch() {
+    accumulatedIntent = { game: null, gamemode: null, features: [], size: null };
+    conversationHistory = [];
+    hasSearched = false;
+    currentSearchQuery = '';
+    results.innerHTML = '';
+    results.classList.add('hidden');
+    refinements.classList.add('hidden');
+    chat.classList.add('hidden');
+    messages.innerHTML = '';
+    input.value = '';
   }
 
   // Event listeners
@@ -333,4 +549,502 @@ const { id = 'smart-search' } = Astro.props;
       handleSearch();
     });
   });
+
+  // Refinement chips
+  container.querySelectorAll('.refine-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const type = chip.closest('.refinement-chips')?.dataset.refine;
+      const value = chip.dataset.value;
+      if (type && value) {
+        handleRefinement(type, value);
+      }
+    });
+  });
+
+  // Clear refinements button
+  document.getElementById(`${id}-clear-refinements`)?.addEventListener('click', () => {
+    accumulatedIntent = { game: null, gamemode: null, features: [], size: null };
+    updateRefinementUI(accumulatedIntent);
+    // Re-run search with cleared filters
+    const searchQuery = buildSearchQuery(accumulatedIntent);
+    if (searchQuery) {
+      searchServers(searchQuery, accumulatedIntent);
+    }
+  });
+
+  // Apply refinements button (redundant since we apply immediately, but good UX)
+  document.getElementById(`${id}-apply-refinements`)?.addEventListener('click', () => {
+    const searchQuery = buildSearchQuery(accumulatedIntent);
+    if (searchQuery) {
+      searchServers(searchQuery, accumulatedIntent);
+    }
+  });
 </script>
+
+<style>
+  .smart-intent-search {
+    width: 100%;
+  }
+
+  .search-container {
+    margin-bottom: 1rem;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #1a1a25;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+  }
+
+  .search-icon {
+    color: #8892b0;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: #8892b0;
+  }
+
+  .search-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #00f5d4;
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .search-button:hover {
+    background: #00d4b8;
+  }
+
+  .search-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .suggestion-label {
+    color: #8892b0;
+    font-size: 0.875rem;
+  }
+
+  .suggestion-chip {
+    padding: 0.25rem 0.75rem;
+    background: #1a1a25;
+    border: 1px solid #2a2a3a;
+    border-radius: 20px;
+    color: #8892b0;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .suggestion-chip:hover {
+    background: #2a2a3a;
+    color: #fff;
+  }
+
+  .chat-container {
+    margin-top: 1rem;
+    background: #12121a;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .chat-container.hidden,
+  .refinements-container.hidden,
+  .results-container.hidden {
+    display: none;
+  }
+
+  .chat-messages {
+    padding: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .message.user {
+    flex-direction: row-reverse;
+  }
+
+  .message-avatar {
+    width: 2rem;
+    height: 2rem;
+    background: #00f5d4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  .message.user .message-bubble {
+    background: #00f5d4;
+    color: #0a0a0f;
+  }
+
+  .message-bubble {
+    padding: 0.75rem 1rem;
+    background: #1a1a25;
+    border-radius: 12px;
+    color: #fff;
+    max-width: 80%;
+    line-height: 1.5;
+  }
+
+  .message-bubble strong {
+    color: #00f5d4;
+  }
+
+  .dots {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .dots span {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: #00f5d4;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out both;
+  }
+
+  .dots span:nth-child(1) { animation-delay: -0.32s; }
+  .dots span:nth-child(2) { animation-delay: -0.16s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+  }
+
+  .chat-input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid #2a2a3a;
+    background: #0a0a0f;
+  }
+
+  .chat-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: #1a1a25;
+    border: 1px solid #2a2a3a;
+    border-radius: 8px;
+    color: #fff;
+    outline: none;
+  }
+
+  .chat-input:focus {
+    border-color: #00f5d4;
+  }
+
+  .chat-send {
+    padding: 0.75rem 1.25rem;
+    background: #00f5d4;
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .chat-send:hover {
+    background: #00d4b8;
+  }
+
+  .results-container {
+    margin-top: 1.5rem;
+  }
+
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .results-header h3 {
+    color: #fff;
+    font-size: 1.25rem;
+  }
+
+  .search-terms {
+    color: #8892b0;
+    font-size: 0.875rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .server-card {
+    display: block;
+    padding: 1rem;
+    background: #12121a;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .server-card:hover {
+    border-color: #00f5d4;
+    transform: translateY(-2px);
+  }
+
+  .server-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .server-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #1a1a25;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .server-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .server-info h4 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .server-info p {
+    color: #8892b0;
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .server-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .status.online {
+    color: #22c55e;
+  }
+
+  .status.offline {
+    color: #ef4444;
+  }
+
+  .votes {
+    color: #ff3864;
+  }
+
+  .server-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .tag {
+    padding: 0.125rem 0.5rem;
+    background: #1a1a25;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #8892b0;
+  }
+
+  .loading-state,
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #2a2a3a;
+    border-top-color: #00f5d4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .empty-state h4 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: #8892b0;
+  }
+
+  .retry-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #00f5d4;
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .refinements-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #12121a;
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+  }
+
+  .refinements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .refinements-header h4 {
+    color: #fff;
+    margin: 0;
+  }
+
+  .clear-refinements {
+    padding: 0.375rem 0.75rem;
+    background: transparent;
+    border: 1px solid #2a2a3a;
+    border-radius: 6px;
+    color: #8892b0;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .clear-refinements:hover {
+    border-color: #ff3864;
+    color: #ff3864;
+  }
+
+  .refinement-section {
+    margin-bottom: 1rem;
+  }
+
+  .refinement-label {
+    display: block;
+    color: #8892b0;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .refinement-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .refine-chip {
+    padding: 0.5rem 0.875rem;
+    background: #1a1a25;
+    border: 1px solid #2a2a3a;
+    border-radius: 20px;
+    color: #8892b0;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .refine-chip:hover {
+    background: #2a2a3a;
+    color: #fff;
+  }
+
+  .refine-chip.active {
+    background: #00f5d4;
+    color: #0a0a0f;
+    border-color: #00f5d4;
+    font-weight: 600;
+  }
+
+  .apply-refinements-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #00f5d4;
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .apply-refinements-btn:hover {
+    background: #00d4b8;
+  }
+</style>

@@ -1,7 +1,8 @@
 ---
-// Search Page - SEO-optimized with query parameters
+// Search Page - Intent-driven search with AI clarification
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+import SmartIntentSearch from '../components/SmartIntentSearch.astro';
 
 // Get search query from URL
 const query = Astro.url.searchParams.get('q') || '';
@@ -50,111 +51,38 @@ const sort = Astro.url.searchParams.get('sort') || 'relevance';
         }
       </p>
 
-      <!-- Search Bar -->
+      <!-- Intent-Driven Smart Search -->
       <div class="mb-8">
-        <form id="search-form" class="flex gap-2">
-          <div class="flex-1 relative">
-            <input 
-              type="search" 
-              id="search-input"
-              name="q"
-              value={query}
-              placeholder="Search servers by name, IP, or tag..."
-              class="w-full px-4 py-4 pl-12 bg-[#12121a] border border-[#2a2a3a] text-white placeholder-[#8892b0] rounded-lg focus:outline-none focus:border-[#00f5d4] transition-colors text-lg"
-              autocomplete="off"
-            />
-            <svg 
-              class="absolute left-4 top-1/2 -translate-y-1/2 text-[#8892b0]" 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="20" 
-              height="20" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              stroke-width="2"
+        <SmartIntentSearch id="intent-search" />
+      </div>
+      
+      <!-- Or browse by category -->
+      <div class="mb-8">
+        <p class="text-[#8892b0] text-sm mb-3">Popular categories:</p>
+        <div class="flex flex-wrap gap-2">
+          {['PvP', 'Survival', 'Skyblock', 'Factions', 'SMP', 'Minigames', 'Hardcore', 'Creative'].map(tag => (
+            <a 
+              href={`/search?q=${tag.toLowerCase()}`}
+              class="px-3 py-1.5 bg-[#12121a] border border-[#2a2a3a] text-[#00f5d4] rounded-lg text-sm hover:bg-[#2a2a3a] transition-colors"
             >
-              <circle cx="11" cy="11" r="8"/>
-              <path d="m21 21-4.3-4.3"/>
-            </svg>
-          </div>
-          <button 
-            type="submit"
-            class="px-8 py-4 bg-[#00f5d4] text-[#0a0a0f] font-bold hover:bg-[#00d4b8] transition-colors rounded-lg"
-          >
-            Search
-          </button>
-        </form>
-        
-        <!-- Popular Searches -->
-        {!query && (
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="text-sm text-[#8892b0]">Popular:</span>
-            {['PvP', 'Survival', 'Skyblock', 'Factions', 'SMP', 'Minigames'].map(tag => (
-              <a 
-                href={`/search?q=${tag.toLowerCase()}`}
-                class="text-sm text-[#00f5d4] hover:underline"
-              >
-                {tag}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <!-- Filters -->
-      <div class="flex flex-wrap gap-3 mb-6">
-        <select id="sort-select" class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-white rounded-lg">
-          <option value="relevance">Sort by Relevance</option>
-          <option value="votes">Most Voted</option>
-          <option value="players">Most Players</option>
-          <option value="recent">Recently Added</option>
-        </select>
-        
-        <select id="edition-select" class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-white rounded-lg">
-          <option value="">Any Edition</option>
-          <option value="java">Java Edition</option>
-          <option value="bedrock">Bedrock Edition</option>
-        </select>
-        
-        <select id="version-select" class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-white rounded-lg">
-          <option value="">Any Version</option>
-          <option value="1.21">1.21</option>
-          <option value="1.20">1.20.x</option>
-          <option value="1.19">1.19.x</option>
-          <option value="1.8">1.8.x (PvP)</option>
-        </select>
-      </div>
-
-      <!-- Results Count -->
-      <p id="results-count" class="text-[#8892b0] mb-4">Loading results...</p>
-
-      <!-- Results Grid -->
-      <div id="search-results" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="col-span-full text-center py-12">
-          <div class="w-12 h-12 border-4 border-[#2a2a3a] border-t-[#00f5d4] rounded-full animate-spin mx-auto mb-4"></div>
-          <p class="text-[#8892b0]">Searching servers...</p>
+              {tag}
+            </a>
+          ))}
         </div>
       </div>
 
-      <!-- Pagination -->
-      <div id="pagination" class="flex justify-center gap-2 mt-8 hidden">
-        <button id="prev-btn" class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-[#8892b0] hover:text-white transition-colors rounded-lg disabled:opacity-50">
-          ← Previous
-        </button>
-        <span id="page-info" class="px-4 py-2 text-[#8892b0]">Page 1</span>
-        <button id="next-btn" class="px-4 py-2 bg-[#12121a] border border-[#2a2a3a] text-[#8892b0] hover:text-white transition-colors rounded-lg disabled:opacity-50">
-          Next →
-        </button>
-      </div>
-
-      <!-- No Results -->
-      <div id="no-results" class="hidden text-center py-16">
-        <div class="w-16 h-16 bg-[#2a2a3a] text-[#8892b0] rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        </div>
-        <h2 class="text-xl font-bold text-white mb-2">No servers found</h2>
-        <p class="text-[#8892b0] mb-4">Try different keywords or filters.</p>
-        <a href="/minecraft" class="text-[#00f5d4] hover:underline">Browse all servers</a>
+      <!-- Browse all link -->
+      <div class="text-center py-8">
+        <p class="text-[#8892b0] mb-4">Want to browse instead?</p>
+        <a 
+          href="/minecraft" 
+          class="inline-flex items-center gap-2 px-6 py-3 bg-[#12121a] border border-[#2a2a3a] text-white rounded-lg hover:border-[#00f5d4] transition-colors"
+        >
+          <span>View All Servers</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
       </div>
     </main>
 
@@ -166,186 +94,4 @@ const sort = Astro.url.searchParams.get('sort') || 'relevance';
   </div>
 </Layout>
 
-<script define:vars={{ initialQuery: query }}>
-  import { createClient } from '@supabase/supabase-js';
-  
-  const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.FUiWKe-SwTnKEQFmVzN4L46E5gP2qXl1MnEkrzjWfSw';
-  
-  let currentPage = 1;
-  const perPage = 12;
-  let totalResults = 0;
-  let currentQuery = initialQuery;
-  
-  async function performSearch() {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const container = document.getElementById('search-results');
-    const pagination = document.getElementById('pagination');
-    const noResults = document.getElementById('no-results');
-    const countDisplay = document.getElementById('results-count');
-    
-    const sort = document.getElementById('sort-select').value;
-    const edition = document.getElementById('edition-select').value;
-    const version = document.getElementById('version-select').value;
-    
-    // Build query
-    let query = supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, status, players_online, max_players, ping_ms, created_at', { count: 'exact' });
-    
-    // Text search
-    if (currentQuery) {
-      query = query.or(`name.ilike.%${currentQuery}%,description.ilike.%${currentQuery}%,ip.ilike.%${currentQuery}%`);
-    }
-    
-    // Edition filter
-    if (edition) {
-      query = query.eq('edition', edition);
-    }
-    
-    // Version filter
-    if (version) {
-      query = query.ilike('version', `%${version}%`);
-    }
-    
-    // Sorting
-    if (sort === 'votes') {
-      query = query.order('vote_count', { ascending: false });
-    } else if (sort === 'players') {
-      query = query.order('players_online', { ascending: false });
-    } else if (sort === 'recent') {
-      query = query.order('created_at', { ascending: false });
-    } else {
-      // Relevance - prioritize exact name matches
-      query = query.order('vote_count', { ascending: false });
-    }
-    
-    // Pagination
-    query = query.range((currentPage - 1) * perPage, currentPage * perPage - 1);
-    
-    const { data: servers, error, count } = await query;
-    
-    if (error) {
-      container.innerHTML = `<div class="col-span-full text-center py-12 text-[#ff3864]">Error searching: ${error.message}</div>`;
-      return;
-    }
-    
-    totalResults = count || 0;
-    countDisplay.textContent = `${totalResults} server${totalResults !== 1 ? 's' : ''} found`;
-    
-    // Update URL without reload (for SEO sharing)
-    if (currentQuery) {
-      const newUrl = `/search?q=${encodeURIComponent(currentQuery)}${sort !== 'relevance' ? `&sort=${sort}` : ''}${edition ? `&edition=${edition}` : ''}${version ? `&version=${version}` : ''}`;
-      window.history.replaceState({}, '', newUrl);
-    }
-    
-    if (!servers || servers.length === 0) {
-      container.classList.add('hidden');
-      noResults.classList.remove('hidden');
-      pagination.classList.add('hidden');
-      return;
-    }
-    
-    container.classList.remove('hidden');
-    noResults.classList.add('hidden');
-    
-    // Render results
-    container.innerHTML = servers.map(server => {
-      const isOnline = server.status === 'online';
-      
-      return `
-        <a href="/servers/${server.id}" class="block p-5 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] transition-colors group rounded-lg">
-          <div class="flex items-start gap-4 mb-4">
-            ${server.icon ? `
-              <div class="relative">
-                <img src="${server.icon}" alt="" class="w-14 h-14 rounded bg-[#1a1a25]" loading="lazy" />
-                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} border-2 border-[#12121a]"></span>
-              </div>
-            ` : `
-              <div class="relative">
-                <div class="w-14 h-14 rounded bg-[#1a1a25] flex items-center justify-center">
-                  <span class="text-[#00f5d4] text-2xl">⛏</span>
-                </div>
-                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'} border-2 border-[#12121a]"></span>
-              </div>
-            `}
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 mb-1">
-                <h3 class="font-bold text-white group-hover:text-[#00f5d4] transition-colors truncate text-lg">${server.name}</h3>
-                ${isOnline ? `<span class="px-2 py-0.5 bg-green-500/20 text-green-500 text-xs font-bold rounded">ONLINE</span>` : ''}
-              </div>
-              <p class="text-sm text-[#8892b0] font-mono truncate">${server.ip}:${server.port}</p>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-4 mb-3 text-sm">
-            <span class="flex items-center gap-1 ${isOnline ? 'text-green-500' : 'text-[#8892b0]'}">
-              <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-500'}"></span>
-              ${isOnline ? `${server.players_online || 0}/${server.max_players || 0}` : 'Offline'}
-            </span>
-            <span class="flex items-center gap-1 text-[#ff3864]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
-              ${server.vote_count || 0}
-            </span>
-          </div>
-          
-          ${server.description ? `<p class="text-[#8892b0] text-sm line-clamp-2 mb-3">${server.description.slice(0, 100)}...</p>` : ''}
-          
-          <div class="flex flex-wrap gap-1">
-            ${(server.tags || []).slice(0, 3).map(t => `<span class="text-xs px-2 py-1 bg-[#1a1a25] text-[#8892b0] rounded">${t}</span>`).join('')}
-          </div>
-        </a>
-      `;
-    }).join('');
-    
-    // Pagination
-    const totalPages = Math.ceil(totalResults / perPage);
-    document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
-    document.getElementById('prev-btn').disabled = currentPage === 1;
-    document.getElementById('next-btn').disabled = currentPage >= totalPages;
-    
-    if (totalPages > 1) {
-      pagination.classList.remove('hidden');
-    }
-  }
-  
-  // Event listeners
-  document.getElementById('search-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    currentQuery = document.getElementById('search-input').value.trim();
-    currentPage = 1;
-    performSearch();
-  });
-  
-  document.getElementById('sort-select')?.addEventListener('change', () => {
-    currentPage = 1;
-    performSearch();
-  });
-  
-  document.getElementById('edition-select')?.addEventListener('change', () => {
-    currentPage = 1;
-    performSearch();
-  });
-  
-  document.getElementById('version-select')?.addEventListener('change', () => {
-    currentPage = 1;
-    performSearch();
-  });
-  
-  document.getElementById('prev-btn')?.addEventListener('click', () => {
-    if (currentPage > 1) {
-      currentPage--;
-      performSearch();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
-  
-  document.getElementById('next-btn')?.addEventListener('click', () => {
-    currentPage++;
-    performSearch();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  
-  // Initial search
-  performSearch();
-</script>
+<!-- SmartIntentSearch component handles all search logic -->
