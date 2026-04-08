@@ -252,8 +252,13 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   function openWizard() {
+    console.log('Opening wizard, wizard element:', wizard, 'searchBar element:', searchBar);
+    if (!wizard) {
+      console.error('Wizard element not found!');
+      return;
+    }
     wizard.classList.remove('hidden');
-    searchBar.classList.add('hidden');
+    if (searchBar) searchBar.classList.add('hidden');
     
     // Determine starting step based on parsed intent
     if (!intent.game) {
@@ -339,8 +344,10 @@ const { id = 'smart-search' } = Astro.props;
 
   // Event handlers
   btn?.addEventListener('click', () => {
+    console.log('Find button clicked, btn:', btn, 'input:', input);
     intent.originalQuery = input.value.trim();
     intent = { ...intent, ...parseIntent(intent.originalQuery) };
+    console.log('Parsed intent:', intent);
     openWizard();
   });
 
