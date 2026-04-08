@@ -46,42 +46,40 @@ Rules:
 - Be conversational and friendly, use emojis occasionally
 - If unclear, ask ONE specific question (don't overwhelm)`;
 
-// Call local Gemma via Ollama
-async function callGemma(messages: any[]) {
-  // Build conversation prompt
-  const conversation = messages.map(m => 
-    m.role === 'assistant' ? `Assistant: ${m.content}` : `User: ${m.content}`
-  ).join('\n');
-  
-  const fullPrompt = `${SYSTEM_PROMPT}\n\n${conversation}\nAssistant:`;
-
-  const response = await fetch('http://localhost:11434/api/generate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'gemma:2b',
-      prompt: fullPrompt,
-      stream: false,
-      options: {
-        temperature: 0.7,
-        num_predict: 500
-      }
-    })
-  });
+// Call Gemma via Google AI Studio API
+async function callGemma(messages: any[], apiKey: string) {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemma-2-27b-it:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
+          { role: 'model', parts: [{ text: 'I understand. I will help users find game servers by extracting their intent and asking clarifying questions when needed. I will respond in the specified JSON format.' }] },
+          ...messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }))
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 500,
+          responseMimeType: 'application/json'
+        }
+      })
+    }
+  );
 
   if (!response.ok) {
-    throw new Error(`Ollama error: ${response.status}`);
+    const error = await response.text();
+    throw new Error(`AI Studio API error: ${error}`);
   }
 
   const data = await response.json();
-  const text = data.response || '';
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
   
   try {
-    // Try to extract JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
-    }
+    // Try to parse as JSON
+    return JSON.parse(text);
+  } catch {
     // Fallback: wrap text in expected format
     return {
       response: text || "I understand you're looking for a server. Could you tell me which game and gamemode you prefer?",
@@ -89,17 +87,13 @@ async function callGemma(messages: any[]) {
       searchQuery: null,
       extractedIntent: { game: null, gamemode: null, features: [], size: null }
     };
-  } catch {
-    return {
-      response: text || "Tell me more about what you're looking for!",
-      readyToSearch: false,
-      searchQuery: null,
-      extractedIntent: { game: null, gamemode: null, features: [], size: null }
-    };
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const env = (locals as any)?.runtime?.env || {};
+  const apiKey = env.GEMMA_API_KEY || env.GEMINI_API_KEY;
+
   try {
     const { message, history = [] } = await request.json();
 
@@ -117,12 +111,28 @@ export const POST: APIRoute = async ({ request }) => {
     ];
 
     let result;
-    try {
-      // Try local Gemma first
-      result = await callGemma(conversation);
-    } catch (ollamaError) {
-      console.log('Ollama failed, falling back to keyword extraction:', ollamaError);
-      // Fallback to keyword extraction
+    if (apiKey) {
+      try {
+        // Try AI Studio Gemma
+        result = await callGemma(conversation, apiKey);
+      } catch (apiError) {
+        console.log('AI Studio API failed, falling back to keyword extraction:', apiError);
+        // Fallback to keyword extraction
+        const lower = message.toLowerCase();
+        const hasGamemode = /\b(survival|pvp|skyblock|creative|hardcore|minigames|smp|modded)\b/.test(lower);
+        const hasFeatures = (lower.match(/\b(economy|claims|community|discord|pvp|events|bedrock|shops|towny|quests)\b/g) || []).length;
+        
+        result = {
+          response: hasGamemode || hasFeatures >= 2 
+            ? "I'll search for servers matching what you described!"
+            : "I want to make sure I find the right server for you! 🎮\n\nWhat gamemode interests you? (survival, pvp, skyblock, creative, minigames, hardcore)",
+          readyToSearch: hasGamemode || hasFeatures >= 2,
+          searchQuery: hasGamemode || hasFeatures >= 2 ? `minecraft ${message}` : null,
+          extractedIntent: { game: 'minecraft', gamemode: null, features: [], size: null }
+        };
+      }
+    } else {
+      // No API key, use keyword extraction
       const lower = message.toLowerCase();
       const hasGamemode = /\b(survival|pvp|skyblock|creative|hardcore|minigames|smp|modded)\b/.test(lower);
       const hasFeatures = (lower.match(/\b(economy|claims|community|discord|pvp|events|bedrock|shops|towny|quests)\b/g) || []).length;
@@ -144,7 +154,7 @@ export const POST: APIRoute = async ({ request }) => {
   } catch (err: any) {
     console.error('Wizard chat error:', err);
     return new Response(JSON.stringify({ 
-      response: "Gemma AI is waking up... try again in a moment! Or tell me directly: what game and gamemode? (e.g., 'Minecraft survival')",
+      response: "Gemma AI is having issues... try again in a moment! Or tell me directly: what game and gamemode? (e.g., 'Minecraft survival')",
       readyToSearch: false,
       searchQuery: null,
       fallback: true
