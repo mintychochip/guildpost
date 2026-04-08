@@ -130,6 +130,14 @@ func loadConfig() *Config {
 	}
 }
 
+func init() {
+	// Set default poll interval to 60 seconds (1 minute) if not specified
+	if os.Getenv("POLL_INTERVAL") == "" {
+		os.Setenv("POLL_INTERVAL", "60")
+	}
+}
+}
+
 func getEnv(key, defaultVal string) string {
 	if val := os.Getenv(key); val != "" {
 		return val
