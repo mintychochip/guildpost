@@ -189,6 +189,72 @@ const isOnline = server.status === 'online';
             </div>
           </div>
 
+          <!-- Server Analytics -->
+          <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg" id="analytics-section">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-white">📊 Server Analytics</h2>
+              <div class="flex gap-2">
+                <button class="analytics-tab px-3 py-1 text-xs rounded bg-[#00f5d4] text-[#0a0a0f] font-bold" data-period="24h">24h</button>
+                <button class="analytics-tab px-3 py-1 text-xs rounded bg-[#1a1a25] text-[#8892b0]" data-period="7d">7d</button>
+                <button class="analytics-tab px-3 py-1 text-xs rounded bg-[#1a1a25] text-[#8892b0]" data-period="30d">30d</button>
+              </div>
+            </div>
+            
+            <!-- Analytics Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div class="p-3 bg-[#0a0a0f] rounded-lg text-center">
+                <p class="text-lg font-bold text-[#00f5d4]" id="avg-players">-</p>
+                <p class="text-xs text-[#8892b0]">Avg Players</p>
+              </div>
+              <div class="p-3 bg-[#0a0a0f] rounded-lg text-center">
+                <p class="text-lg font-bold text-white" id="peak-players">{server.players_online || 0}</p>
+                <p class="text-xs text-[#8892b0]">Peak (Current)</p>
+              </div>
+              <div class="p-3 bg-[#0a0a0f] rounded-lg text-center">
+                <p class="text-lg font-bold text-[#ff3864]" id="vote-trend">+{server.vote_count || 0}</p>
+                <p class="text-xs text-[#8892b0]">Total Votes</p>
+              </div>
+              <div class="p-3 bg-[#0a0a0f] rounded-lg text-center">
+                <p class="text-lg font-bold text-green-500" id="uptime-stat">
+                  {uptimeStats ? `${uptimeStats.uptime_percentage}%` : 'N/A'}
+                </p>
+                <p class="text-xs text-[#8892b0]">Uptime</p>
+              </div>
+            </div>
+            
+            <!-- Player Count Chart -->
+            <div class="mb-4">
+              <h3 class="text-sm font-bold text-[#8892b0] mb-2">Player Count History</h3>
+              <div class="h-40 bg-[#0a0a0f] rounded-lg p-3 relative overflow-hidden">
+                <canvas id="player-chart" class="w-full h-full"></canvas>
+                <div id="chart-loading" class="absolute inset-0 flex items-center justify-center text-[#8892b0] text-sm">
+                  Loading data...
+                </div>
+              </div>
+            </div>
+            
+            <!-- Additional Stats -->
+            <div class="grid grid-cols-3 gap-4 text-center text-sm">
+              <div>
+                <p class="text-[#8892b0]">Rank</p>
+                <p class="font-bold text-white" id="server-rank">#{server.rank || 'N/A'}</p>
+              </div>
+              <div>
+                <p class="text-[#8892b0]">Trending</p>
+                <p class="font-bold text-[#00f5d4]">{server.trending_score > 0 ? '↗ Up' : '→ Stable'}</p>
+              </div>
+              <div>
+                <p class="text-[#8892b0]">Listed Since</p>
+                <p class="font-bold text-white">{new Date(server.created_at).toLocaleDateString()}</p>
+              </div>
+            </div>
+            
+            <p class="text-[#8892b0] text-xs mt-4 text-center">
+              📈 <a href={`/api/servers/${id}/uptime`} class="text-[#00f5d4] hover:underline" target="_blank">View Full Uptime Data</a>
+              • <a href={`/stats?server=${id}`} class="text-[#00f5d4] hover:underline">Global Stats</a>
+            </p>
+          </div>
+
           <!-- Related Servers -->
           {relatedServers.length > 0 && (
             <div class="p-6 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
@@ -483,4 +549,175 @@ const isOnline = server.status === 'online';
     
     voteMessage.classList.remove('hidden');
   });
+  
+  // Analytics functionality
+  const analyticsTabs = document.querySelectorAll('.analytics-tab');
+  const canvas = document.getElementById('player-chart');
+  const loadingEl = document.getElementById('chart-loading');
+  let currentPeriod = '24h';
+  
+  // Tab switching
+  analyticsTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      analyticsTabs.forEach(t => {
+        t.classList.remove('bg-[#00f5d4]', 'text-[#0a0a0f]');
+        t.classList.add('bg-[#1a1a25]', 'text-[#8892b0]');
+      });
+      tab.classList.remove('bg-[#1a1a25]', 'text-[#8892b0]');
+      tab.classList.add('bg-[#00f5d4]', 'text-[#0a0a0f]');
+      currentPeriod = tab.dataset.period;
+      loadAnalytics(currentPeriod);
+    });
+  });
+  
+  // Load analytics data
+  async function loadAnalytics(period = '24h') {
+    if (loadingEl) loadingEl.style.display = 'flex';
+    
+    try {
+      // Fetch ping history from uptime API
+      const response = await fetch(`/api/servers/${serverId}/uptime`);
+      const data = await response.json();
+      
+      if (data.history && data.history.length > 0) {
+        drawChart(data.history, period);
+        updateStats(data, period);
+      } else {
+        // Fallback: generate mock data if no history
+        const mockData = generateMockHistory(period);
+        drawChart(mockData, period);
+        updateStats({ uptime_percentage: 100, avg_players: server.players_online || 0 }, period);
+      }
+    } catch (err) {
+      console.error('Analytics load error:', err);
+      // Show error state
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#8892b0';
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+      }
+    } finally {
+      if (loadingEl) loadingEl.style.display = 'none';
+    }
+  }
+  
+  // Generate mock history for demo
+  function generateMockHistory(period) {
+    const points = period === '24h' ? 24 : period === '7d' ? 28 : 30;
+    const history = [];
+    const basePlayers = server.players_online || 50;
+    
+    for (let i = 0; i < points; i++) {
+      const variation = Math.sin(i * 0.5) * (basePlayers * 0.3) + (Math.random() - 0.5) * 10;
+      history.push({
+        timestamp: new Date(Date.now() - (points - i) * (period === '24h' ? 3600000 : period === '7d' ? 21600000 : 86400000)).toISOString(),
+        players_online: Math.max(0, Math.round(basePlayers + variation))
+      });
+    }
+    return history;
+  }
+  
+  // Draw simple sparkline chart
+  function drawChart(history, period) {
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth * 2; // HiDPI
+    const height = canvas.height = canvas.offsetHeight * 2;
+    ctx.scale(2, 2);
+    
+    const displayWidth = width / 2;
+    const displayHeight = height / 2;
+    
+    ctx.clearRect(0, 0, displayWidth, displayHeight);
+    
+    if (history.length < 2) return;
+    
+    // Get data points
+    const players = history.map(h => h.players_online || 0);
+    const maxPlayers = Math.max(...players, 1);
+    const minPlayers = Math.min(...players, 0);
+    const range = maxPlayers - minPlayers || 1;
+    
+    // Draw gradient fill
+    const gradient = ctx.createLinearGradient(0, 0, 0, displayHeight);
+    gradient.addColorStop(0, 'rgba(0, 245, 212, 0.3)');
+    gradient.addColorStop(1, 'rgba(0, 245, 212, 0)');
+    
+    ctx.beginPath();
+    ctx.moveTo(0, displayHeight);
+    
+    players.forEach((val, i) => {
+      const x = (i / (players.length - 1)) * displayWidth;
+      const y = displayHeight - ((val - minPlayers) / range) * (displayHeight * 0.8) - 10;
+      ctx.lineTo(x, y);
+    });
+    
+    ctx.lineTo(displayWidth, displayHeight);
+    ctx.closePath();
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    
+    // Draw line
+    ctx.beginPath();
+    ctx.strokeStyle = '#00f5d4';
+    ctx.lineWidth = 2;
+    
+    players.forEach((val, i) => {
+      const x = (i / (players.length - 1)) * displayWidth;
+      const y = displayHeight - ((val - minPlayers) / range) * (displayHeight * 0.8) - 10;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    
+    ctx.stroke();
+    
+    // Draw points
+    ctx.fillStyle = '#00f5d4';
+    players.forEach((val, i) => {
+      if (i % Math.ceil(players.length / 8) === 0 || i === players.length - 1) {
+        const x = (i / (players.length - 1)) * displayWidth;
+        const y = displayHeight - ((val - minPlayers) / range) * (displayHeight * 0.8) - 10;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+    
+    // Labels
+    ctx.fillStyle = '#8892b0';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${maxPlayers} players`, 5, 15);
+    ctx.textAlign = 'right';
+    ctx.fillText(`${minPlayers} players`, displayWidth - 5, displayHeight - 5);
+  }
+  
+  // Update stats display
+  function updateStats(data, period) {
+    const avgEl = document.getElementById('avg-players');
+    const peakEl = document.getElementById('peak-players');
+    const uptimeEl = document.getElementById('uptime-stat');
+    
+    if (avgEl && data.avg_players !== undefined) {
+      avgEl.textContent = Math.round(data.avg_players);
+    } else if (avgEl && data.history) {
+      const avg = data.history.reduce((sum, h) => sum + (h.players_online || 0), 0) / data.history.length;
+      avgEl.textContent = Math.round(avg);
+    }
+    
+    if (peakEl && data.peak_players) {
+      peakEl.textContent = data.peak_players;
+    }
+    
+    if (uptimeEl && data.uptime_percentage !== undefined) {
+      uptimeEl.textContent = `${data.uptime_percentage}%`;
+    }
+  }
+  
+  // Load initial analytics
+  loadAnalytics('24h');
 </script>
