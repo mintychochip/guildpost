@@ -1,0 +1,46 @@
+{
+  "brand": {
+    "name": "GuildPost",
+    "tagline": "The best place to find and share Minecraft servers"
+  },
+  "nav": {
+    "minecraft": "Minecraft",
+    "wizard": "Wizard",
+    "discover": "Discover",
+    "premium": "Premium",
+    "uptime": "Uptime",
+    "events": "Events",
+    "bannerMaker": "Banner Maker",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "dashboard": "Dashboard",
+    "addServer": "Add Server",
+    "compare": "Compare",
+    "more": "More"
+  },
+  "actions": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
+  },
+  "footer": {
+    "copyright": "© 2026 GuildPost. Not affiliated with Mojang or Microsoft.",
+    "madeWith": "Made with",
+    "by": "by"
+  }
+}

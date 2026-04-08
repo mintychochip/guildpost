@@ -1,0 +1,38 @@
+{
+  "title": "Add Your Server",
+  "subtitle": "List your Minecraft server on GuildPost and reach thousands of players",
+  "form": {
+    "serverName": "Server Name",
+    "serverNamePlaceholder": "Enter your server name",
+    "serverIP": "Server IP/Domain",
+    "serverIPPlaceholder": "play.myserver.com",
+    "port": "Port",
+    "portPlaceholder": "25565",
+    "description": "Description",
+    "descriptionPlaceholder": "Tell players what makes your server special...",
+    "tags": "Tags",
+    "tagsPlaceholder": "survival, pvp, factions (comma separated)",
+    "version": "Minecraft Version",
+    "gamemode": "Gamemode",
+    "serverType": "Server Type",
+    "serverTypeJava": "Java Edition",
+    "serverTypeBedrock": "Bedrock Edition",
+    "serverTypeBoth": "Cross-Platform"
+  },
+  "steps": {
+    "basic": "Basic Info",
+    "details": "Details",
+    "verify": "Verify",
+    "publish": "Publish"
+  },
+  "validation": {
+    "nameRequired": "Server name is required",
+    "ipRequired": "Server IP is required",
+    "invalidIP": "Invalid IP address or domain",
+    "descriptionTooShort": "Description must be at least 50 characters"
+  },
+  "success": {
+    "title": "Server Submitted!",
+    "message": "Your server has been submitted and will appear in the listings shortly."
+  }
+}

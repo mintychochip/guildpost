@@ -1,0 +1,54 @@
+{
+  "status": {
+    "online": "Online",
+    "offline": "Offline",
+    "unknown": "Unknown",
+    "checking": "Checking..."
+  },
+  "players": {
+    "online": "Online Players",
+    "max": "Max Players",
+    "slots": "Player Slots",
+    "empty": "No players online"
+  },
+  "details": {
+    "ip": "Server IP",
+    "port": "Port",
+    "version": "Version",
+    "type": "Server Type",
+    "gamemode": "Gamemode",
+    "tags": "Tags",
+    "description": "Description",
+    "motd": "Message of the Day"
+  },
+  "actions": {
+    "join": "Join Server",
+    "copyIP": "Copy IP",
+    "vote": "Vote",
+    "claim": "Claim Server",
+    "favorite": "Add to Favorites",
+    "share": "Share",
+    "report": "Report"
+  },
+  "listings": {
+    "title": "Minecraft Servers",
+    "subtitle": "Find the best Minecraft multiplayer servers",
+    "searchPlaceholder": "Search servers...",
+    "noResults": "No servers found",
+    "loadMore": "Load More",
+    "sortBy": "Sort by",
+    "filterBy": "Filter by"
+  },
+  "categories": {
+    "all": "All Servers",
+    "survival": "Survival",
+    "creative": "Creative",
+    "pvp": "PvP",
+    "factions": "Factions",
+    "skyblock": "Skyblock",
+    "minigames": "Minigames",
+    "roleplay": "Roleplay",
+    "modded": "Modded",
+    "vanilla": "Vanilla"
+  }
+}

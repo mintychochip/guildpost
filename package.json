@@ -6,7 +6,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "i18n:init": "crowdin init",
+    "i18n:upload": "crowdin upload sources",
+    "i18n:download": "crowdin download",
+    "i18n:sync": "npm run i18n:upload && npm run i18n:download",
+    "i18n:status": "crowdin status"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",
@@ -19,6 +24,7 @@
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.0",
+    "@crowdin/cli": "^4.0.0",
     "tailwindcss": "^3.4.0"
   }
 }

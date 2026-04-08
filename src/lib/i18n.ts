@@ -1,6 +1,7 @@
 /**
  * Internationalization (i18n) System for GuildPost
  * Supports multiple languages with RTL foundation
+ * Crowdin-managed translations
  */
 
 // Available locales configuration
@@ -30,6 +31,57 @@ export const defaultLocale: LocaleCode = 'en';
 
 // Local storage key
 const STORAGE_KEY = 'guildpost-locale';
+
+// Cache for loaded translations
+const translationCache: Record<LocaleCode, Record<string, any>> = {
+  en: {},
+  es: {},
+  fr: {},
+  de: {},
+  it: {},
+  pt: {},
+  ru: {},
+  zh: {},
+  ja: {},
+  ko: {},
+  ar: {},
+  he: {}
+};
+
+/**
+ * Load translations for a locale
+ */
+export async function loadTranslations(locale: LocaleCode): Promise<void> {
+  if (translationCache[locale] && Object.keys(translationCache[locale]).length > 0) {
+    return; // Already loaded
+  }
+  
+  try {
+    const namespaces = ['common', 'server', 'submit'];
+    const translations: Record<string, any> = {};
+    
+    for (const ns of namespaces) {
+      try {
+        const response = await fetch(`/locales/${locale}/${ns}.json`);
+        if (response.ok) {
+          translations[ns] = await response.json();
+        }
+      } catch (e) {
+        // Fall back to English if translation file doesn't exist
+        if (locale !== 'en') {
+          const fallbackResponse = await fetch(`/locales/en/${ns}.json`);
+          if (fallbackResponse.ok) {
+            translations[ns] = await fallbackResponse.json();
+          }
+        }
+      }
+    }
+    
+    translationCache[locale] = translations;
+  } catch (e) {
+    console.error('Failed to load translations:', e);
+  }
+}
 
 /**
  * Get the text direction for a locale
@@ -71,81 +123,50 @@ export function getStoredLocale(): LocaleCode {
 }
 
 /**
- * Simple translation function (keys hardcoded for now)
+ * Save locale to localStorage
+ */
+export function saveLocale(locale: LocaleCode): void {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(STORAGE_KEY, locale);
+  }
+}
+
+/**
+ * Translation function with namespace support
+ * Usage: t('nav.minecraft') or t('server.status.online')
  */
 export function t(key: string, locale: LocaleCode = defaultLocale): string {
-  const translations: Record<string, Record<LocaleCode, string>> = {
-    'nav.minecraft': {
-      en: 'Minecraft', es: 'Minecraft', fr: 'Minecraft', de: 'Minecraft',
-      it: 'Minecraft', pt: 'Minecraft', ru: 'Minecraft', zh: 'Minecraft',
-      ja: 'Minecraft', ko: 'Minecraft', ar: 'ماينكرافت', he: 'מיינקראפט'
-    },
-    'nav.wizard': {
-      en: 'Wizard', es: 'Asistente', fr: 'Assistant', de: 'Assistent',
-      it: 'Assistente', pt: 'Assistente', ru: 'Мастер', zh: '向导',
-      ja: 'ウィザード', ko: '마법사', ar: 'مساعد', he: 'אשף'
-    },
-    'nav.discover': {
-      en: 'Discover', es: 'Descubrir', fr: 'Découvrir', de: 'Entdecken',
-      it: 'Scopri', pt: 'Descobrir', ru: 'Обзор', zh: '发现',
-      ja: '発見', ko: '발견', ar: 'اكتشاف', he: 'גלה'
-    },
-    'nav.premium': {
-      en: 'Premium', es: 'Premium', fr: 'Premium', de: 'Premium',
-      it: 'Premium', pt: 'Premium', ru: 'Премиум', zh: '高级版',
-      ja: 'プレミアム', ko: '프리미엄', ar: 'مميز', he: 'פרימיום'
-    },
-    'nav.uptime': {
-      en: 'Uptime', es: 'Tiempo Activo', fr: 'Uptime', de: 'Uptime',
-      it: 'Uptime', pt: 'Uptime', ru: 'Аптайм', zh: '在线时间',
-      ja: '稼働時間', ko: '가동 시간', ar: 'وقت التشغيل', he: 'זמן פעילות'
-    },
-    'nav.events': {
-      en: 'Events', es: 'Eventos', fr: 'Événements', de: 'Events',
-      it: 'Eventi', pt: 'Eventos', ru: 'События', zh: '活动',
-      ja: 'イベント', ko: '이벤트', ar: 'الأحداث', he: 'אירועים'
-    },
-    'nav.bannerMaker': {
-      en: 'Banner Maker', es: 'Creador de Banners', fr: 'Créateur de Bannières',
-      de: 'Banner-Ersteller', it: 'Creatore di Banner', pt: 'Criador de Banners',
-      ru: 'Создатель Баннеров', zh: '横幅制作器', ja: 'バナーメーカー',
-      ko: '배너 제작자', ar: 'صانع اللافتات', he: 'יוצר באנרים'
-    },
-    'nav.categories': {
-      en: 'Categories', es: 'Categorías', fr: 'Catégories', de: 'Kategorien',
-      it: 'Categorie', pt: 'Categorias', ru: 'Категории', zh: '分类',
-      ja: 'カテゴリー', ko: '카테고리', ar: 'الفئات', he: 'קטגוריות'
-    },
-    'nav.favorites': {
-      en: 'Favorites', es: 'Favoritos', fr: 'Favoris', de: 'Favoriten',
-      it: 'Preferiti', pt: 'Favoritos', ru: 'Избранное', zh: '收藏',
-      ja: 'お気に入り', ko: '즐겨찾기', ar: 'المفضلة', he: 'מועדפים'
-    },
-    'nav.dashboard': {
-      en: 'Dashboard', es: 'Panel', fr: 'Tableau de Bord', de: 'Dashboard',
-      it: 'Dashboard', pt: 'Painel', ru: 'Панель', zh: '仪表板',
-      ja: 'ダッシュボード', ko: '대시보드', ar: 'لوحة التحكم', he: 'לוח מחוונים'
-    },
-    'nav.addServer': {
-      en: 'Add Server', es: 'Añadir Servidor', fr: 'Ajouter un Serveur',
-      de: 'Server Hinzufügen', it: 'Aggiungi Server', pt: 'Adicionar Servidor',
-      ru: 'Добавить Сервер', zh: '添加服务器', ja: 'サーバーを追加',
-      ko: '서버 추가', ar: 'إضافة خادم', he: 'הוסף שרת'
-    },
-    'nav.compare': {
-      en: 'Compare', es: 'Comparar', fr: 'Comparer', de: 'Vergleichen',
-      it: 'Confronta', pt: 'Comparar', ru: 'Сравнить', zh: '比较',
-      ja: '比較', ko: '비교', ar: 'مقارنة', he: 'השווה'
-    },
-    'common.more': {
-      en: 'More', es: 'Más', fr: 'Plus', de: 'Mehr',
-      it: 'Altro', pt: 'Mais', ru: 'Ещё', zh: '更多',
-      ja: 'もっと', ko: '더보기', ar: 'المزيد', he: 'עוד'
-    }
-  };
+  const [namespace, ...path] = key.split('.');
+  const translations = translationCache[locale];
   
-  const translation = translations[key]?.[locale] || translations[key]?.[defaultLocale];
-  return translation || key;
+  if (!translations || !translations[namespace]) {
+    // Fall back to English
+    const enTranslations = translationCache['en'];
+    if (enTranslations && enTranslations[namespace]) {
+      let value = enTranslations[namespace];
+      for (const segment of path) {
+        value = value?.[segment];
+      }
+      return value || key;
+    }
+    return key;
+  }
+  
+  let value = translations[namespace];
+  for (const segment of path) {
+    value = value?.[segment];
+  }
+  
+  return value || key;
+}
+
+/**
+ * Initialize i18n on the client side
+ */
+export async function initI18n(locale?: LocaleCode): Promise<void> {
+  const targetLocale = locale || getStoredLocale();
+  await loadTranslations(targetLocale);
+  await loadTranslations('en'); // Always load English as fallback
 }
 
 /**
