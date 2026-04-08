@@ -161,8 +161,63 @@ const categories = [
                   
                   <!-- Analytics Tab -->
                   <div class="tab-content hidden" data-tab="analytics" data-server-id={server.id}>
-                    <div class="p-8 bg-[#0a0a0f] rounded text-center">
-                      <p class="text-[#8892b0]">📈 Analytics coming soon</p>
+                    <div class="space-y-6" data-server-id={server.id}>
+                      <!-- Analytics Period Selector -->
+                      <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">Server Analytics</h3>
+                        <div class="flex gap-2">
+                          <button class="analytics-period-btn px-3 py-1.5 text-sm rounded bg-[#00f5d4] text-[#0a0a0f] font-medium" data-period="24h" data-server-id={server.id}>24h</button>
+                          <button class="analytics-period-btn px-3 py-1.5 text-sm rounded bg-[#1a1a25] text-[#8892b0]" data-period="7d" data-server-id={server.id}>7d</button>
+                          <button class="analytics-period-btn px-3 py-1.5 text-sm rounded bg-[#1a1a25] text-[#8892b0]" data-period="30d" data-server-id={server.id}>30d</button>
+                        </div>
+                      </div>
+                      
+                      <!-- Stats Grid -->
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center">
+                          <p class="text-2xl font-bold text-[#00f5d4]" id={`analytics-avg-${server.id}`}>-</p>
+                          <p class="text-xs text-[#8892b0]">Avg Players</p>
+                        </div>
+                        <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center">
+                          <p class="text-2xl font-bold text-white" id={`analytics-peak-${server.id}`}>-</p>
+                          <p class="text-xs text-[#8892b0]">Peak Players</p>
+                        </div>
+                        <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center">
+                          <p class="text-2xl font-bold text-[#ff3864]" id={`analytics-uptime-${server.id}`}>-</p>
+                          <p class="text-xs text-[#8892b0]">Uptime %</p>
+                        </div>
+                        <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-center">
+                          <p class="text-2xl font-bold text-yellow-500" id={`analytics-votes-${server.id}`}>-</p>
+                          <p class="text-xs text-[#8892b0]">Votes (period)</p>
+                        </div>
+                      </div>
+                      
+                      <!-- Player Count Chart -->
+                      <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg">
+                        <h4 class="text-sm font-bold text-[#8892b0] mb-3">Player Count History</h4>
+                        <div class="h-48 relative">
+                          <canvas id={`player-chart-${server.id}`} class="w-full h-full"></canvas>
+                          <div id={`chart-loading-${server.id}`} class="absolute inset-0 flex items-center justify-center text-[#8892b0] text-sm bg-[#0a0a0f]">
+                            Loading...
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Vote History Chart -->
+                      <div class="p-4 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg">
+                        <h4 class="text-sm font-bold text-[#8892b0] mb-3">Vote History</h4>
+                        <div class="h-40 relative">
+                          <canvas id={`vote-chart-${server.id}`} class="w-full h-full"></canvas>
+                          <div id={`vote-chart-loading-${server.id}`} class="absolute inset-0 flex items-center justify-center text-[#8892b0] text-sm bg-[#0a0a0f]">
+                            Loading...
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Last Updated -->
+                      <p class="text-xs text-[#8892b0] text-center" id={`analytics-updated-${server.id}`}>
+                        Loading analytics data...
+                      </p>
                     </div>
                   </div>
                   
@@ -1705,4 +1760,194 @@ Email: admin@yourserver.com"
       showToast('Failed to vote', 'error');
     }
   };
+  
+  // Analytics Tab Functionality
+  document.querySelectorAll('.tab-btn[data-tab="analytics"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const serverId = btn.getAttribute('data-server-id');
+      if (serverId) {
+        loadAnalytics(serverId, '24h');
+      }
+    });
+  });
+  
+  // Analytics period buttons
+  document.querySelectorAll('.analytics-period-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const period = btn.getAttribute('data-period');
+      const serverId = btn.getAttribute('data-server-id');
+      
+      if (!serverId || !period) return;
+      
+      // Update active button state
+      document.querySelectorAll(`.analytics-period-btn[data-server-id="${serverId}"]`).forEach(b => {
+        b.classList.remove('bg-[#00f5d4]', 'text-[#0a0a0f]', 'font-medium');
+        b.classList.add('bg-[#1a1a25]', 'text-[#8892b0]');
+      });
+      btn.classList.remove('bg-[#1a1a25]', 'text-[#8892b0]');
+      btn.classList.add('bg-[#00f5d4]', 'text-[#0a0a0f]', 'font-medium');
+      
+      loadAnalytics(serverId, period);
+    });
+  });
+  
+  async function loadAnalytics(serverId: string, range: string) {
+    // Show loading states
+    const playerLoading = document.getElementById(`chart-loading-${serverId}`);
+    const voteLoading = document.getElementById(`vote-chart-loading-${serverId}`);
+    if (playerLoading) playerLoading.style.display = 'flex';
+    if (voteLoading) voteLoading.style.display = 'flex';
+    
+    try {
+      const response = await fetch(`/api/servers/${encodeURIComponent(serverId)}/analytics?range=${range}`);
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to load analytics');
+      }
+      
+      // Update stats
+      const avgEl = document.getElementById(`analytics-avg-${serverId}`);
+      const peakEl = document.getElementById(`analytics-peak-${serverId}`);
+      const uptimeEl = document.getElementById(`analytics-uptime-${serverId}`);
+      const votesEl = document.getElementById(`analytics-votes-${serverId}`);
+      const updatedEl = document.getElementById(`analytics-updated-${serverId}`);
+      
+      if (avgEl) avgEl.textContent = data.summary?.avg_players?.toString() || '0';
+      if (peakEl) peakEl.textContent = data.summary?.peak_players?.toString() || '0';
+      if (uptimeEl) uptimeEl.textContent = data.summary?.uptime_percentage?.toString() + '%' || '0%';
+      if (votesEl) votesEl.textContent = data.summary?.total_votes?.toString() || '0';
+      if (updatedEl) updatedEl.textContent = `Last updated: ${new Date(data.generated_at).toLocaleString()}`;
+      
+      // Draw player chart
+      drawPlayerChart(serverId, data.charts?.player_history);
+      
+      // Draw vote chart
+      drawVoteChart(serverId, data.charts?.vote_history);
+      
+    } catch (err: any) {
+      console.error('Analytics error:', err);
+      const updatedEl = document.getElementById(`analytics-updated-${serverId}`);
+      if (updatedEl) updatedEl.textContent = 'Error loading analytics data';
+    } finally {
+      if (playerLoading) playerLoading.style.display = 'none';
+      if (voteLoading) voteLoading.style.display = 'none';
+    }
+  }
+  
+  function drawPlayerChart(serverId: string, chartData: any) {
+    const canvas = document.getElementById(`player-chart-${serverId}`) as HTMLCanvasElement;
+    if (!canvas || !chartData?.data?.length) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    const padding = 20;
+    
+    const data = chartData.data;
+    const maxValue = Math.max(...data, 1);
+    const minValue = Math.min(...data, 0);
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+    
+    // Draw grid lines
+    ctx.strokeStyle = '#2a2a3a';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const y = padding + (height - 2 * padding) * (i / 4);
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(width - padding, y);
+      ctx.stroke();
+    }
+    
+    // Draw line chart
+    if (data.length > 1) {
+      ctx.strokeStyle = '#00f5d4';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      data.forEach((value: number, index: number) => {
+        const x = padding + (width - 2 * padding) * (index / (data.length - 1));
+        const y = height - padding - (height - 2 * padding) * ((value - minValue) / (maxValue - minValue));
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      
+      ctx.stroke();
+      
+      // Fill area under line
+      ctx.fillStyle = 'rgba(0, 245, 212, 0.1)';
+      ctx.lineTo(width - padding, height - padding);
+      ctx.lineTo(padding, height - padding);
+      ctx.closePath();
+      ctx.fill();
+    }
+    
+    // Draw data points
+    data.forEach((value: number, index: number) => {
+      const x = padding + (width - 2 * padding) * (index / (data.length - 1 || 1));
+      const y = height - padding - (height - 2 * padding) * ((value - minValue) / (maxValue - minValue || 1));
+      
+      ctx.fillStyle = '#00f5d4';
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+  
+  function drawVoteChart(serverId: string, chartData: any) {
+    const canvas = document.getElementById(`vote-chart-${serverId}`) as HTMLCanvasElement;
+    if (!canvas || !chartData?.data?.length) return;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    
+    const width = canvas.width;
+    const height = canvas.height;
+    const padding = 20;
+    
+    const data = chartData.data;
+    const maxValue = Math.max(...data, 1);
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+    
+    // Draw bars
+    const barWidth = (width - 2 * padding) / data.length * 0.8;
+    const spacing = (width - 2 * padding) / data.length * 0.2;
+    
+    data.forEach((value: number, index: number) => {
+      const x = padding + index * (barWidth + spacing) + spacing / 2;
+      const barHeight = (value / maxValue) * (height - 2 * padding);
+      const y = height - padding - barHeight;
+      
+      // Draw bar
+      ctx.fillStyle = '#ff3864';
+      ctx.fillRect(x, y, barWidth, barHeight);
+      
+      // Draw value on top
+      if (value > 0) {
+        ctx.fillStyle = '#fff';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(value.toString(), x + barWidth / 2, y - 5);
+      }
+    });
+  }
 </script>
