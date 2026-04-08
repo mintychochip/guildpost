@@ -1,8 +1,0 @@
-Add version compatibility features: Bedrock/Java/Cross-play platform badges and filters
-
-- Add platform filter dropdown (Java/Bedrock/Cross-play) on /minecraft page
-- Add platform badges to server cards with icons (Java coffee cup, Bedrock block, Cross-play globe)
-- Update server detail page with platform badge and Version Compatibility section
-- Add Bedrock and Cross-Play to category filters
-- Create database migration for edition field with auto-detection
-- Fix astro.config.mjs to externalize stripe dependency

@@ -744,6 +744,163 @@ Email: admin@yourserver.com"
       if (tab === 'events') {
         loadEvents(serverId);
       }
+      
+      // Load rules if rules tab
+      if (tab === 'rules') {
+        loadRules(serverId);
+      }
+    });
+  });
+  
+  // Rules management
+  let rulesContent: {[key: string]: string} = {};
+  
+  async function loadRules(serverId: string) {
+    const container = document.querySelector(`.rules-container[data-server-id="${serverId}"]`);
+    const editor = container?.querySelector('.rules-editor') as HTMLTextAreaElement;
+    const preview = container?.querySelector('.rules-preview .prose') as HTMLElement;
+    const charCount = container?.querySelector('.rules-char-count') as HTMLElement;
+    const lastSaved = container?.querySelector('.rules-last-saved') as HTMLElement;
+    
+    if (!editor || !preview) return;
+    
+    try {
+      const response = await fetch(`/api/servers/${serverId}/rules`);
+      const data = await response.json();
+      
+      if (response.ok) {
+        const content = data.exists ? data.content : '';
+        rulesContent[serverId] = content;
+        editor.value = content;
+        
+        if (data.exists && data.updated_at) {
+          lastSaved.textContent = new Date(data.updated_at).toLocaleString();
+        }
+        
+        updateRulesPreview(serverId, content);
+        updateCharCount(serverId);
+      }
+    } catch (err) {
+      console.error('Failed to load rules:', err);
+    }
+  }
+  
+  function parseMarkdown(text: string): string {
+    if (!text) return '';
+    
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+      .replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/~~(.*?)~~/g, '<del>$1</del>')
+      .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
+      .replace(/^---$/gim, '<hr />')
+      .replace(/^- \[x\] (.*$)/gim, '<div><input type="checkbox" checked disabled> $1</div>')
+      .replace(/^- \[ \] (.*$)/gim, '<div><input type="checkbox" disabled> $1</div>')
+      .replace(/^\* (.*$)/gim, '<ul><li>$1</li></ul>')
+      .replace(/^- (.*$)/gim, '<ul><li>$1</li></ul>')
+      .replace(/^\d+\. (.*$)/gim, '<ol><li>$1</li></ol>')
+      .replace(/<\/ul>\s*<ul>/g, '')
+      .replace(/<\/ol>\s*<ol>/g, '')
+      .split('\n')
+      .map(line => {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('<h') || trimmed.startsWith('<ul') || trimmed.startsWith('<ol') || 
+            trimmed.startsWith('<pre') || trimmed.startsWith('<blockquote') || trimmed === '') {
+          return line;
+        }
+        return '<p>' + line + '</p>';
+      })
+      .join('\n');
+  }
+  
+  function updateRulesPreview(serverId: string, content: string) {
+    const container = document.querySelector(`.rules-container[data-server-id="${serverId}"]`);
+    const preview = container?.querySelector('.rules-preview .prose') as HTMLElement;
+    if (preview) {
+      preview.innerHTML = content ? parseMarkdown(content) : '<p class="text-[#8892b0] italic">Start typing to see preview...</p>';
+    }
+  }
+  
+  function updateCharCount(serverId: string) {
+    const container = document.querySelector(`.rules-container[data-server-id="${serverId}"]`);
+    const editor = container?.querySelector('.rules-editor') as HTMLTextAreaElement;
+    const charCount = container?.querySelector('.rules-char-count') as HTMLElement;
+    if (editor && charCount) {
+      const count = editor.value.length;
+      charCount.textContent = `${count.toLocaleString()} / 50,000 characters`;
+      if (count > 50000) {
+        charCount.classList.add('text-[#ff3864]');
+      } else {
+        charCount.classList.remove('text-[#ff3864]');
+      }
+    }
+  }
+  
+  // Editor input handling
+  document.querySelectorAll('.rules-editor').forEach(editor => {
+    editor.addEventListener('input', (e) => {
+      const textarea = e.target as HTMLTextAreaElement;
+      const serverId = textarea.getAttribute('data-server-id');
+      if (serverId) {
+        rulesContent[serverId] = textarea.value;
+        updateRulesPreview(serverId, textarea.value);
+        updateCharCount(serverId);
+      }
+    });
+  });
+  
+  // Save rules button
+  document.querySelectorAll('.save-rules-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const serverId = btn.getAttribute('data-server-id');
+      if (!serverId) return;
+      
+      const content = rulesContent[serverId] || '';
+      
+      if (content.length > 50000) {
+        showToast('Content is too long (max 50,000 characters)', 'error');
+        return;
+      }
+      
+      btn.disabled = true;
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<span class="animate-spin">↻</span> Saving...';
+      
+      try {
+        const response = await fetch(`/api/servers/${serverId}/rules`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          showToast('Rules saved successfully!', 'success');
+          const lastSaved = document.querySelector(`.rules-last-saved[data-server-id="${serverId}"]`);
+          if (lastSaved) {
+            lastSaved.textContent = new Date().toLocaleString();
+          }
+        } else {
+          showToast(data.error || 'Failed to save rules', 'error');
+        }
+      } catch (err: any) {
+        showToast('Failed to save rules', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
     });
   });
   
