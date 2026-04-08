@@ -159,10 +159,11 @@ export const POST: APIRoute = async ({ params, request, locals }) => {
   }
   
   const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  // Use service role key for writes, fall back to anon key
+  const supabaseKey = env.SUPABASE_SERVICE_KEY || env.SUPABASE_ANON_KEY;
   
   if (!supabaseKey) {
-    return new Response(JSON.stringify({ error: 'Service unavailable' }), {
+    return new Response(JSON.stringify({ error: 'Service unavailable - missing API key' }), {
       status: 503,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });

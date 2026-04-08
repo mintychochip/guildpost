@@ -133,15 +133,42 @@ const { serverId, reviews: initialReviews = [] } = Astro.props;
     document.getElementById('write-review-btn').classList.remove('hidden');
   });
   
+  // Toast fallback if not defined globally
+  function showToast(message, type = 'info') {
+    if (window.showToast) {
+      window.showToast(message, type);
+    } else {
+      console.log(`[${type}] ${message}`);
+      alert(message);
+    }
+  }
+  
   // Submit review
   document.getElementById('submit-review')?.addEventListener('click', async () => {
-    const name = document.getElementById('reviewer-name').value;
-    const text = document.getElementById('review-text').value;
+    const nameInput = document.getElementById('reviewer-name');
+    const textInput = document.getElementById('review-text');
+    const name = nameInput?.value?.trim();
+    const text = textInput?.value?.trim();
     
-    if (!name || !selectedRating) {
-      showToast('Please enter your name and rating', 'error');
+    if (!name) {
+      showToast('Please enter your Minecraft username', 'error');
       return;
     }
+    
+    if (!selectedRating || selectedRating < 1 || selectedRating > 5) {
+      showToast('Please select a rating (1-5 stars)', 'error');
+      return;
+    }
+    
+    if (!text || text.length < 10) {
+      showToast('Review must be at least 10 characters', 'error');
+      return;
+    }
+    
+    const submitBtn = document.getElementById('submit-review');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Submitting...';
+    submitBtn.disabled = true;
     
     try {
       const response = await fetch(`/api/servers/${serverId}/reviews`, {
@@ -154,15 +181,26 @@ const { serverId, reviews: initialReviews = [] } = Astro.props;
         })
       });
       
+      const result = await response.json().catch(() => ({ error: 'Invalid response' }));
+      
       if (response.ok) {
         showToast('Review submitted! Pending approval.', 'success');
         document.getElementById('review-form').classList.add('hidden');
         document.getElementById('write-review-btn').classList.remove('hidden');
+        // Clear form
+        nameInput.value = '';
+        textInput.value = '';
+        selectedRating = 0;
+        updateStars();
       } else {
-        showToast('Failed to submit review', 'error');
+        showToast(result.error || `Failed to submit review (${response.status})`, 'error');
       }
     } catch (err) {
-      showToast('Error submitting review', 'error');
+      console.error('Review submit error:', err);
+      showToast('Network error - please try again', 'error');
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
     }
   });
 </script>
