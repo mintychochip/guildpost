@@ -56,12 +56,34 @@ const { id = 'smart-search' } = Astro.props;
         <div class="progress-bar">
           <div class="progress-fill" id={`${id}-progress`}></div>
         </div>
-        <span class="progress-text">Question <span id={`${id}-step-num`}>1</span> of 3</span>
+        <span class="progress-text">Question <span id={`${id}-step-num`}>1</span> of 4</span>
       </div>
 
-      <!-- Step 1: Gamemode -->
+      <!-- Step 1: Game Selection -->
       <div class="wizard-step active" data-step="1">
-        <h4>What gamemode interests you?</h4>
+        <h4>Which game are you looking for?</h4>
+        <div class="option-grid">
+          <button class="option-card featured" data-answer="minecraft">
+            <span class="option-icon">⛏️</span>
+            <span class="option-label">Minecraft</span>
+            <span class="option-badge">1,000+ servers</span>
+          </button>
+          <button class="option-card disabled" data-answer="rust" disabled>
+            <span class="option-icon">🦀</span>
+            <span class="option-label">Rust</span>
+            <span class="option-badge soon">Soon</span>
+          </button>
+          <button class="option-card disabled" data-answer="cs2" disabled>
+            <span class="option-icon">🎯</span>
+            <span class="option-label">CS2</span>
+            <span class="option-badge soon">Soon</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Gamemode (Minecraft) -->
+      <div class="wizard-step" data-step="2">
+        <h4>What Minecraft gamemode?</h4>
         <div class="option-grid">
           <button class="option-card" data-answer="survival">
             <span class="option-icon">🛡️</span>
@@ -87,15 +109,23 @@ const { id = 'smart-search' } = Astro.props;
             <span class="option-icon">🔥</span>
             <span class="option-label">Hardcore</span>
           </button>
+          <button class="option-card" data-answer="smp">
+            <span class="option-icon">🤝</span>
+            <span class="option-label">SMP</span>
+          </button>
+          <button class="option-card" data-answer="modded">
+            <span class="option-icon">⚙️</span>
+            <span class="option-label">Modded</span>
+          </button>
           <button class="option-card skip" data-answer="any">
             <span class="option-icon">🤷</span>
-            <span class="option-label">Not sure</span>
+            <span class="option-label">Any mode</span>
           </button>
         </div>
       </div>
 
-      <!-- Step 2: Features -->
-      <div class="wizard-step" data-step="2">
+      <!-- Step 3: Features -->
+      <div class="wizard-step" data-step="3">
         <h4>What features do you want?</h4>
         <p class="step-subtitle">Select all that apply</p>
         <div class="feature-chips">
@@ -114,8 +144,8 @@ const { id = 'smart-search' } = Astro.props;
         <button class="continue-btn" id={`${id}-continue-features`}>Continue</button>
       </div>
 
-      <!-- Step 3: Size -->
-      <div class="wizard-step" data-step="3">
+      <!-- Step 4: Size -->
+      <div class="wizard-step" data-step="4">
         <h4>What community size?</h4>
         <div class="size-options">
           <button class="size-card" data-answer="small">
@@ -178,6 +208,7 @@ const { id = 'smart-search' } = Astro.props;
   // State
   let wizardData = {
     originalQuery: '',
+    game: null,
     gamemode: null,
     features: [],
     size: null,
@@ -243,6 +274,7 @@ const { id = 'smart-search' } = Astro.props;
   // Show wizard
   function showWizard(query, intent) {
     wizardData.originalQuery = query;
+    wizardData.game = intent.game || 'minecraft'; // default to minecraft
     wizardData.gamemode = intent.gamemode;
     wizardData.features = [...intent.features];
     wizardData.size = intent.size;
@@ -251,14 +283,25 @@ const { id = 'smart-search' } = Astro.props;
     originalQuery.textContent = `"${query}"`;
     wizard.classList.remove('hidden');
     
-    // Pre-select if detected
+    // Pre-select game (minecraft by default since it's the only live one)
+    const gameBtn = wizard.querySelector(`[data-step="1"] [data-answer="${wizardData.game}"]`);
+    if (gameBtn && !gameBtn.disabled) {
+      gameBtn.classList.add('selected');
+      // Auto-advance to gamemode if game is pre-selected and valid
+      if (wizardData.game === 'minecraft') {
+        setTimeout(() => goToStep(2), 300);
+      }
+    }
+
+    // Pre-select gamemode if detected (on step 2)
     if (intent.gamemode) {
-      const btn = wizard.querySelector(`[data-step="1"] [data-answer="${intent.gamemode}"]`);
+      const btn = wizard.querySelector(`[data-step="2"] [data-answer="${intent.gamemode}"]`);
       if (btn) btn.classList.add('selected');
     }
 
+    // Pre-select features (on step 3)
     intent.features.forEach(f => {
-      const btn = wizard.querySelector(`[data-step="2"] [data-answer="${f}"]`);
+      const btn = wizard.querySelector(`[data-step="3"] [data-answer="${f}"]`);
       if (btn) btn.classList.add('selected');
     });
 
@@ -271,15 +314,15 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   function resetWizard() {
-    wizardData = { originalQuery: '', gamemode: null, features: [], size: null, currentStep: 1 };
+    wizardData = { originalQuery: '', game: null, gamemode: null, features: [], size: null, currentStep: 1 };
     wizard.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
     wizard.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
     wizard.querySelector('[data-step="1"]').classList.add('active');
   }
 
   function updateWizardUI() {
-    // Progress
-    const pct = (wizardData.currentStep / 3) * 100;
+    // Progress (4 steps total)
+    const pct = (wizardData.currentStep / 4) * 100;
     progressFill.style.width = `${pct}%`;
     stepNum.textContent = wizardData.currentStep;
 
@@ -296,7 +339,7 @@ const { id = 'smart-search' } = Astro.props;
 
   // Build final query
   function buildQuery() {
-    const parts = ['minecraft'];
+    const parts = [wizardData.game || 'minecraft'];
     if (wizardData.gamemode && wizardData.gamemode !== 'any') parts.push(wizardData.gamemode);
     parts.push(...wizardData.features);
     if (wizardData.size && wizardData.size !== 'any') parts.push(wizardData.size);
@@ -373,18 +416,32 @@ const { id = 'smart-search' } = Astro.props;
   input?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearch(); });
   closeWizard?.addEventListener('click', hideWizard);
 
-  // Wizard step 1 (gamemode)
+  // Wizard step 1 (game selection)
   wizard.querySelectorAll('[data-step="1"] .option-card').forEach(card => {
     card.addEventListener('click', () => {
+      if (card.disabled) return;
       wizard.querySelectorAll('[data-step="1"] .option-card').forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
-      wizardData.gamemode = card.dataset.answer;
+      wizardData.game = card.dataset.answer;
+      
+      // For now only Minecraft is live, so auto-advance to gamemode
+      // When Rust/CS2 launch, we'll show different gamemode options per game
       setTimeout(() => goToStep(2), 200);
     });
   });
 
-  // Wizard step 2 (features) - multi-select
-  wizard.querySelectorAll('[data-step="2"] .feature-toggle').forEach(toggle => {
+  // Wizard step 2 (gamemode)
+  wizard.querySelectorAll('[data-step="2"] .option-card').forEach(card => {
+    card.addEventListener('click', () => {
+      wizard.querySelectorAll('[data-step="2"] .option-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      wizardData.gamemode = card.dataset.answer;
+      setTimeout(() => goToStep(3), 200);
+    });
+  });
+
+  // Wizard step 3 (features) - multi-select
+  wizard.querySelectorAll('[data-step="3"] .feature-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('selected');
       const answer = toggle.dataset.answer;
@@ -396,10 +453,10 @@ const { id = 'smart-search' } = Astro.props;
     });
   });
 
-  continueFeatures?.addEventListener('click', () => goToStep(3));
+  continueFeatures?.addEventListener('click', () => goToStep(4));
 
-  // Wizard step 3 (size)
-  wizard.querySelectorAll('[data-step="3"] .size-card').forEach(card => {
+  // Wizard step 4 (size)
+  wizard.querySelectorAll('[data-step="4"] .size-card').forEach(card => {
     card.addEventListener('click', () => {
       wizardData.size = card.dataset.answer;
       goToStep('searching');
