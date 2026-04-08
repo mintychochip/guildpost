@@ -14,7 +14,8 @@
     "astro": "^5.0.0",
     "chart.js": "^4.5.1",
     "crypto-js": "^4.2.0",
-    "minecraft-server-util": "^5.4.2"
+    "minecraft-server-util": "^5.4.2",
+    "stripe": "^14.5.0"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.0",

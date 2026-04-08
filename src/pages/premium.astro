@@ -79,15 +79,15 @@ const tiers = [
 const faqs = [
   {
     q: 'How do I upgrade my server?',
-    a: 'Navigate to your server dashboard, click "Upgrade" and select your tier. You\'ll be redirected to our secure payment processor.',
+    a: 'Click the Upgrade button on any tier, enter your server ID and email, then complete payment via Stripe. Your server will be upgraded instantly.',
   },
   {
     q: 'Can I downgrade or cancel anytime?',
-    a: 'Yes, you can downgrade or cancel at any time from your dashboard. Your premium features remain active until the end of your billing period.',
+    a: 'Yes, you can cancel anytime from your dashboard or via the customer portal. Your premium features remain active until the end of your billing period.',
   },
   {
     q: 'What payment methods are accepted?',
-    a: 'We accept all major credit cards (Visa, MasterCard, American Express) and PayPal. Stripe handles all payments securely.',
+    a: 'We accept all major credit cards (Visa, MasterCard, American Express). Stripe handles all payments securely.',
   },
   {
     q: 'How does priority placement work?',
@@ -98,6 +98,15 @@ const faqs = [
     a: 'We don\'t offer free trials, but you can upgrade for a month and cancel anytime if you\'re not satisfied.',
   },
 ];
+
+// Server ID from URL params for pre-filling
+default export async function getServerSideProps({ request }: { request: Request }) {
+  const url = new URL(request.url);
+  const serverId = url.searchParams.get('server') || '';
+  return { props: { serverId } };
+}
+
+const { serverId: initialServerId = '' } = Astro.props;
 
 const testimonials = [
   {
@@ -223,16 +232,30 @@ const testimonials = [
                 ))}
               </div>
 
-              <a 
-                href={tier.ctaLink}
-                class={`block w-full py-3 px-4 text-center font-bold rounded-lg transition-colors ${
-                  tier.highlight 
-                    ? 'bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f]' 
-                    : 'bg-[#1a1a25] hover:bg-[#2a2a3a] text-white border border-[#2a2a3a]'
-                }`}
-              >
-                {tier.cta}
-              </a>
+              {tier.id === 'free' ? (
+                <a 
+                  href={tier.ctaLink}
+                  class={`block w-full py-3 px-4 text-center font-bold rounded-lg transition-colors ${
+                    tier.highlight 
+                      ? 'bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f]' 
+                      : 'bg-[#1a1a25] hover:bg-[#2a2a3a] text-white border border-[#2a2a3a]'
+                  }`}
+                >
+                  {tier.cta}
+                </a>
+              ) : (
+                <button 
+                  class={`checkout-btn block w-full py-3 px-4 text-center font-bold rounded-lg transition-colors ${
+                    tier.highlight 
+                      ? 'bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f]' 
+                      : 'bg-[#a855f7] hover:bg-[#9333ea] text-white'
+                  }`}
+                  data-tier={tier.id}
+                  data-price={tier.price}
+                >
+                  {tier.cta}
+                </button>
+              )}
             </div>
           ))}
         </div>
@@ -395,4 +418,166 @@ const testimonials = [
 
     <Footer />
   </div>
+  
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#12121a] border border-[#2a2a3a] rounded-2xl max-w-md w-full p-6 relative">
+      <button id="close-modal" class="absolute top-4 right-4 text-[#8892b0] hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-[#00f5d4]/20 rounded-full flex items-center justify-center mx-auto mb-3">
+          <span class="text-2xl">⭐</span>
+        </div>
+        <h3 class="text-xl font-bold text-white">Upgrade to <span id="modal-tier-name">Premium</span></h3>
+        <p class="text-[#8892b0] text-sm">Complete your subscription</p>
+      </div>
+      
+      <form id="checkout-form" class="space-y-4">
+        <div>
+          <label class="text-[#8892b0] text-sm block mb-2">Server ID</label>
+          <input 
+            type="text" 
+            id="server-id" 
+            class="w-full px-3 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white text-sm"
+            placeholder="Enter your server ID"
+            value={initialServerId}
+          />
+          <p class="text-[#8892b0] text-xs mt-1">Find this in your server URL: /servers/[id]</p>
+        </div>
+        
+        <div>
+          <label class="text-[#8892b0] text-sm block mb-2">Billing Email</label>
+          <input 
+            type="email" 
+            id="billing-email" 
+            class="w-full px-3 py-2 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white text-sm"
+            placeholder="your@email.com"
+            required
+          />
+        </div>
+        
+        <div class="p-4 bg-[#0a0a0f] rounded-lg">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-white" id="summary-tier">Premium Plan</span>
+            <span class="text-[#00f5d4] font-bold" id="summary-price">$9.99/mo</span>
+          </div>
+          <p class="text-[#8892b0] text-xs">Cancel anytime. Billed monthly.</p>
+        </div>
+        
+        <button 
+          type="submit" 
+          id="checkout-submit"
+          class="w-full py-3 bg-[#00f5d4] hover:bg-[#00d4b8] text-[#0a0a0f] font-bold rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          <span id="checkout-text">Proceed to Checkout</span>
+          <svg id="checkout-spinner" class="animate-spin hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+        </button>
+      </form>
+      
+      <div class="mt-4 text-center">
+        <p class="text-[#8892b0] text-xs">
+          🔒 Secure payment via <span class="text-[#635BFF]">Stripe</span>
+        </p>
+      </div>
+    </div>
+  </div>
 </Layout>
+
+<script define:vars={{ initialServerId }}>
+  // Modal functionality
+  const modal = document.getElementById('checkout-modal');
+  const closeBtn = document.getElementById('close-modal');
+  const checkoutForm = document.getElementById('checkout-form');
+  const serverIdInput = document.getElementById('server-id');
+  const billingEmailInput = document.getElementById('billing-email');
+  const modalTierName = document.getElementById('modal-tier-name');
+  const summaryTier = document.getElementById('summary-tier');
+  const summaryPrice = document.getElementById('summary-price');
+  const checkoutSubmit = document.getElementById('checkout-submit');
+  const checkoutText = document.getElementById('checkout-text');
+  const checkoutSpinner = document.getElementById('checkout-spinner');
+  
+  let selectedTier = 'premium';
+  let selectedPrice = '$9.99/mo';
+  
+  // Open modal when clicking upgrade buttons
+  document.querySelectorAll('.checkout-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedTier = btn.dataset.tier;
+      selectedPrice = selectedTier === 'premium' ? '$9.99/mo' : '$29.99/mo';
+      const tierName = selectedTier === 'premium' ? 'Premium' : 'Elite';
+      
+      modalTierName.textContent = tierName;
+      summaryTier.textContent = tierName + ' Plan';
+      summaryPrice.textContent = selectedPrice;
+      
+      modal.classList.remove('hidden');
+    });
+  });
+  
+  // Close modal
+  closeBtn?.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+  
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+  
+  // Handle checkout
+  checkoutForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const serverId = serverIdInput.value.trim();
+    const email = billingEmailInput.value.trim();
+    
+    if (!serverId) {
+      alert('Please enter your server ID');
+      return;
+    }
+    
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    // Show loading
+    checkoutSubmit.disabled = true;
+    checkoutText.textContent = 'Creating checkout...';
+    checkoutSpinner.classList.remove('hidden');
+    
+    try {
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          serverId: serverId,
+          tier: selectedTier,
+          email: email,
+          successUrl: `${window.location.origin}/dashboard?upgrade=success`,
+          cancelUrl: `${window.location.origin}/premium?upgrade=canceled`,
+        }),
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = result.url;
+      } else {
+        alert(result.error || 'Failed to create checkout. Please try again.');
+        checkoutSubmit.disabled = false;
+        checkoutText.textContent = 'Proceed to Checkout';
+        checkoutSpinner.classList.add('hidden');
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('Network error. Please try again.');
+      checkoutSubmit.disabled = false;
+      checkoutText.textContent = 'Proceed to Checkout';
+      checkoutSpinner.classList.add('hidden');
+    }
+  });
+</script>
