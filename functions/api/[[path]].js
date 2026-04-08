@@ -45,7 +45,7 @@ export default {
       }
 
       // Get Servers List (for watcher)
-      if (path === '/api/servers' && request.method === 'GET') {
+      if ((path === '/api/servers' || path === '/api/servers/') && request.method === 'GET') {
         return await handleServersList(request, env);
       }
 
