@@ -11,14 +11,14 @@ import { Pinecone } from '@pinecone-database/pinecone';
 // Environment configuration
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-const MIXEDBREAD_API_KEY = process.env.MIXEDBREAD_API_KEY;
+const JINA_API_KEY = process.env.JINA_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
-const PINECONE_INDEX = process.env.PINECONE_INDEX || 'guildpost-servers';
+const PINECONE_INDEX = process.env.PINECONE_INDEX || 'guildpost';
 
-if (!SUPABASE_SERVICE_KEY || !MIXEDBREAD_API_KEY || !PINECONE_API_KEY) {
+if (!SUPABASE_SERVICE_KEY || !JINA_API_KEY || !PINECONE_API_KEY) {
   console.error('❌ Missing required env vars:');
   console.error('   SUPABASE_SERVICE_KEY - Get from Supabase dashboard');
-  console.error('   MIXEDBREAD_API_KEY - Get from https://mixedbread.ai');
+  console.error('   JINA_API_KEY - Get from https://jina.ai/embeddings/');
   console.error('   PINECONE_API_KEY - From 1Password guildpost vault');
   console.error('\nUsage: node generate-embeddings-pinecone.mjs');
   process.exit(1);
@@ -43,7 +43,7 @@ async function getIndex() {
     console.log(`📝 Creating index '${PINECONE_INDEX}'...`);
     await pinecone.createIndex({
       name: PINECONE_INDEX,
-      dimension: 768, // Mixedbread embedding dimension
+      dimension: 768, // Jina embedding dimension
       metric: 'cosine',
       spec: {
         serverless: {
@@ -61,23 +61,23 @@ async function getIndex() {
   }
 }
 
-// Mixedbread embedding API - 768 dimensions
+// Jina AI embedding API - 768 dimensions
 async function generateEmbedding(text) {
-  const response = await fetch('https://api.mixedbread.ai/v1/embeddings', {
+  const response = await fetch('https://api.jina.ai/v1/embeddings', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${MIXEDBREAD_API_KEY}`,
+      'Authorization': `Bearer ${JINA_API_KEY}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'mixedbread-ai/mxbai-embed-large-v1',
-      input: text
+      model: 'jina-embeddings-v3',
+      input: [text]
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Mixedbread API error: ${errorText.substring(0, 200)}`);
+    throw new Error(`Jina API error: ${errorText.substring(0, 200)}`);
   }
 
   const data = await response.json();
@@ -219,12 +219,12 @@ async function processServers(index) {
 async function testConnections() {
   console.log('🧪 Testing connections...\n');
   
-  // Test Mixedbread
+  // Test Jina AI
   try {
     const embedding = await generateEmbedding("Minecraft PvP survival server");
-    console.log(`✅ Mixedbread works! Dimensions: ${embedding.length}`);
+    console.log(`✅ Jina AI works! Dimensions: ${embedding.length}`);
   } catch (err) {
-    console.error(`❌ Mixedbread failed:`, err.message);
+    console.error(`❌ Jina AI failed:`, err.message);
     process.exit(1);
   }
   

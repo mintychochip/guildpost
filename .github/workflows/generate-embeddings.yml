@@ -30,7 +30,7 @@ jobs:
         env:
           SUPABASE_URL: https://wpxutsdbiampnxfgkjwq.supabase.co
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          MIXEDBREAD_API_KEY: ${{ secrets.MIXEDBREAD_API_KEY }}
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
-          PINECONE_INDEX: guildpost-servers
+          PINECONE_INDEX: guildpost
         run: node generate-embeddings-pinecone.mjs

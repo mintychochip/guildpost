@@ -92,26 +92,27 @@ const corsHeaders = {
   'Content-Type': 'application/json'
 };
 
-// Generate embedding using Gemini
+// Generate embedding using Jina AI (768 dimensions)
 async function generateEmbedding(text: string, apiKey: string): Promise<number[]> {
-  const model = 'models/gemini-embedding-001';
-  const url = `https://generativelanguage.googleapis.com/v1beta/${model}:embedContent?key=${apiKey}`;
-  
-  const response = await fetch(url, {
+  const response = await fetch('https://api.jina.ai/v1/embeddings', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
-      content: { parts: [{ text }] }
+      model: 'jina-embeddings-v3',
+      input: [text]
     })
   });
 
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(`Gemini API error: ${error}`);
+    throw new Error(`Jina API error: ${error}`);
   }
 
   const data = await response.json();
-  return data.embedding?.values || [];
+  return data.data[0].embedding;
 }
 
 // Generate sparse vector for keyword matching (BM25-like)
@@ -156,10 +157,10 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const pineconeKey = Deno.env.get('PINECONE_API_KEY') || '';
-    const geminiKey = Deno.env.get('GEMINI_API_KEY') || '';
+    const jinaKey = Deno.env.get('JINA_API_KEY') || '';
     const pineconeIndex = Deno.env.get('PINECONE_INDEX') || 'guildpost';
 
-    if (!supabaseKey || !pineconeKey || !geminiKey) {
+    if (!supabaseKey || !pineconeKey || !jinaKey) {
       return new Response(
         JSON.stringify({ error: 'Missing required environment variables' }),
         { headers: corsHeaders, status: 500 }
@@ -186,7 +187,7 @@ Deno.serve(async (req: Request) => {
 
     if (hybrid) {
       // Hybrid search: dense + sparse
-      const queryEmbedding = await generateEmbedding(query, geminiKey);
+      const queryEmbedding = await generateEmbedding(query, jinaKey);
       const sparseVector = generateSparseVector(query);
       
       console.log(`📐 Dense: ${queryEmbedding.length} dims, Sparse: ${sparseVector.indices.length} terms`);
@@ -239,7 +240,7 @@ Deno.serve(async (req: Request) => {
       }
     } else {
       // Dense only search
-      const queryEmbedding = await generateEmbedding(query, geminiKey);
+      const queryEmbedding = await generateEmbedding(query, jinaKey);
       console.log(`📐 Generated ${queryEmbedding.length}-dim embedding`);
       
       searchResults = await index.query({
