@@ -194,8 +194,8 @@ async function processServers(index) {
       console.log(`   ✅ Stored in Pinecone`);
       processed++;
       
-      // Rate limiting
-      await new Promise(r => setTimeout(r, 300));
+      // Rate limiting - Jina allows 100 req/min = 1 req per 600ms
+      await new Promise(r => setTimeout(r, 600));
       
     } catch (err) {
       console.error(`   ❌ Error:`, err.message);
