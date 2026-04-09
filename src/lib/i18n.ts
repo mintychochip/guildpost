@@ -154,25 +154,43 @@ export function t(key: string, locale: LocaleCode = defaultLocale): string {
   const [namespace, ...path] = key.split('.');
   const translations = translationCache[locale];
   
-  if (!translations || !translations[namespace]) {
-    // Fall back to English
-    const enTranslations = translationCache['en'];
-    if (enTranslations && enTranslations[namespace]) {
-      let value = enTranslations[namespace];
-      for (const segment of path) {
-        value = value?.[segment];
-      }
-      return value || key;
+  // Helper to look up a value given a starting object and path
+  const lookup = (obj: any, segments: string[]): any => {
+    let value = obj;
+    for (const segment of segments) {
+      value = value?.[segment];
     }
-    return key;
+    return value;
+  };
+  
+  // Try direct namespace lookup first (e.g., 'nav.minecraft' -> translations.nav.minecraft)
+  if (translations?.[namespace]) {
+    const value = lookup(translations[namespace], path);
+    if (value) return value;
   }
   
-  let value = translations[namespace];
-  for (const segment of path) {
-    value = value?.[segment];
+  // Try in 'common' namespace (e.g., 'nav.minecraft' -> translations.common.nav.minecraft)
+  if (translations?.common?.[namespace]) {
+    const value = lookup(translations.common[namespace], path);
+    if (value) return value;
   }
   
-  return value || key;
+  // Fall back to English
+  const enTranslations = translationCache['en'];
+  if (enTranslations) {
+    // Try direct namespace in English
+    if (enTranslations[namespace]) {
+      const value = lookup(enTranslations[namespace], path);
+      if (value) return value;
+    }
+    // Try in 'common' namespace in English
+    if (enTranslations.common?.[namespace]) {
+      const value = lookup(enTranslations.common[namespace], path);
+      if (value) return value;
+    }
+  }
+  
+  return key;
 }
 
 /**
