@@ -12,8 +12,8 @@ SUPABASE_URL = "https://wpxutsdbiampnxfgkjwq.supabase.co"
 
 # Note: Secrets are set via Cloudflare Dashboard or wrangler secret put
 # - SUPABASE_SERVICE_KEY
-# - GEMINI_API_KEY  
-# - MIXEDBREAD_API_KEY
+# - JINA_API_KEY (for semantic search embeddings - 768 dims)
+# - PINECONE_API_KEY (for vector search)
 # - CRON_SECRET
 # - STRIPE_SECRET_KEY
 # - STRIPE_WEBHOOK_SECRET
