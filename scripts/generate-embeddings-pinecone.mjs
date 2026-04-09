@@ -11,14 +11,14 @@ import { Pinecone } from '@pinecone-database/pinecone';
 // Environment configuration
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const MIXEDBREAD_API_KEY = process.env.MIXEDBREAD_API_KEY;
 const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
 const PINECONE_INDEX = process.env.PINECONE_INDEX || 'guildpost-servers';
 
-if (!SUPABASE_SERVICE_KEY || !GEMINI_API_KEY || !PINECONE_API_KEY) {
+if (!SUPABASE_SERVICE_KEY || !MIXEDBREAD_API_KEY || !PINECONE_API_KEY) {
   console.error('❌ Missing required env vars:');
   console.error('   SUPABASE_SERVICE_KEY - Get from Supabase dashboard');
-  console.error('   GEMINI_API_KEY - Get from https://aistudio.google.com/apikey');
+  console.error('   MIXEDBREAD_API_KEY - Get from https://mixedbread.ai');
   console.error('   PINECONE_API_KEY - From 1Password guildpost vault');
   console.error('\nUsage: node generate-embeddings-pinecone.mjs');
   process.exit(1);
@@ -43,7 +43,7 @@ async function getIndex() {
     console.log(`📝 Creating index '${PINECONE_INDEX}'...`);
     await pinecone.createIndex({
       name: PINECONE_INDEX,
-      dimension: 3072, // Gemini embedding dimension
+      dimension: 768, // Mixedbread embedding dimension
       metric: 'cosine',
       spec: {
         serverless: {
@@ -61,26 +61,27 @@ async function getIndex() {
   }
 }
 
-// Gemini embedding API
+// Mixedbread embedding API - 768 dimensions
 async function generateEmbedding(text) {
-  const model = 'models/gemini-embedding-001';
-  const url = `https://generativelanguage.googleapis.com/v1beta/${model}:embedContent?key=${GEMINI_API_KEY}`;
-  
-  const response = await fetch(url, {
+  const response = await fetch('https://api.mixedbread.ai/v1/embeddings', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Authorization': `Bearer ${MIXEDBREAD_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
-      content: { parts: [{ text }] }
+      model: 'mixedbread-ai/mxbai-embed-large-v1',
+      input: text
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Gemini API error: ${errorText.substring(0, 200)}`);
+    throw new Error(`Mixedbread API error: ${errorText.substring(0, 200)}`);
   }
 
   const data = await response.json();
-  const values = data.embedding?.values;
+  const values = data.data?.[0]?.embedding;
   
   if (!values || values.length === 0) {
     throw new Error('Empty embedding returned');
@@ -218,12 +219,12 @@ async function processServers(index) {
 async function testConnections() {
   console.log('🧪 Testing connections...\n');
   
-  // Test Gemini
+  // Test Mixedbread
   try {
     const embedding = await generateEmbedding("Minecraft PvP survival server");
-    console.log(`✅ Gemini works! Dimensions: ${embedding.length}`);
+    console.log(`✅ Mixedbread works! Dimensions: ${embedding.length}`);
   } catch (err) {
-    console.error(`❌ Gemini failed:`, err.message);
+    console.error(`❌ Mixedbread failed:`, err.message);
     process.exit(1);
   }
   

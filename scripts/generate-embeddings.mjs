@@ -1,78 +1,67 @@
 #!/usr/bin/env node
 /**
- * Generate semantic embeddings for all servers
- * Uses Cloudflare Workers AI or external API
+ * Generate semantic embeddings for all servers using Mixedbread AI
+ * Mixedbread uses 768 dimensions which matches our pgvector setup
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// Supabase credentials from environment
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
-// Supabase credentials
-const SUPABASE_URL = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTM1MTAwNCwiZXhwIjoyMDkwOTI3MDA0fQ.qWj0l_7V1jO2k_I6V-0-lYlX2X-3-4-5-6-7-8-9-0';
+// Mixedbread API - 768 dimensions
+const MIXEDBREAD_API_KEY = process.env.MIXEDBREAD_API_KEY;
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+if (!SUPABASE_SERVICE_KEY || !MIXEDBREAD_API_KEY) {
+  console.error('❌ Missing required env vars:');
+  console.error('   SUPABASE_SERVICE_KEY - Get from Supabase dashboard');
+  console.error('   MIXEDBREAD_API_KEY - Get from https://mixedbread.ai');
+  console.error('\nUsage: SUPABASE_SERVICE_KEY=xxx MIXEDBREAD_API_KEY=xxx node generate-embeddings.mjs');
+  process.exit(1);
+}
 
-// Cloudflare Workers AI endpoint (you'll need to deploy the worker first)
-const WORKER_URL = process.env.WORKER_URL || 'https://your-worker.guildpost.workers.dev';
-
-// Or use OpenAI/HuggingFace directly
-const USE_OPENAI = false;
-const OPENAI_KEY = process.env.OPENAI_API_KEY;
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
 async function generateEmbedding(text) {
-  if (USE_OPENAI && OPENAI_KEY) {
-    // Use OpenAI API
-    const response = await fetch('https://api.openai.com/v1/embeddings', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        input: text,
-        model: 'text-embedding-ada-002'
-      })
-    });
-    const data = await response.json();
-    return data.data[0].embedding;
-  } else {
-    // Use Cloudflare Workers AI (free)
-    // Note: This requires the worker to be deployed with AI bindings
-    const response = await fetch(`${WORKER_URL}/embed`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
-    });
-    
-    if (!response.ok) {
-      console.log('Worker not available, using mock embedding');
-      // Return mock embedding for testing (768 dimensions of 0s with small random values)
-      return Array(768).fill(0).map(() => (Math.random() - 0.5) * 0.01);
-    }
-    
-    const data = await response.json();
-    return data.embedding;
+  // Use Mixedbread API (768 dimensions)
+  const response = await fetch('https://api.mixedbread.ai/v1/embeddings', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${MIXEDBREAD_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'mixedbread-ai/mxbai-embed-large-v1',
+      input: text
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Mixedbread API error: ${errorText.substring(0, 200)}`);
   }
+
+  const data = await response.json();
+  return data.data[0].embedding;
 }
 
 async function processServers() {
   console.log('🔍 Fetching servers without embeddings...');
   
-  const { data: servers, error } = await supabase
+  const { data: servers, error, count } = await supabase
     .from('servers')
-    .select('id, name, description, tags')
+    .select('id, name, description, tags', { count: 'exact' })
     .is('embedding', null)
-    .limit(50);
+    .limit(100);
   
   if (error) {
     console.error('❌ Error fetching servers:', error);
     return;
   }
+  
+  console.log(`📊 Total servers: ${count}`);
+  console.log(`📊 Servers without embeddings: ${servers?.length || 0}\n`);
   
   if (!servers || servers.length === 0) {
     console.log('✅ All servers have embeddings!');
@@ -80,6 +69,10 @@ async function processServers() {
   }
   
   console.log(`📝 Processing ${servers.length} servers...\n`);
+  
+  let processed = 0;
+  let failed = 0;
+  let skipped = 0;
   
   for (const server of servers) {
     try {
@@ -90,14 +83,23 @@ async function processServers() {
         ...(server.tags || [])
       ].filter(Boolean).join('. ');
       
-      if (!text) {
+      if (!text || text.length < 5) {
         console.log(`⏭️  Skipping ${server.name} - no content`);
+        skipped++;
         continue;
       }
       
-      console.log(`🤖 Generating embedding for: ${server.name}`);
+      console.log(`🤖 [${processed + failed + skipped + 1}/${servers.length}] ${server.name?.substring(0, 40)}...`);
       
       const embedding = await generateEmbedding(text);
+      
+      if (!embedding || embedding.length === 0) {
+        console.error(`   ❌ Empty embedding returned`);
+        failed++;
+        continue;
+      }
+      
+      console.log(`   📐 Dimensions: ${embedding.length}`);
       
       // Update server with embedding
       const { error: updateError } = await supabase
@@ -106,51 +108,75 @@ async function processServers() {
         .eq('id', server.id);
       
       if (updateError) {
-        console.error(`❌ Failed to update ${server.name}:`, updateError);
+        console.error(`   ❌ Failed to update:`, updateError.message);
+        failed++;
       } else {
-        console.log(`✅ Updated ${server.name}`);
+        console.log(`   ✅ Updated`);
+        processed++;
       }
       
-      // Rate limiting
-      await new Promise(r => setTimeout(r, 100));
+      // Rate limiting - be nice to the API
+      await new Promise(r => setTimeout(r, 200));
       
     } catch (err) {
-      console.error(`❌ Error processing ${server.name}:`, err.message);
+      console.error(`   ❌ Error:`, err.message);
+      failed++;
+      await new Promise(r => setTimeout(r, 1000));
     }
   }
   
-  console.log('\n🎉 Done!');
+  console.log(`\n🎉 Done! Processed: ${processed}, Failed: ${failed}, Skipped: ${skipped}`);
+  
+  // Show final status
+  const { data: status } = await supabase
+    .from('servers')
+    .select('embedding', { count: 'exact' });
+  
+  const withEmb = status?.filter(s => s.embedding).length || 0;
+  const total = status?.length || 0;
+  console.log(`📊 Total embeddings in DB: ${withEmb}/${total}`);
 }
 
-// Also create a simple embedding function using the worker
-async function testWorkerEmbedding() {
-  console.log('Testing worker embedding...');
-  
-  const testText = "Minecraft PvP survival server with factions";
+// Test Mixedbread API
+async function testEmbedding() {
+  console.log('🧪 Testing Mixedbread embedding...\n');
   
   try {
-    const response = await fetch(`${WORKER_URL}/embed`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: testText })
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      console.log('✅ Worker is working!');
-      console.log(`Embedding dimensions: ${data.embedding?.length}`);
-    } else {
-      console.log('⚠️  Worker not responding, will use mock embeddings');
-    }
+    const embedding = await generateEmbedding("Minecraft PvP survival server with factions and economy");
+    console.log(`\n✅ Mixedbread works! Dimensions: ${embedding.length}`);
+    console.log(`   Sample values: ${embedding.slice(0, 5).map(v => v.toFixed(4)).join(', ')}...`);
+    return true;
   } catch (err) {
-    console.log('⚠️  Worker error:', err.message);
-    console.log('Will use mock embeddings for testing');
+    console.error(`\n❌ Mixedbread test failed:`, err.message);
+    process.exit(1);
+  }
+}
+
+// Show status
+async function showStatus() {
+  const { data, error, count } = await supabase
+    .from('servers')
+    .select('embedding', { count: 'exact' });
+  
+  if (error) {
+    console.error('❌ Error:', error.message);
+    return;
+  }
+  
+  const withEmb = data?.filter(s => s.embedding).length || 0;
+  const total = count || data?.length || 0;
+  console.log(`📊 Embedding status: ${withEmb}/${total} servers have embeddings`);
+  
+  if (withEmb < total) {
+    console.log(`   Run without --status to generate embeddings for ${total - withEmb} remaining servers`);
   }
 }
 
 // Main
 if (process.argv.includes('--test')) {
-  testWorkerEmbedding();
+  testEmbedding();
+} else if (process.argv.includes('--status')) {
+  showStatus();
 } else {
-  processServers();
+  testEmbedding().then(() => processServers());
 }
