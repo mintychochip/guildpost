@@ -13,3 +13,6 @@ dist/
 # Documentation
 README_*.md
 supabase/migrations/
+
+# Build artifacts
+*.tar.gz
