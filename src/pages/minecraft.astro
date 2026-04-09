@@ -264,7 +264,7 @@ const VALID_CATEGORIES = [
   const filterChips = document.getElementById('filter-chips');
   
   async function loadServers() {
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     
     const { data: servers, error } = await supabase
       .from('servers')
