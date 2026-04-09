@@ -1,14 +1,15 @@
 /**
- * Cloudflare Worker: Semantic Search API using Gemini
+ * Cloudflare Worker: Semantic Search API using Mixedbread + Gemini
  * 
  * Routes:
- * - POST /search/semantic - AI-powered semantic search using Gemini embeddings
+ * - POST /search/semantic - AI-powered semantic search using embeddings
  * - GET /search/suggestions - AI-powered search suggestions using Gemma 4B
- * - POST /embed - Generate embeddings using Gemini
+ * - POST /embed - Generate embeddings using Mixedbread (primary) or Gemini (fallback)
  * 
- * Uses Gemini API:
- * - gemini-embedding-001 for embeddings (3072 dimensions)
- * - gemma-3-4b-it for text generation
+ * Uses:
+ * - Mixedbread mxbai-embed-large-v1 (1024 dims, cheaper) - PRIMARY
+ * - Gemini embedding-001 (768 dims) - FALLBACK
+ * - Gemma-3-4b-it for text generation (suggestions)
  */
 
 // CORS headers
@@ -111,25 +112,58 @@ export default {
 };
 
 // Generate embedding using Gemini gemini-embedding-001
-async function generateEmbedding(text, apiKey) {
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        content: { parts: [{ text }] }
-      })
+// Generate embeddings using Mixedbread (primary) with Gemini fallback
+async function generateEmbedding(text, env) {
+  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
+  const geminiKey = env.GEMINI_API_KEY;
+  
+  // Try Mixedbread first (cheaper, 1024 dimensions)
+  if (mixedbreadKey) {
+    try {
+      const response = await fetch('https://api.mixedbread.ai/v1/embeddings', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${mixedbreadKey}`
+        },
+        body: JSON.stringify({
+          model: 'mixedbread-ai/mxbai-embed-large-v1',
+          input: text
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.data[0].embedding;
+      }
+    } catch (err) {
+      console.log('Mixedbread failed, falling back to Gemini:', err.message);
     }
-  );
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Gemini embedding API error: ${error}`);
   }
+  
+  // Fallback to Gemini (768 dimensions)
+  if (geminiKey) {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: { parts: [{ text }] }
+        })
+      }
+    );
 
-  const data = await response.json();
-  return data.embedding?.values || data.embedding;
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Gemini embedding API error: ${error}`);
+    }
+
+    const data = await response.json();
+    return data.embedding?.values || data.embedding;
+  }
+  
+  throw new Error('No embedding API key configured (MIXEDBREAD_API_KEY or GEMINI_API_KEY)');
 }
 
 // Semantic Search using Gemini embeddings
@@ -143,17 +177,19 @@ async function handleSemanticSearch(request, env) {
     });
   }
 
-  const apiKey = env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), {
+  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
+  const geminiKey = env.GEMINI_API_KEY;
+  
+  if (!mixedbreadKey && !geminiKey) {
+    return new Response(JSON.stringify({ error: 'MIXEDBREAD_API_KEY or GEMINI_API_KEY not configured' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 
   try {
-    // Generate embedding for query using Gemini
-    const embedding = await generateEmbedding(query, apiKey);
+    // Generate embedding for query
+    const embedding = await generateEmbedding(query, env);
 
     // Search Supabase for similar embeddings using pgvector
     const supabaseUrl = env.SUPABASE_URL;
@@ -269,7 +305,7 @@ Suggestions (JSON array only):`;
   }
 }
 
-// Generate embeddings using Gemini
+// Generate embeddings using Mixedbread (primary) or Gemini (fallback)
 async function handleEmbed(request, env) {
   const { text } = await request.json();
   
@@ -280,20 +316,23 @@ async function handleEmbed(request, env) {
     });
   }
 
-  const apiKey = env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not configured' }), {
+  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
+  const geminiKey = env.GEMINI_API_KEY;
+  
+  if (!mixedbreadKey && !geminiKey) {
+    return new Response(JSON.stringify({ error: 'MIXEDBREAD_API_KEY or GEMINI_API_KEY not configured' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
   
   try {
-    const embedding = await generateEmbedding(text, apiKey);
+    const embedding = await generateEmbedding(text, env);
     
     return new Response(JSON.stringify({
       embedding,
-      dimensions: embedding.length
+      dimensions: embedding.length,
+      provider: mixedbreadKey ? 'mixedbread' : 'gemini'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -345,10 +384,18 @@ async function handleEmbeddingsBatch(request, env) {
 
     const supabaseUrl = env.SUPABASE_URL;
     const supabaseKey = env.SUPABASE_SERVICE_KEY;
-    const geminiApiKey = env.GEMINI_API_KEY;
+    const mixedbreadKey = env.MIXEDBREAD_API_KEY;
+    const geminiKey = env.GEMINI_API_KEY;
 
-    if (!supabaseKey || !geminiApiKey) {
-      return new Response(JSON.stringify({ error: 'Missing required secrets' }), {
+    if (!supabaseKey) {
+      return new Response(JSON.stringify({ error: 'Missing SUPABASE_SERVICE_KEY' }), {
+        status: 500,
+        headers: { ...corsHeadersBatch, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    if (!mixedbreadKey && !geminiKey) {
+      return new Response(JSON.stringify({ error: 'Missing MIXEDBREAD_API_KEY or GEMINI_API_KEY' }), {
         status: 500,
         headers: { ...corsHeadersBatch, 'Content-Type': 'application/json' },
       });
@@ -410,7 +457,7 @@ async function handleEmbeddingsBatch(request, env) {
         }
 
         // Generate embedding
-        const embedding = await generateEmbedding(text, geminiApiKey);
+        const embedding = await generateEmbedding(text, env);
 
         // Update server
         const updateRes = await fetch(`${supabaseUrl}/rest/v1/servers?id=eq.${server.id}`, {
