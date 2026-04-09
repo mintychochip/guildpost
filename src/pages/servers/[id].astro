@@ -173,7 +173,17 @@ const isOnline = server.status === 'online';
                     }
                   })()}
                 </div>
-                <code class="text-[#8892b0]">{server.ip}:{server.port}</code>
+                <div class="flex items-center gap-2">
+                  <code class="text-[#8892b0]" id="server-ip">{server.ip}{server.port && server.port !== 25565 ? `:${server.port}` : ''}</code>
+                  <button 
+                    id="copy-ip-btn"
+                    class="px-2 py-1 text-xs bg-[#1a1a25] hover:bg-[#00f5d4]/20 text-[#8892b0] hover:text-[#00f5d4] rounded transition-colors flex items-center gap-1"
+                    data-ip={`${server.ip}${server.port && server.port !== 25565 ? `:${server.port}` : ''}`}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span id="copy-ip-text">Copy</span>
+                  </button>
+                </div>
               </div>
             </div>
             
@@ -571,14 +581,30 @@ const isOnline = server.status === 'online';
 </Layout>
 
 <script define:vars={{ serverId: id, serverIp: server.ip, serverPort: server.port, serverName: server.name }}>
-  // Copy IP functionality
-  document.getElementById('copy-ip-btn')?.addEventListener('click', async () => {
-    const ip = `${serverIp}:${serverPort}`;
-    await navigator.clipboard.writeText(ip);
-    const btn = document.getElementById('copy-ip-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy IP Address', 2000);
+  // Copy IP functionality - handle both buttons
+  const ipText = `${serverIp}${serverPort && serverPort !== 25565 ? ':' + serverPort : ''}`;
+  
+  // Header copy button
+  const headerCopyBtn = document.querySelector('#server-ip + #copy-ip-btn');
+  const headerCopyText = headerCopyBtn?.querySelector('#copy-ip-text');
+  
+  headerCopyBtn?.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(ipText);
+    if (headerCopyText) {
+      headerCopyText.textContent = 'Copied!';
+      setTimeout(() => headerCopyText.textContent = 'Copy', 2000);
+    }
   });
+  
+  // Sidebar copy button
+  const sidebarCopyBtn = document.querySelector('#quick-actions #copy-ip-btn, .quick-actions #copy-ip-btn, [id="copy-ip-btn"]');
+  if (sidebarCopyBtn && sidebarCopyBtn !== headerCopyBtn) {
+    sidebarCopyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(ipText);
+      sidebarCopyBtn.textContent = 'Copied!';
+      setTimeout(() => sidebarCopyBtn.textContent = 'Copy IP Address', 2000);
+    });
+  }
 
   // Favorite functionality
   const favoriteBtn = document.getElementById('favorite-btn');
