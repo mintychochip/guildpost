@@ -45,27 +45,26 @@ jobs:
         with:
           project_id: ${{ env.GCP_PROJECT }}
 
-      - name: Deploy to GCP VM (using IAP)
+      - name: Copy files to GCP VM
         run: |
-          # Setup gcloud for OS Login
-          gcloud compute config-ssh --quiet || true
-          
           # Create tarball
           tar -czf dist.tar.gz dist/
           
-          # Copy to VM using IAP tunnel (bypasses firewall issues)
+          # Copy to VM home directory
           gcloud compute scp --zone=$GCP_ZONE \
             --tunnel-through-iap \
-            dist.tar.gz $GCP_INSTANCE:~/guildpost/ || echo "SCP may need retry"
-            
-          # SSH and setup
+            dist.tar.gz $GCP_INSTANCE:~/
+
+      - name: Start server on VM
+        run: |
+          # SSH and setup using Python HTTP server on port 8080 (no sudo needed)
           gcloud compute ssh $GCP_INSTANCE --zone=$GCP_ZONE \
             --tunnel-through-iap \
-            --command="
-              mkdir -p ~/guildpost &&
-              cd ~/guildpost &&
-              tar -xzf dist.tar.gz &&
-              npm install --production &&
-              pm2 restart guildpost || pm2 start dist/server/entry.mjs --name guildpost &&
-              pm2 save
-            " || echo "Deployment may need manual setup"
+            --command='export HOME=/home/justin-lo && mkdir -p ~/guildpost && cd ~/guildpost && tar -xzf ~/dist.tar.gz && pkill -f "http.server" 2>/dev/null || true && cd dist && nohup python3 -m http.server 8080 > ~/server.log 2>&1 &'
+            
+      - name: Open firewall for port 8080
+        run: |
+          gcloud compute firewall-rules create allow-http-8080 \
+            --direction=INGRESS --priority=1000 --network=default \
+            --action=ALLOW --rules=tcp:8080 --source-ranges=0.0.0.0/0 \
+            --target-tags=http-server 2>/dev/null || echo "Firewall rule may already exist"
