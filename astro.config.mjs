@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [tailwind()],
-  output: 'static',
+  output: 'hybrid',
   // Deploying to root domain guildpost.tech
   build: {
     assets: 'assets',

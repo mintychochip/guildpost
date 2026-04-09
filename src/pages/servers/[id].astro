@@ -5,6 +5,9 @@ import Header from '../../components/Header.astro';
 import Reviews from '../../components/Reviews.astro';
 import MarkdownRenderer from '../../components/MarkdownRenderer.astro';
 
+// Server-side render this page (don't pre-generate at build time)
+export const prerender = false;
+
 export async function getStaticPaths() {
   return [];
 }
