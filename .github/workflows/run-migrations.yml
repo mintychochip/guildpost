@@ -1,0 +1,28 @@
+name: Run Supabase Migrations
+
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+      
+      - name: Run migrations
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          echo "Running migrations..."
+          for file in $(ls -1 supabase/migrations/*.sql | sort); do
+            echo "Applying: $(basename $file)"
+            psql "postgresql://postgres:${PGPASSWORD}@db.wpxutsdbiampnxfgkjwq.supabase.co:5432/postgres?sslmode=require" -f "$file" || true
+          done
+          echo "Migrations complete!"
