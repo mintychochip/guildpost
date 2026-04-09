@@ -61,8 +61,22 @@ async function getIndex() {
   }
 }
 
+// Rate limiter for Jina API (100 req/min = 600ms between requests)
+let lastRequestTime = 0;
+async function rateLimit() {
+  const now = Date.now();
+  const elapsed = now - lastRequestTime;
+  const minDelay = 650; // 650ms = ~92 req/min (safe buffer)
+  if (elapsed < minDelay) {
+    await new Promise(r => setTimeout(r, minDelay - elapsed));
+  }
+  lastRequestTime = Date.now();
+}
+
 // Jina AI embedding API - 768 dimensions
 async function generateEmbedding(text) {
+  await rateLimit(); // Apply rate limiting
+  
   const response = await fetch('https://api.jina.ai/v1/embeddings', {
     method: 'POST',
     headers: {
@@ -94,12 +108,16 @@ async function generateEmbedding(text) {
 async function processServers(index) {
   console.log('🔍 Fetching servers without Pinecone embeddings...');
   
+  // Get offset from command line args (for parallel processing)
+  const offsetArg = process.argv.find(arg => arg.startsWith('--offset='));
+  const offset = offsetArg ? parseInt(offsetArg.split('=')[1]) : 0;
+  
   // Get servers that haven't been embedded yet
-  // We'll check Pinecone for existing embeddings
   const { data: servers, error, count } = await supabase
     .from('servers')
     .select('id, name, description, tags, version', { count: 'exact' })
-    .limit(500);
+    .order('id', { ascending: true })
+    .range(offset, offset + 499);
   
   if (error) {
     console.error('❌ Error fetching servers:', error);
@@ -107,29 +125,25 @@ async function processServers(index) {
   }
   
   console.log(`📊 Total servers in database: ${count}`);
+  console.log(`📊 Offset: ${offset}, processing range ${offset}-${offset + 499}`);
   
   if (!servers || servers.length === 0) {
-    console.log('✅ No servers to process');
+    console.log('✅ No servers to process at this offset');
     return;
   }
   
-  // Check which servers already have embeddings in Pinecone
-  const serverIds = servers.map(s => s.id);
-  const { data: existingEmbeddings } = await supabase
-    .from('server_embeddings')
-    .select('server_id')
-    .in('server_id', serverIds);
+  // Check current Pinecone count
+  try {
+    const stats = await index.describeIndexStats();
+    console.log(`📊 Pinecone total vectors: ${stats.totalRecordCount || 0}`);
+  } catch (e) {
+    // Ignore error
+  }
   
-  const embeddedIds = new Set(existingEmbeddings?.map(e => e.server_id) || []);
-  const serversToProcess = servers.filter(s => !embeddedIds.has(s.id));
+  // For now, process all in this range
+  const serversToProcess = servers;
   
-  console.log(`📊 Servers already embedded: ${embeddedIds.size}`);
   console.log(`📊 Servers to process: ${serversToProcess.length}\n`);
-  
-  if (serversToProcess.length === 0) {
-    console.log('✅ All servers have Pinecone embeddings!');
-    return;
-  }
   
   console.log(`📝 Processing ${serversToProcess.length} servers...\n`);
   
@@ -177,19 +191,8 @@ async function processServers(index) {
         }
       }]);
       
-      // Mark as embedded in Supabase
-      const { error: insertError } = await supabase
-        .from('server_embeddings')
-        .upsert({
-          server_id: server.id,
-          pinecone_id: server.id,
-          indexed_at: new Date().toISOString()
-        });
-      
-      if (insertError) {
-        console.error(`   ⚠️  Failed to mark as embedded:`, insertError.message);
-        // Don't count as failed since Pinecone upsert succeeded
-      }
+      // Note: server_embeddings tracking table not available
+      // Using Pinecone as source of truth for embedded status
       
       console.log(`   ✅ Stored in Pinecone`);
       processed++;
@@ -245,9 +248,15 @@ async function showStatus() {
     .from('servers')
     .select('*', { count: 'exact', head: true });
   
-  const { count: embeddedCount } = await supabase
-    .from('server_embeddings')
-    .select('*', { count: 'exact', head: true });
+  // Get count from Pinecone
+  let embeddedCount = 0;
+  try {
+    const index = await getIndex();
+    const stats = await index.describeIndexStats();
+    embeddedCount = stats.totalRecordCount || 0;
+  } catch (e) {
+    // Ignore
+  }
   
   console.log(`📊 Embedding status: ${embeddedCount || 0}/${count || 0} servers have Pinecone embeddings`);
   
@@ -256,24 +265,21 @@ async function showStatus() {
   }
 }
 
-// Ensure server_embeddings table exists
+// Ensure server_embeddings table exists (optional tracking table)
 async function ensureTable() {
-  const { error } = await supabase
-    .from('server_embeddings')
-    .select('*', { count: 'exact', head: true });
-  
-  if (error && error.message.includes('relation "server_embeddings" does not exist')) {
-    console.log('⚠️  server_embeddings table not found. Run this SQL in Supabase:');
-    console.log(`
-CREATE TABLE IF NOT EXISTS server_embeddings (
-  server_id UUID PRIMARY KEY REFERENCES servers(id) ON DELETE CASCADE,
-  pinecone_id TEXT NOT NULL,
-  indexed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_server_embeddings_indexed_at ON server_embeddings(indexed_at);
-    `);
-    process.exit(1);
+  // Table is optional - we use Pinecone as source of truth
+  // If it exists, great. If not, we continue without it.
+  try {
+    const { error } = await supabase
+      .from('server_embeddings')
+      .select('*', { count: 'exact', head: true });
+    
+    if (error && error.message.includes('relation "server_embeddings" does not exist')) {
+      console.log('⚠️  server_embeddings table not found - using Pinecone as source of truth');
+      console.log('   (Optional: Create table via Supabase Dashboard for tracking)');
+    }
+  } catch (e) {
+    // Ignore
   }
 }
 
