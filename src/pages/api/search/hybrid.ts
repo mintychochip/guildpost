@@ -30,7 +30,7 @@ async function generateEmbedding(text: string, apiKey: string): Promise<number[]
   return data.data[0].embedding;
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }: { request: Request, locals: any }) => {
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -46,11 +46,12 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Get API keys from environment (supports both Vite import.meta.env and Cloudflare process.env)
-    const jinaKey = import.meta.env.JINA_API_KEY || process.env.JINA_API_KEY;
-    const pineconeKey = import.meta.env.PINECONE_API_KEY || process.env.PINECONE_API_KEY;
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || process.env.PUBLIC_SUPABASE_URL;
-    const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || process.env.PUBLIC_SUPABASE_ANON_KEY;
+    // Get API keys from environment (Cloudflare runtime uses locals.runtime.env)
+    const runtimeEnv = locals?.runtime?.env || {};
+    const jinaKey = runtimeEnv.JINA_API_KEY;
+    const pineconeKey = runtimeEnv.PINECONE_API_KEY;
+    const supabaseUrl = runtimeEnv.PUBLIC_SUPABASE_URL;
+    const supabaseKey = runtimeEnv.PUBLIC_SUPABASE_ANON_KEY;
 
     if (!jinaKey || !pineconeKey) {
       return new Response(JSON.stringify({ error: 'API keys not configured' }), {

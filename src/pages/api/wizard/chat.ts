@@ -199,7 +199,7 @@ async function hybridSearch(query: string, limit: number, env: any) {
   };
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }: { request: Request, locals: any }) => {
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -217,8 +217,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Get API keys from environment (supports both Vite import.meta.env and Cloudflare process.env)
-    const env = { ...import.meta.env, ...process.env };
+    // Get API keys from environment (Cloudflare runtime uses locals.runtime.env)
+    const env = locals?.runtime?.env || {};
     const geminiKey = env.GEMINI_API_KEY;
     
     // If performSearch is true, skip AI and do hybrid search directly
