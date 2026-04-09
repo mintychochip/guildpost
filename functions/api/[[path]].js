@@ -104,60 +104,36 @@ export async function onRequest(context) {
 
 // Generate embedding using Gemini gemini-embedding-001
 // Generate embeddings using Mixedbread (primary) with Gemini fallback
+// Generate embeddings using Jina AI (768 dimensions) - matches Pinecone index
 async function generateEmbedding(text, env) {
-  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
-  const geminiKey = env.GEMINI_API_KEY;
+  const jinaKey = env.JINA_API_KEY;
   
-  // Try Mixedbread first (cheaper, 1024 dimensions)
-  if (mixedbreadKey) {
-    try {
-      const response = await fetch('https://api.mixedbread.ai/v1/embeddings', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${mixedbreadKey}`
-        },
-        body: JSON.stringify({
-          model: 'mixedbread-ai/mxbai-embed-large-v1',
-          input: text
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return data.data[0].embedding;
-      }
-    } catch (err) {
-      console.log('Mixedbread failed, falling back to Gemini:', err.message);
-    }
+  if (!jinaKey) {
+    throw new Error('JINA_API_KEY not configured');
   }
   
-  // Fallback to Gemini (768 dimensions)
-  if (geminiKey) {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${geminiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content: { parts: [{ text }] }
-        })
-      }
-    );
+  const response = await fetch('https://api.jina.ai/v1/embeddings', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${jinaKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'jina-embeddings-v2-base-en',
+      input: [text]
+    })
+  });
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Gemini embedding API error: ${error}`);
-    }
-
-    const data = await response.json();
-    return data.embedding?.values || data.embedding;
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Jina API error: ${error}`);
   }
-  
-  throw new Error('No embedding API key configured (MIXEDBREAD_API_KEY or GEMINI_API_KEY)');
+
+  const data = await response.json();
+  return data.data[0].embedding;
 }
 
-// Semantic Search using Gemini embeddings
+// Semantic Search using Jina embeddings + Pinecone
 async function handleSemanticSearch(request, env) {
   const { query, limit = 10 } = await request.json();
 
@@ -168,45 +144,109 @@ async function handleSemanticSearch(request, env) {
     });
   }
 
-  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
-  const geminiKey = env.GEMINI_API_KEY;
+  const jinaKey = env.JINA_API_KEY;
+  const pineconeKey = env.PINECONE_API_KEY;
   
-  if (!mixedbreadKey && !geminiKey) {
-    return new Response(JSON.stringify({ error: 'MIXEDBREAD_API_KEY or GEMINI_API_KEY not configured' }), {
+  if (!jinaKey) {
+    return new Response(JSON.stringify({ error: 'JINA_API_KEY not configured' }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+
+  if (!pineconeKey) {
+    return new Response(JSON.stringify({ error: 'PINECONE_API_KEY not configured' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
 
   try {
-    // Generate embedding for query
+    // Generate embedding for query using Jina AI
     const embedding = await generateEmbedding(query, env);
+    console.log(`🔍 Searching for: "${query}" with ${embedding.length}-dim embedding`);
 
-    // Search Supabase for similar embeddings using pgvector
-    const supabaseUrl = env.SUPABASE_URL;
-    const supabaseKey = env.SUPABASE_SERVICE_KEY;
+    // Get Pinecone index host
+    const pineconeIndex = env.PINECONE_INDEX || 'guildpost';
+    const indexResponse = await fetch(`https://api.pinecone.io/indexes/${pineconeIndex}`, {
+      headers: {
+        'Api-Key': pineconeKey,
+        'X-Pinecone-API-Version': '2024-07'
+      }
+    });
 
-    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/match_servers`, {
+    if (!indexResponse.ok) {
+      throw new Error(`Failed to get Pinecone index: ${await indexResponse.text()}`);
+    }
+
+    const indexData = await indexResponse.json();
+    const indexHost = indexData.host;
+
+    // Query Pinecone for similar vectors
+    const queryResponse = await fetch(`https://${indexHost}/query`, {
       method: 'POST',
       headers: {
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Content-Type': 'application/json'
+        'Api-Key': pineconeKey,
+        'Content-Type': 'application/json',
+        'X-Pinecone-API-Version': '2024-07'
       },
       body: JSON.stringify({
-        query_embedding: embedding,
-        match_threshold: 0.7,
-        match_count: limit
+        vector: embedding,
+        topK: limit,
+        includeMetadata: true
       })
     });
 
-    const results = await response.json();
+    if (!queryResponse.ok) {
+      throw new Error(`Pinecone query failed: ${await queryResponse.text()}`);
+    }
+
+    const queryData = await queryResponse.json();
+    const matches = queryData.matches || [];
+
+    // Fetch full server details from Supabase
+    const supabaseUrl = env.SUPABASE_URL;
+    const supabaseKey = env.SUPABASE_SERVICE_KEY;
+    
+    let results = [];
+    if (matches.length > 0) {
+      const serverIds = matches.map(m => m.id).filter(Boolean);
+      
+      if (serverIds.length > 0) {
+        const serversResponse = await fetch(
+          `${supabaseUrl}/rest/v1/servers?id=in.(${serverIds.join(',')})&select=*`,
+          {
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`
+            }
+          }
+        );
+
+        if (serversResponse.ok) {
+          const servers = await serversResponse.json();
+          // Merge Pinecone scores with server data
+          results = matches.map(match => {
+            const server = servers.find(s => s.id === match.id);
+            if (server) {
+              return {
+                ...server,
+                similarity: match.score,
+                pinecone_id: match.id
+              };
+            }
+            return null;
+          }).filter(Boolean);
+        }
+      }
+    }
 
     return new Response(JSON.stringify({
       query,
       results,
       count: results.length,
-      semantic: true
+      semantic: true,
+      source: 'pinecone'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -307,11 +347,10 @@ async function handleEmbed(request, env) {
     });
   }
 
-  const mixedbreadKey = env.MIXEDBREAD_API_KEY;
-  const geminiKey = env.GEMINI_API_KEY;
+  const jinaKey = env.JINA_API_KEY;
   
-  if (!mixedbreadKey && !geminiKey) {
-    return new Response(JSON.stringify({ error: 'MIXEDBREAD_API_KEY or GEMINI_API_KEY not configured' }), {
+  if (!jinaKey) {
+    return new Response(JSON.stringify({ error: 'JINA_API_KEY not configured' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
@@ -323,7 +362,7 @@ async function handleEmbed(request, env) {
     return new Response(JSON.stringify({
       embedding,
       dimensions: embedding.length,
-      provider: mixedbreadKey ? 'mixedbread' : 'gemini'
+      provider: 'jina'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
