@@ -45,20 +45,18 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
 
-      - name: Deploy to GCP VM via gcloud
+      - name: Deploy to GCP VM
         run: |
-          # Ensure gcloud SSH works
-          gcloud compute config-ssh --quiet
+          # Create tar.gz of dist
+          tar -czf dist.tar.gz dist/
           
-          # Deploy dist folder to VM using gcloud
-          gcloud compute scp --recurse --zone=us-west1-b --quiet dist/ instance-20260409-000924:~/guildpost/dist/
+          # Copy to VM and extract
+          gcloud compute scp --zone=us-west1-b dist.tar.gz instance-20260409-000924:~/guildpost/
           
-          # Deploy package.json
-          gcloud compute scp --zone=us-west1-b --quiet package.json instance-20260409-000924:~/guildpost/
-          
-          # Restart the app on VM
-          gcloud compute ssh instance-20260409-000924 --zone=us-west1-b --quiet --command="
+          # SSH to VM and setup
+          gcloud compute ssh instance-20260409-000924 --zone=us-west1-b --command="
             cd ~/guildpost &&
+            tar -xzf dist.tar.gz &&
             npm install --production &&
             pm2 restart guildpost || pm2 start dist/server/entry.mjs --name guildpost &&
             pm2 save
