@@ -4,6 +4,11 @@
  * Crowdin-managed translations
  */
 
+// Import default English translations for SSR
+import enCommon from '../../public/locales/en/common.json';
+import enServer from '../../public/locales/en/server.json';
+import enSubmit from '../../public/locales/en/submit.json';
+
 // Available locales configuration
 export const locales = {
   en: { name: 'English', flag: '🇺🇸', dir: 'ltr', code: 'en' },
@@ -32,9 +37,13 @@ export const defaultLocale: LocaleCode = 'en';
 // Local storage key
 const STORAGE_KEY = 'guildpost-locale';
 
-// Cache for loaded translations
+// Cache for loaded translations - pre-populated with English for SSR
 const translationCache: Record<LocaleCode, Record<string, any>> = {
-  en: {},
+  en: {
+    common: enCommon,
+    server: enServer,
+    submit: enSubmit
+  },
   es: {},
   fr: {},
   de: {},
@@ -52,6 +61,11 @@ const translationCache: Record<LocaleCode, Record<string, any>> = {
  * Load translations for a locale
  */
 export async function loadTranslations(locale: LocaleCode): Promise<void> {
+  // English is pre-loaded via imports for SSR, skip fetch
+  if (locale === 'en' && translationCache[locale]?.common) {
+    return;
+  }
+  
   if (translationCache[locale] && Object.keys(translationCache[locale]).length > 0) {
     return; // Already loaded
   }
