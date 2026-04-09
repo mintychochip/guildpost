@@ -224,7 +224,7 @@ async function testConnections() {
     console.log(`✅ Jina AI works! Dimensions: ${embedding.length}`);
   } catch (err) {
     console.error(`❌ Jina AI failed:`, err.message);
-    process.exit(1);
+    // Don't exit on test failure - let it fail during actual processing
   }
   
   // Test Pinecone
@@ -235,7 +235,7 @@ async function testConnections() {
     return index;
   } catch (err) {
     console.error(`❌ Pinecone failed:`, err.message);
-    process.exit(1);
+    throw err; // Pinecone is required - throw to stop
   }
 }
 
