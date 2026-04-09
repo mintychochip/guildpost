@@ -99,6 +99,7 @@ export function detectBrowserLocale(): LocaleCode {
   const browserLangs = navigator.languages || [navigator.language];
   
   for (const lang of browserLangs) {
+    if (typeof lang !== 'string') continue;
     const exactCode = lang.split('-')[0] as LocaleCode;
     if (exactCode in locales) {
       return exactCode;
