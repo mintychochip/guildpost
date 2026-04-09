@@ -752,8 +752,12 @@ const VALID_CATEGORIES = [
     }
   };
   
-  // Load on mount
-  loadServers();
+  // Wait for Supabase library to load, then load servers
+  if (window.supabase) {
+    loadServers();
+  } else {
+    window.addEventListener('load', loadServers);
+  }
   })(); // Close IIFE
   } // Close else block
 </script>
