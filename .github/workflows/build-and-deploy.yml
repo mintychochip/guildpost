@@ -47,8 +47,7 @@ jobs:
 
       - name: Deploy to GCP VM
         run: |
-          # Use OS Login for SSH
-          gcloud config set compute/enable_oslogin true
+          # OS Login is enabled on instance metadata, use IAP for reliable SSH
           
           # Create tar.gz of dist
           tar -czf dist.tar.gz dist/
