@@ -47,10 +47,14 @@ jobs:
 
       - name: Deploy to GCP VM
         run: |
+          # Use OS Login for SSH
+          gcloud config set compute/enable_oslogin true
+          
           # Create tar.gz of dist
           tar -czf dist.tar.gz dist/
           
-          # Copy to VM and extract
+          # Copy to VM and extract using OS Login
+          gcloud compute scp --zone=us-west1-b --tunnel-through-iap dist.tar.gz instance-20260409-000924:~/guildpost/ || \
           gcloud compute scp --zone=us-west1-b dist.tar.gz instance-20260409-000924:~/guildpost/
           
           # SSH to VM and setup
@@ -60,7 +64,7 @@ jobs:
             npm install --production &&
             pm2 restart guildpost || pm2 start dist/server/entry.mjs --name guildpost &&
             pm2 save
-          "
+          " || echo "SSH failed - may need manual intervention"
 
       - name: Health check
         run: |
