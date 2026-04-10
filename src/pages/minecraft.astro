@@ -4,9 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// Environment config
-const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
+
 
 const VALID_CATEGORIES = [
   'Survival', 'SMP', 'PvP', 'Skyblock', 'Factions', 
@@ -233,7 +231,7 @@ const VALID_CATEGORIES = [
   </div>
 </Layout>
 
-<script is:inline define:vars={{ supabaseUrl, supabaseKey }}>
+<script>
   // Client-side only - guard against SSR
   if (typeof window === 'undefined' || typeof document === 'undefined') {
     // Skip execution during server-side rendering
@@ -266,15 +264,15 @@ const VALID_CATEGORIES = [
   const filterChips = document.getElementById('filter-chips');
   
   async function loadServers() {
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    try {
+      const response = await fetch('/api/servers');
+      if (!response.ok) throw new Error('Failed to load servers');
+      const data = await response.json();
+      const servers = data.servers || [];
+      allServers = servers;
     
-    const { data: servers, error } = await supabase
-      .from('servers')
-      .select('*')
-      .order('vote_count', { ascending: false });
-    
-    if (error) {
-      console.error('Error loading servers:', error);
+    } catch (err) {
+      console.error('Error loading servers:', err);
       serversList.innerHTML = `
         <div class="col-span-full text-center py-16">
           <div class="w-20 h-20 bg-[#ff3864]/10 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -300,7 +298,6 @@ const VALID_CATEGORIES = [
       return;
     }
     
-    allServers = servers || [];
     filteredServers = [...allServers];
     
     applyFilters();
@@ -756,11 +753,11 @@ const VALID_CATEGORIES = [
     }
   };
   
-  // Wait for Supabase library to load, then load servers
-  if (window.supabase) {
-    loadServers();
+  // Load servers on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadServers);
   } else {
-    window.addEventListener('load', loadServers);
+    loadServers();
   }
   })(); // Close IIFE
   } // Close else block

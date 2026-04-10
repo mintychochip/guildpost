@@ -244,30 +244,21 @@ const gameCategories = [
 </Layout>
 
 <script>
-  // Use global supabase from CDN library loaded in Layout.astro
-  // Keys loaded from window.__CONFIG (injected by Layout.astro)
-  const { supabaseUrl, supabaseKey } = window.__CONFIG || {};
-  
-  // Load featured servers
+  // Load featured servers from API
   async function loadServers() {
-    if (!supabaseKey) {
-      console.error('Supabase key not configured');
-      return;
-    }
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-    const { data: servers, error } = await supabase
-      .from('servers')
-      .select('id, ip, port, name, description, version, tags, verified, vote_count, icon, banner, players_online, max_players, status')
-      .order('vote_count', { ascending: false })
-      .limit(6);
-    
-    const container = document.getElementById('featured-servers');
-    if (error || !servers?.length) {
-      container.innerHTML = `<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">No servers found.</div>`;
-      return;
-    }
-    
-    container.innerHTML = servers.map(server => `
+    try {
+      const response = await fetch('/api/servers?limit=6');
+      if (!response.ok) throw new Error('Failed to load servers');
+      const data = await response.json();
+      const servers = data.servers || [];
+      
+      const container = document.getElementById('featured-servers');
+      if (!servers.length) {
+        container.innerHTML = `<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">No servers found.</div>`;
+        return;
+      }
+      
+      container.innerHTML = servers.slice(0, 6).map(server => `
       <a href="/servers/${server.id}" class="block p-4 transition-all group gp-card-interactive" style="background-color: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
         <div class="flex items-start gap-3 mb-3">
           ${server.icon ? `<img src="${server.icon}" alt="" class="w-12 h-12 rounded-lg" style="background-color: var(--bg-tertiary);" loading="lazy" />` : `<div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: var(--bg-tertiary);"><span style="color: var(--accent-primary);" class="text-xl">⛏</span></div>`}
@@ -288,6 +279,10 @@ const gameCategories = [
         </div>
       </a>
     `).join('');
+    } catch (err) {
+      console.error('Failed to load servers:', err);
+      document.getElementById('featured-servers').innerHTML = '<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">Failed to load servers.</div>';
+    }
   }
   
   if (document.readyState === 'loading') {
@@ -301,20 +296,23 @@ const gameCategories = [
     const btn = document.getElementById('surprise-btn');
     btn.innerHTML = `<svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Finding...`;
     
-    if (!supabaseKey) {
+    try {
+      const response = await fetch('/api/servers');
+      if (!response.ok) throw new Error('Failed to load servers');
+      const data = await response.json();
+      const servers = data.servers || [];
+      
+      if (!servers.length) {
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
+        return;
+      }
+      
+      const randomServer = servers[Math.floor(Math.random() * servers.length)];
+      window.location.href = `/servers/${randomServer.id}`;
+    } catch (err) {
+      console.error('Surprise me failed:', err);
       btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
-      return;
     }
-    
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-    const { count } = await supabase.from('servers').select('*', { count: 'exact', head: true });
-    if (!count) { 
-      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
-      return; 
-    }
-    
-    const { data } = await supabase.from('servers').select('id').range(Math.floor(Math.random() * count), Math.floor(Math.random() * count)).limit(1);
-    if (data?.[0]) window.location.href = `/servers/${data[0].id}`;
   });
   
 </script>
