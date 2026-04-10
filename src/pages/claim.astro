@@ -10,6 +10,7 @@ const step = Astro.url.searchParams.get('step') || '1';
 
 // Server-side fetch from Supabase for initial data
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 let server = null;
 let initialError = null;

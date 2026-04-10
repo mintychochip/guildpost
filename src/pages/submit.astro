@@ -334,7 +334,7 @@ import Footer from '../components/Footer.astro';
 <script>
   import { createClient } from '@supabase/supabase-js';
   
-  const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const { supabaseUrl, supabaseKey } = window.__CONFIG || {};
   
   // Character count
   const descField = document.getElementById('description');

@@ -109,8 +109,7 @@ const formattedTag = tag.charAt(0).toUpperCase() + tag.slice(1);
 <script define:vars={{ tag }}>
   import { createClient } from '@supabase/supabase-js';
   
-  const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-
+  const { supabaseUrl, supabaseKey } = window.__CONFIG || {};
   
   let currentPage = 1;
   const perPage = 12;

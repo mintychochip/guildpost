@@ -18,6 +18,7 @@ let authError = null;
 
 if (isAuthenticated) {
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   
   try {
     let queryUrl = `${supabaseUrl}/rest/v1/servers?claimed=eq.true&select=*`;

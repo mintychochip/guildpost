@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 const { id: serverId } = Astro.params;
 
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 let server = null;
 let rules = null;

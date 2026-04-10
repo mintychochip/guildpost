@@ -12,6 +12,7 @@ const { id } = Astro.params;
 
 // Server-side fetch from Supabase
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 let server = null;
 let relatedServers = [];

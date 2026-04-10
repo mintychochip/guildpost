@@ -10,6 +10,7 @@ const serverIds = params.get('servers')?.split(',') || [];
 
 // Fetch server data server-side
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 let servers = [];
 let error = null;
