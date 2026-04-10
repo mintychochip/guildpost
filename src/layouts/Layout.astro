@@ -12,14 +12,18 @@ interface Props {
 
 const { 
   title, 
-  description = 'GuildPost - Find Your Server. Discover the best game servers for Minecraft, Rust, CS2, and more.',
-  image = 'https://guildpost.tech/og-image.jpg',
+  description = 'GuildPost - Find your next multiplayer home. Discover the best Minecraft, Rust, and CS2 servers with live stats and community reviews.',
+  image = 'https://guildpost.tech/og-image-new.png',
   url = 'https://guildpost.tech',
   type = 'website',
-  keywords = 'minecraft servers, server list, minecraft multiplayer, game servers, rust servers, cs2 servers'
+  keywords = 'minecraft servers, server list, minecraft multiplayer, game servers, rust servers, cs2 servers, minecraft server directory'
 } = Astro.props;
 
 const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
+
+// Environment configuration - injected for client-side use
+const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <!DOCTYPE html>
@@ -88,12 +92,22 @@ const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
       })();
     </script>
     
+    <!-- Global config for client-side scripts -->
+    <script is:inline define:vars={{ supabaseUrl, supabaseKey }}>
+      window.__CONFIG = {
+        supabaseUrl: supabaseUrl,
+        supabaseKey: supabaseKey
+      };
+    </script>
+    
     <!-- Canonical URL -->
     <link rel="canonical" href={url} />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/logo-icon-180.png" />
+    <link rel="icon" type="image/svg+xml" href="/logo-icon.svg" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
@@ -123,7 +137,7 @@ const fullTitle = title === 'GuildPost' ? title : `${title} | GuildPost`;
         "url": "https://guildpost.tech",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://guildpost.tech/logo.png"
+          "url": "https://guildpost.tech/logo-icon-512.png"
         }
       }
     })} />

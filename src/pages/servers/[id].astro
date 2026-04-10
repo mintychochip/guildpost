@@ -12,7 +12,6 @@ const { id } = Astro.params;
 
 // Server-side fetch from Supabase
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
 
 let server = null;
 let relatedServers = [];
@@ -699,14 +698,21 @@ const isOnline = server.status === 'online';
     voteBtn.disabled = true;
     voteBtn.innerHTML = '<span class="animate-spin">↻</span> Voting...';
     
+    console.log('[Vote] Sending vote for', username, 'on server', serverId);
+    
     try {
       const response = await fetch('https://wpxutsdbiampnxfgkjwq.supabase.co/functions/v1/vote', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo'
+        },
         body: JSON.stringify({ serverId, username, address: serverIp })
       });
       
+      console.log('[Vote] Response status:', response.status);
       const result = await response.json();
+      console.log('[Vote] Response result:', result);
       
       if (response.ok && result.success) {
         localStorage.setItem(`vote_${serverId}_${username.toLowerCase()}`, Date.now().toString());
@@ -721,7 +727,8 @@ const isOnline = server.status === 'online';
         voteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg> Vote Now`;
       }
     } catch (err) {
-      voteMessage.textContent = 'Error: ' + err.message;
+      console.error('[Vote] Fetch error:', err);
+      voteMessage.textContent = 'Error: ' + (err.message || 'Failed to connect');
       voteMessage.className = 'text-sm text-[#ff3864]';
       voteBtn.disabled = false;
       voteBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg> Vote Now`;

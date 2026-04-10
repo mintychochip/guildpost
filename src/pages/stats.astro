@@ -6,7 +6,6 @@ import Footer from '../components/Footer.astro';
 
 // Fetch stats server-side
 const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
 
 let stats = {
   total_servers: 3303,
@@ -18,6 +17,7 @@ let stats = {
 };
 
 try {
+  const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   const response = await fetch(`${supabaseUrl}/rest/v1/servers?select=count`, {
     headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` }
   });

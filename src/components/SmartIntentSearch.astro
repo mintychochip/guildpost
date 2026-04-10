@@ -483,13 +483,13 @@ const { id = 'smart-search' } = Astro.props;
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    background: #1a1a25;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
   }
 
   .search-icon {
-    color: #8892b0;
+    color: var(--text-secondary);
     flex-shrink: 0;
   }
 
@@ -497,19 +497,19 @@ const { id = 'smart-search' } = Astro.props;
     flex: 1;
     background: transparent;
     border: none;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 1rem;
     outline: none;
   }
 
   .search-input::placeholder {
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   .search-button {
     padding: 0.5rem 1rem;
-    background: #00f5d4;
-    color: #0a0a0f;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -517,7 +517,7 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .search-button:hover {
-    background: #00d4b8;
+    background: var(--accent-primary);
   }
 
   .suggestions {
@@ -530,17 +530,17 @@ const { id = 'smart-search' } = Astro.props;
 
   .suggestion-chip {
     padding: 0.25rem 0.75rem;
-    background: #1a1a25;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
-    color: #8892b0;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     cursor: pointer;
   }
 
   .suggestion-chip:hover {
-    background: #2a2a3a;
-    color: #fff;
+    background: var(--border-color);
+    color: var(--text-primary);
   }
 
   /* Wizard Overlay */
@@ -560,8 +560,8 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .wizard-container {
-    background: #12121a;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 2rem;
     max-width: 700px;
@@ -577,21 +577,21 @@ const { id = 'smart-search' } = Astro.props;
 
   .progress-bar {
     height: 4px;
-    background: #2a2a3a;
+    background: var(--border-color);
     border-radius: 2px;
     margin-bottom: 0.5rem;
   }
 
   .progress-fill {
     height: 100%;
-    background: #00f5d4;
+    background: var(--accent-primary);
     border-radius: 2px;
     transition: width 0.3s;
   }
 
   .progress-text {
     font-size: 0.875rem;
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   /* Steps */
@@ -610,20 +610,20 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .wizard-step h3 {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 1.5rem;
     margin-bottom: 0.25rem;
   }
 
   .step-desc {
-    color: #8892b0;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
   }
 
   .back-btn {
     background: transparent;
     border: none;
-    color: #8892b0;
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 0.875rem;
     margin-bottom: 1rem;
@@ -631,7 +631,7 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .back-btn:hover {
-    color: #fff;
+    color: var(--text-primary);
   }
 
   /* Option Grid */
@@ -653,15 +653,15 @@ const { id = 'smart-search' } = Astro.props;
     align-items: center;
     gap: 0.5rem;
     padding: 1rem;
-    background: #1a1a25;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
   }
 
   .option-card:hover:not(.disabled) {
-    border-color: #00f5d4;
+    border-color: var(--accent-primary);
     transform: translateY(-2px);
   }
 
@@ -683,31 +683,31 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .option-label {
-    color: #fff;
+    color: var(--text-primary);
     font-weight: 500;
   }
 
   .option-badge {
     font-size: 0.75rem;
     padding: 0.125rem 0.5rem;
-    background: #00f5d4;
-    color: #0a0a0f;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
     border-radius: 4px;
   }
 
   .option-badge.soon {
-    background: #2a2a3a;
-    color: #8892b0;
+    background: var(--border-color);
+    color: var(--text-secondary);
   }
 
   .option-desc {
     font-size: 0.75rem;
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   .option-card.other {
     border-style: dashed;
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   /* Other input */
@@ -724,21 +724,21 @@ const { id = 'smart-search' } = Astro.props;
   .other-input input {
     flex: 1;
     padding: 0.75rem;
-    background: #0a0a0f;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     outline: none;
   }
 
   .other-input input:focus {
-    border-color: #00f5d4;
+    border-color: var(--accent-primary);
   }
 
   .confirm-btn {
     padding: 0.75rem 1rem;
-    background: #00f5d4;
-    color: #0a0a0f;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -749,16 +749,16 @@ const { id = 'smart-search' } = Astro.props;
     margin-top: 1rem;
     padding: 0.75rem;
     background: transparent;
-    border: 1px dashed #2a2a3a;
-    color: #8892b0;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
   }
 
   .skip-btn:hover {
-    border-color: #00f5d4;
-    color: #fff;
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
   }
 
   /* Searching state */
@@ -770,8 +770,8 @@ const { id = 'smart-search' } = Astro.props;
   .spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid #2a2a3a;
-    border-top-color: #00f5d4;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--accent-primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 1rem;
@@ -782,7 +782,7 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .search-query {
-    color: #8892b0;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     margin-top: 0.5rem;
   }
@@ -797,7 +797,7 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .results-header h3 {
-    color: #fff;
+    color: var(--text-primary);
   }
 
   .results-grid {
@@ -809,15 +809,15 @@ const { id = 'smart-search' } = Astro.props;
   .server-card {
     display: block;
     padding: 1rem;
-    background: #12121a;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     text-decoration: none;
     transition: all 0.2s;
   }
 
   .server-card:hover {
-    border-color: #00f5d4;
+    border-color: var(--accent-primary);
     transform: translateY(-2px);
   }
 
@@ -831,7 +831,7 @@ const { id = 'smart-search' } = Astro.props;
   .server-icon {
     width: 2.5rem;
     height: 2.5rem;
-    background: #1a1a25;
+    background: var(--bg-tertiary);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -846,13 +846,13 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .server-info h4 {
-    color: #fff;
+    color: var(--text-primary);
     margin: 0;
     font-size: 1rem;
   }
 
   .server-info p {
-    color: #8892b0;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     margin: 0;
   }
@@ -861,7 +861,7 @@ const { id = 'smart-search' } = Astro.props;
     display: flex;
     gap: 1rem;
     font-size: 0.875rem;
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   .status.online {
@@ -869,21 +869,21 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .votes {
-    color: #ff3864;
+    color: var(--accent-secondary);
   }
 
   .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #8892b0;
+    color: var(--text-secondary);
   }
 
   /* Refinements */
   .refinements-container {
     margin-top: 1.5rem;
     padding: 1rem;
-    background: #12121a;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
   }
 
@@ -899,20 +899,20 @@ const { id = 'smart-search' } = Astro.props;
   }
 
   .refinements-header h4 {
-    color: #fff;
+    color: var(--text-primary);
     margin: 0;
   }
 
   .refinements-header button {
     background: transparent;
     border: none;
-    color: #8892b0;
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 0.875rem;
   }
 
   .refinements-header button:hover {
-    color: #ff3864;
+    color: var(--accent-secondary);
   }
 
   .refinement-section {
@@ -921,7 +921,7 @@ const { id = 'smart-search' } = Astro.props;
 
   .refinement-label {
     display: block;
-    color: #8892b0;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     margin-bottom: 0.5rem;
   }
@@ -934,23 +934,23 @@ const { id = 'smart-search' } = Astro.props;
 
   .refine-chip {
     padding: 0.5rem 0.875rem;
-    background: #1a1a25;
-    border: 1px solid #2a2a3a;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
-    color: #8892b0;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.2s;
   }
   .refine-chip:hover {
-    background: #2a2a3a;
-    color: #fff;
+    background: var(--border-color);
+    color: var(--text-primary);
   }
 
   .refine-chip.active {
-    background: #00f5d4;
-    color: #0a0a0f;
-    border-color: #00f5d4;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+    border-color: var(--accent-primary);
     font-weight: 600;
   }
 </style>

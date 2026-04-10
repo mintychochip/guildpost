@@ -17,3 +17,5 @@ SUPABASE_URL = "https://wpxutsdbiampnxfgkjwq.supabase.co"
 # - CRON_SECRET
 # - STRIPE_SECRET_KEY
 # - STRIPE_WEBHOOK_SECRET
+
+# Cron polling is handled via external cron service calling /api/cron/ping

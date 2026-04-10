@@ -49,12 +49,12 @@ const { id = 'gemma-wizard' } = Astro.props;
 
 <style>
   .gemma-wizard {
-    --primary: #00f5d4;
-    --bg-card: #12121a;
-    --bg-hover: #1a1a25;
-    --border: #2a2a3a;
-    --text: #ffffff;
-    --text-muted: #8892b0;
+    --primary: var(--accent-primary);
+    --bg-card: var(--bg-secondary);
+    --bg-hover: var(--bg-tertiary);
+    --border: var(--border-color);
+    --text: var(--text-primary);
+    --text-muted: var(--text-secondary);
   }
 
   .search-section {
@@ -80,7 +80,7 @@ const { id = 'gemma-wizard' } = Astro.props;
   .search-input {
     flex: 1;
     padding: 14px 16px 14px 48px;
-    background: #0a0a0f;
+    background: var(--bg-primary);
     border: 2px solid var(--border);
     border-radius: 12px;
     color: var(--text);
@@ -97,7 +97,7 @@ const { id = 'gemma-wizard' } = Astro.props;
     background: var(--primary);
     border: none;
     border-radius: 12px;
-    color: #0a0a0f;
+    color: var(--bg-primary);
     font-weight: 600;
     cursor: pointer;
   }
@@ -210,7 +210,7 @@ const { id = 'gemma-wizard' } = Astro.props;
 
   .bubble.user {
     background: var(--primary);
-    color: #0a0a0f;
+    color: var(--bg-primary);
     border-bottom-right-radius: 4px;
   }
 
@@ -219,7 +219,7 @@ const { id = 'gemma-wizard' } = Astro.props;
     gap: 8px;
     padding: 16px 20px;
     border-top: 1px solid var(--border);
-    background: #0a0a0f;
+    background: var(--bg-primary);
   }
 
   .chat-input {
@@ -236,7 +236,7 @@ const { id = 'gemma-wizard' } = Astro.props;
     background: var(--primary);
     border: none;
     border-radius: 8px;
-    color: #0a0a0f;
+    color: var(--bg-primary);
     font-weight: 600;
     cursor: pointer;
   }
@@ -306,6 +306,7 @@ const { id = 'gemma-wizard' } = Astro.props;
   }
 
   async function callGemma(userMessage) {
+    console.log('[Gemma] Calling API with message:', userMessage);
     try {
       const res = await fetch('/api/wizard/chat', {
         method: 'POST',
@@ -315,8 +316,12 @@ const { id = 'gemma-wizard' } = Astro.props;
           history: conversation
         })
       });
-      return await res.json();
+      console.log('[Gemma] Response status:', res.status);
+      const data = await res.json();
+      console.log('[Gemma] Response data:', data);
+      return data;
     } catch (e) {
+      console.error('[Gemma] Error:', e);
       return { 
         response: "I understand you're looking for a server. Could you tell me more about what game and gamemode you prefer?",
         readyToSearch: false
@@ -325,6 +330,7 @@ const { id = 'gemma-wizard' } = Astro.props;
   }
 
   async function doSearch(query) {
+    console.log('[Search] Starting search with query:', query);
     results.innerHTML = '<p style="text-align:center;padding:40px;color:#8892b0">Searching...</p>';
     
     try {
@@ -333,7 +339,9 @@ const { id = 'gemma-wizard' } = Astro.props;
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, limit: 9 })
       });
+      console.log('[Search] Response status:', res.status);
       const data = await res.json();
+      console.log('[Search] Response data:', data);
 
       if (data.results?.length) {
         results.innerHTML = `
@@ -385,6 +393,7 @@ const { id = 'gemma-wizard' } = Astro.props;
 
   async function startWizard() {
     const query = input.value.trim();
+    console.log('[Wizard] Starting with query:', query);
     if (!query) return;
     
     btn.disabled = true;
@@ -394,11 +403,14 @@ const { id = 'gemma-wizard' } = Astro.props;
     const response = await callGemma(query);
     hideTyping();
     
+    console.log('[Wizard] AI response:', response);
     if (response.readyToSearch && response.searchQuery) {
       // Intent was clear, search immediately
+      console.log('[Wizard] Ready to search:', response.searchQuery);
       await doSearch(response.searchQuery);
     } else {
       // Need clarification, show chat
+      console.log('[Wizard] Need clarification, showing chat');
       chat.classList.remove('hidden');
       messages.innerHTML = '';
       addMessage(response.response, false);

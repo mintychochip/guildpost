@@ -1,7 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
+// Keys loaded from window.__CONFIG (injected by Layout.astro)
+const config = (window as any).__CONFIG || {};
+const supabaseUrl = config.supabaseUrl || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+const supabaseKey = config.supabaseKey || '';
 
 // State
 let allServers: any[] = [];

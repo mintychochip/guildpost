@@ -1,6 +1,5 @@
 ---
-// Animated counter that counts up when visible
-// Uses client-side JavaScript for the animation
+// Animated counter - Clean, minimal design
 
 interface Props {
   value: number;
@@ -13,10 +12,10 @@ const { value, suffix = "", label, color } = Astro.props;
 ---
 
 <div class="animated-stat text-center" data-value={value} data-suffix={suffix}>
-  <div class="stat-value text-4xl md:text-5xl font-black tabular-nums" style={`color: ${color}`}>
+  <div class="stat-value text-2xl md:text-3xl font-semibold tabular-nums" style={`color: ${color}`}>
     0{suffix}
   </div>
-  <div class="text-xs text-[#8892b0] uppercase tracking-wider mt-1">
+  <div class="text-xs mt-1" style="color: var(--text-secondary);">
     {label}
   </div>
 </div>
@@ -31,30 +30,37 @@ const { value, suffix = "", label, color } = Astro.props;
         const suffix = stat.dataset.suffix || '';
         const valueEl = stat.querySelector('.stat-value');
         
-        if (!valueEl) return;
+        if (valueEl) {
+          animateValue(valueEl, 0, value, 1500, suffix);
+        }
         
-        const duration = 2000; // 2 seconds
-        const steps = 60;
-        const increment = value / steps;
-        let current = 0;
-        
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= value) {
-            valueEl.textContent = value.toLocaleString() + suffix;
-            clearInterval(timer);
-          } else {
-            valueEl.textContent = Math.floor(current).toLocaleString() + suffix;
-          }
-        }, duration / steps);
-        
-        // Stop observing once animated
         observer.unobserve(stat);
       }
     });
   }, { threshold: 0.5 });
-  
-  // Observe all animated stats
+
+  function animateValue(element: Element, start: number, end: number, duration: number, suffix: string) {
+    const startTime = performance.now();
+    
+    function update(currentTime: number) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const current = Math.floor(start + (end - start) * easeOutQuart);
+      
+      element.textContent = current.toLocaleString() + suffix;
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+    
+    requestAnimationFrame(update);
+  }
+
+  // Observe all stat elements
   document.querySelectorAll('.animated-stat').forEach(stat => {
     observer.observe(stat);
   });

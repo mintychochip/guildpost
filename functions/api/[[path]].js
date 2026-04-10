@@ -29,7 +29,7 @@ export async function onRequest(context) {
   }
 
   const url = new URL(request.url);
-  // Strip /api prefix since Functions are mounted at /api/
+  // Strip /api/ prefix since Functions are mounted at /api/
   const path = url.pathname.replace(/^\/api/, '') || '/';
 
   try {
@@ -75,6 +75,11 @@ export async function onRequest(context) {
         return await handleCronPing(request, env);
       }
 
+      // Wizard Chat (AI-powered server finder)
+      if (path === '/wizard/chat' && request.method === 'POST') {
+        return await handleWizardChat(request, env);
+      }
+
       // Batch Embedding Generation (for populating server embeddings)
       if (path === '/embeddings/batch' && request.method === 'POST') {
         return await handleEmbeddingsBatch(request, env);
@@ -101,6 +106,12 @@ export async function onRequest(context) {
       const analyticsMatch = path.match(/^\/servers\/([^\/]+)\/analytics$/);
       if (analyticsMatch && request.method === 'GET') {
         return await handleServerAnalytics(analyticsMatch[1], request, env);
+      }
+
+      // Server Uptime Stats (for server page analytics chart)
+      const uptimeMatch = path.match(/^\/servers\/([^\/]+)\/uptime$/);
+      if (uptimeMatch && request.method === 'GET') {
+        return await handleServerUptime(uptimeMatch[1], request, env);
       }
 
       return new Response('Not Found', { status: 404, headers: corsHeaders });
@@ -1004,6 +1015,137 @@ async function handleCronPing(request, env) {
   });
 }
 
+// Wizard Chat - AI-powered server finder
+async function handleWizardChat(request, env) {
+  try {
+    const { message, history = [], performSearch = false } = await request.json();
+
+    if (!message || message.length < 2) {
+      return new Response(JSON.stringify({ 
+        response: 'Hey there! Tell me what kind of Minecraft server you\'re looking for. For example: "survival with claims" or "pvp factions"',
+        readyToSearch: false 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    const geminiKey = env.GEMINI_API_KEY;
+    
+    // If performSearch is true, skip AI and do hybrid search directly
+    if (performSearch) {
+      try {
+        const searchResults = await hybridSearch(message, 12, env);
+        return new Response(JSON.stringify({
+          response: `Found ${searchResults.count} servers matching "${message}"`,
+          readyToSearch: true,
+          searchQuery: message,
+          results: searchResults.results,
+          searchType: 'hybrid',
+          ai: false
+        }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      } catch (searchErr) {
+        return new Response(JSON.stringify({ 
+          response: 'I had trouble searching. Please try again with different keywords.',
+          readyToSearch: false,
+          error: searchErr.message
+        }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
+    }
+    
+    if (!geminiKey) {
+      // Fallback to basic responses if no API key
+      return new Response(JSON.stringify({ 
+        response: 'I understand you\'re looking for a server! Try being more specific about the gamemode (survival, pvp, skyblock, etc.) and any features you want.',
+        readyToSearch: false 
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Call Gemma AI
+    const prompt = `You are Gemma, an AI assistant for GuildPost - a game server discovery platform. Help users find their ideal Minecraft server.
+
+Available server types:
+- Gamemodes: survival, smp, pvp, factions, skyblock, creative, minigames, hardcore, prison, modded, roleplay, towny
+- Features: economy, claims, discord, events, bedrock, vanilla, quests, mmo, shops, crates, kits
+
+Conversation history:
+${history.map(h => `${h.role}: ${h.content}`).join('\n')}
+
+User: ${message}
+
+Respond naturally as a helpful assistant. If you have enough info to recommend servers (gamemode or specific features mentioned), include "SEARCH_READY: <query>" at the end where <query> is the search terms.
+
+Gemma:`;
+
+    const aiResponse = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemma-3-4b-it:generateContent?key=${geminiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.8,
+            maxOutputTokens: 300
+          }
+        })
+      }
+    );
+
+    if (!aiResponse.ok) {
+      throw new Error(`Gemma API error: ${aiResponse.status}`);
+    }
+
+    const data = await aiResponse.json();
+    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
+    // Check if AI indicated search is ready
+    const searchMatch = aiText.match(/SEARCH_READY:\s*(.+)/i);
+    const readyToSearch = !!searchMatch;
+    const searchQuery = searchMatch ? searchMatch[1].trim() : null;
+    
+    // Clean up the response text
+    const cleanResponse = aiText.replace(/SEARCH_READY:.*/i, '').trim();
+
+    // If ready to search, perform hybrid search
+    let searchResults = null;
+    if (readyToSearch && searchQuery) {
+      try {
+        searchResults = await hybridSearch(searchQuery, 12, env);
+      } catch (e) {
+        console.error('Hybrid search error:', e);
+      }
+    }
+
+    return new Response(JSON.stringify({
+      response: cleanResponse || 'Tell me more about what kind of server you want!',
+      readyToSearch,
+      searchQuery,
+      results: searchResults?.results,
+      searchType: 'hybrid',
+      ai: true
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+
+  } catch (err) {
+    console.error('Wizard chat error:', err);
+    return new Response(JSON.stringify({ 
+      response: 'I\'m having trouble connecting to my AI brain right now. Try searching with keywords like "survival", "pvp", or "skyblock"!',
+      readyToSearch: false,
+      ai: false
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
 // Batch ping all servers (used by cron)
 async function runBatchPing(env) {
   const supabaseUrl = env.SUPABASE_URL;
@@ -1487,6 +1629,146 @@ async function handleServerAnalytics(serverId, request, env) {
     console.error('Analytics error:', err);
     return new Response(
       JSON.stringify({ error: err.message || 'Failed to fetch analytics' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+// Server Uptime Stats (for server page analytics chart)
+async function handleServerUptime(serverId, request, env) {
+  const url = new URL(request.url);
+  const days = parseInt(url.searchParams.get('days') || '1', 10);
+  
+  const supabaseUrl = env.SUPABASE_URL || 'https://wpxutsdbiampnxfgkjwq.supabase.co';
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
+  
+  if (!supabaseKey) {
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+
+  try {
+    // Calculate date range
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+    
+    // Fetch ping history from server_ping_history table
+    const pingsResponse = await fetch(
+      `${supabaseUrl}/rest/v1/server_ping_history?server_id=eq.${serverId}&created_at=gte.${startDate.toISOString()}&order=created_at.asc&select=created_at,players_online,max_players,ping_ms`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    if (!pingsResponse.ok) {
+      const errorText = await pingsResponse.text();
+      console.error('Supabase ping fetch error:', pingsResponse.status, errorText);
+      throw new Error(`Failed to fetch ping history: ${pingsResponse.status} ${errorText}`);
+    }
+    
+    const pings = await pingsResponse.json();
+    
+    // Get current server stats
+    const serverResponse = await fetch(
+      `${supabaseUrl}/rest/v1/servers?id=eq.${serverId}&select=players_online,max_players,status,uptime_percentage`,
+      {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
+        }
+      }
+    );
+    
+    let currentStats = {};
+    if (serverResponse.ok) {
+      const servers = await serverResponse.json();
+      if (servers.length > 0) {
+        currentStats = servers[0];
+      }
+    }
+    
+    // Process data into chart format
+    const chartData = [];
+    const rawData = pings.map(ping => ({
+      time: ping.created_at,
+      players: ping.players_online || 0,
+      max_players: ping.max_players || 0,
+      latency: ping.ping_ms || 0
+    }));
+    
+    // Aggregate by day for longer periods
+    if (days > 1) {
+      const dailyMap = new Map();
+      
+      for (const ping of pings) {
+        const date = ping.created_at.split('T')[0];
+        if (!dailyMap.has(date)) {
+          dailyMap.set(date, { 
+            date, 
+            players_sum: 0, 
+            count: 0,
+            avg_latency: 0,
+            latency_count: 0
+          });
+        }
+        const day = dailyMap.get(date);
+        day.players_sum += ping.players_online || 0;
+        day.count++;
+        if (ping.ping_ms) {
+          day.avg_latency += ping.ping_ms;
+          day.latency_count++;
+        }
+      }
+      
+      for (const [date, day] of dailyMap) {
+        chartData.push({
+          date,
+          avg_players: Math.round(day.players_sum / day.count),
+          avg_latency: day.latency_count > 0 ? Math.round(day.avg_latency / day.latency_count) : 0
+        });
+      }
+      
+      chartData.sort((a, b) => a.date.localeCompare(b.date));
+    }
+    
+    // Calculate stats
+    const totalPings = pings.length;
+    const avgPlayers = totalPings > 0 
+      ? Math.round(pings.reduce((sum, p) => sum + (p.players_online || 0), 0) / totalPings)
+      : 0;
+    const avgLatency = totalPings > 0
+      ? Math.round(pings.reduce((sum, p) => sum + (p.ping_ms || 0), 0) / totalPings)
+      : 0;
+    
+    return new Response(
+      JSON.stringify({
+        success: true,
+        period: { days, start: startDate.toISOString(), end: endDate.toISOString() },
+        summary: {
+          avg_players: avgPlayers,
+          avg_latency: avgLatency,
+          total_pings: totalPings
+        },
+        current_stats: currentStats,
+        chart_data: chartData,
+        raw_data: rawData
+      }),
+      {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      }
+    );
+    
+  } catch (err) {
+    console.error('Uptime stats error:', err);
+    return new Response(
+      JSON.stringify({ error: err.message || 'Failed to fetch uptime stats' }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

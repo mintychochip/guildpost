@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500">
+  <!-- Twitter/X Header Design Spec (1500×500) -->
+  
+  <!-- Background -->
+  <defs>
+    <linearGradient id="headerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d0d12"/>
+      <stop offset="50%" stop-color="#151519"/>
+      <stop offset="100%" stop-color="#0d0d12"/>
+    </linearGradient>
+    
+    <!-- Subtle pattern -->
+    <pattern id="nodePattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <circle cx="50" cy="50" r="2" fill="#27272a" opacity="0.5"/>
+      <circle cx="20" cy="20" r="1" fill="#27272a" opacity="0.3"/>
+      <circle cx="80" cy="80" r="1" fill="#27272a" opacity="0.3"/>
+    </pattern>
+  </defs>
+  
+  <!-- Base -->
+  <rect width="1500" height="500" fill="url(#headerGradient)"/>
+  <rect width="1500" height="500" fill="url(#nodePattern)"/>
+  
+  <!-- Accent line at bottom -->
+  <rect x="0" y="496" width="1500" height="4" fill="#6366f1"/>
+  
+  <!-- Logo Icon -->
+  <g transform="translate(750, 200)">
+    <!-- Top node -->
+    <circle cx="0" cy="-40" r="12" fill="#6366f1"/>
+    
+    <!-- Left node -->
+    <circle cx="-35" cy="20" r="12" fill="#6366f1"/>
+    
+    <!-- Right node -->
+    <circle cx="35" cy="20" r="12" fill="#6366f1"/>
+    
+    <!-- Connecting lines -->
+    <line x1="0" y1="-40" x2="-35" y2="20" stroke="#6366f1" stroke-width="4" stroke-linecap="round"/>
+    <line x1="0" y1="-40" x2="35" y2="20" stroke="#6366f1" stroke-width="4" stroke-linecap="round"/>
+    <line x1="-35" y1="20" x2="35" y2="20" stroke="#6366f1" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Center -->
+    <circle cx="0" cy="0" r="6" fill="#ec4899"/>
+  </g>
+  
+  <!-- Wordmark -->
+  <text x="750" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="600" fill="#f4f4f5">
+    GuildPost
+  </text>
+  
+  <!-- Tagline -->
+  <text x="750" y="365" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#a1a1aa">
+    Find your next multiplayer home
+  </text>
+  
+  <!-- Game icons (decorative) -->
+  <g transform="translate(1200, 400)" opacity="0.3">
+    <text x="0" y="0" font-size="32" fill="#6366f1">⛏</text>
+    <text x="50" y="0" font-size="32" fill="#6366f1">🎮</text>
+    <text x="100" y="0" font-size="32" fill="#6366f1">📊</text>
+  </g>
+  
+  <!-- URL -->
+  <text x="1400" y="480" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#52525b">
+    guildpost.tech
+  </text>
+</svg>

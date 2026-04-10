@@ -1,6 +1,6 @@
 ---
 // GuildPost Astro - Main Homepage
-// Static site with client-side Supabase data fetching
+// Clean, unisex, professional design
 
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
@@ -8,13 +8,14 @@ import Footer from '../components/Footer.astro';
 import AnimatedStat from '../components/AnimatedStat.astro';
 import GemmaWizard from '../components/GemmaWizard.astro';
 
+
+
 // Game categories data
 const gameCategories = [
   {
     id: "minecraft",
     name: "Minecraft",
     description: "PvP, Survival, Skyblock, Factions & more",
-    iconColor: "#00f5d4",
     serverCount: 1064,
     href: "/minecraft",
     featured: true,
@@ -23,7 +24,6 @@ const gameCategories = [
     id: "rust",
     name: "Rust",
     description: "Coming soon",
-    iconColor: "#ff3864",
     serverCount: 0,
     href: "#",
     featured: false,
@@ -32,7 +32,6 @@ const gameCategories = [
     id: "cs2",
     name: "CS2",
     description: "Coming soon",
-    iconColor: "#9d4edd",
     serverCount: 0,
     href: "#",
     featured: false,
@@ -50,63 +49,58 @@ const gameCategories = [
     <Header />
 
     <!-- Hero Section -->
-    <section class="px-4 py-20 md:py-32">
-      <div class="max-w-6xl mx-auto text-center">
-        <h1 class="text-5xl md:text-7xl font-black mb-6">
-          <span class="text-white">Find Your</span>
-          <br />
-          <span class="text-[#ff3864]">SERVER</span>
+    <section class="px-4 py-20 md:py-28">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-6xl font-semibold mb-6 tracking-tight" style="color: var(--text-primary);">
+          Find your next<br />
+          <span style="color: var(--accent-primary);">multiplayer home</span>
         </h1>
-        <p class="text-[#8892b0] text-xl md:text-2xl max-w-2xl mx-auto mb-12">
-          The ultimate directory for game servers. 
-          From Minecraft to Rust, discover your next multiplayer home.
+        <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10" style="color: var(--text-secondary);">
+          The modern directory for game servers. From Minecraft to Rust, discover servers that match your play style.
         </p>
 
         <!-- Animated Stats -->
         <div 
-          class="flex justify-center gap-8 md:gap-16 mb-8 py-6 px-8 bg-[#12121a] border border-[#2a2a3a] max-w-2xl mx-auto"
-          style="clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%)"
+          class="flex justify-center gap-8 md:gap-12 mb-10 py-5 px-8 max-w-xl mx-auto"
+          style="background-color: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);"
         >
-          <AnimatedStat value={1064} label="Servers" color="#00f5d4" />
-          <AnimatedStat value={50} suffix="+" label="Game Modes" color="#00f5d4" />
-          <AnimatedStat value={0} label="Fake Reviews" color="#ff3864" />
+          <AnimatedStat value={1064} label="Servers" color="var(--accent-primary)" />
+          <AnimatedStat value={50} suffix="+" label="Game Modes" color="var(--accent-secondary)" />
+          <AnimatedStat value={0} label="Fake Reviews" color="var(--accent-tertiary)" />
         </div>
 
         <!-- Gemma AI Wizard -->
-        <div class="max-w-3xl mx-auto mt-8 mb-4">
-          <div class="flex items-center justify-center gap-2 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="max-w-3xl mx-auto mt-6 mb-4">
+          <div class="flex items-center justify-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5z"/>
               <path d="M2 17l10 5 10-5"/>
               <path d="M2 12l10 5 10-5"/>
             </svg>
-            <span class="text-[#00f5d4] text-sm font-medium">Powered by Gemini AI</span>
+            <span class="text-sm font-medium" style="color: var(--text-secondary);">Powered by Gemini AI</span>
           </div>
           <GemmaWizard id="hero-wizard" />
         </div>
 
         <!-- CTA Buttons -->
-        <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <div class="flex flex-wrap justify-center gap-3 mt-8">
           <a
             href="/minecraft"
-            class="inline-flex items-center gap-2 bg-[#00f5d4] text-[#0a0a0f] px-8 py-4 font-bold text-lg hover:bg-[#00d4b8] transition-colors"
-            style="clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)"
+            class="gp-btn-primary inline-flex items-center gap-2 px-6 py-3 text-base"
           >
             Browse All
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
           <a
             href="/wizard"
-            class="inline-flex items-center gap-2 border-2 border-[#00f5d4] text-[#00f5d4] px-8 py-4 font-bold text-lg hover:bg-[#00f5d4] hover:text-[#0a0a0f] transition-colors"
-            style="clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)"
+            class="gp-btn-outline inline-flex items-center gap-2 px-6 py-3 text-base"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            Full AI Wizard
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            AI Wizard
           </a>
           <a
             href="/submit"
-            class="inline-flex items-center gap-2 border-2 border-[#2a2a3a] text-white px-8 py-4 font-bold text-lg hover:border-[#00f5d4] hover:text-[#00f5d4] transition-colors"
-            style="clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%)"
+            class="gp-btn-ghost inline-flex items-center gap-2 px-6 py-3 text-base"
           >
             Add Server
           </a>
@@ -116,40 +110,41 @@ const gameCategories = [
         <div class="mt-6">
           <button
             id="surprise-btn"
-            class="inline-flex items-center gap-2 text-[#8892b0] hover:text-[#ff3864] transition-colors"
+            class="inline-flex items-center gap-2 text-sm transition-colors hover:underline"
+            style="color: var(--text-tertiary);"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
               <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
               <line x1="12" y1="22.08" x2="12" y2="12"/>
             </svg>
-            🎲 Surprise Me - Random Server
+            Surprise me — Random Server
           </button>
         </div>
       </div>
     </section>
 
     <!-- Game Categories -->
-    <section class="px-4 py-16 border-t border-[#1a1a25]">
+    <section class="px-4 py-16 border-t" style="border-color: var(--border-subtle);">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-white mb-8 text-center">
+        <h2 class="text-2xl font-semibold mb-8 text-center" style="color: var(--text-primary);">
           Browse by Game
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           {gameCategories.map((game) => (
             <a
               href={game.href}
-              class={`group p-8 border-2 transition-all ${
+              class={`group p-6 transition-all border ${
                 game.featured
-                  ? "border-[#00f5d4] bg-[#00f5d4]/5 hover:bg-[#00f5d4]/10"
-                  : "border-[#2a2a3a] opacity-60 hover:opacity-100 hover:border-[#3a3a4a]"
+                  ? "gp-card-interactive"
+                  : "opacity-50 hover:opacity-80"
               }`}
-              style="clip-path: polygon(5% 0, 100% 0, 100% 95%, 95% 100%, 0 100%, 0 5%)"
+              style="background-color: var(--bg-secondary); border-radius: var(--radius-lg); border-color: var(--border-subtle);"
             >
-              <div class="mb-4" style={`color: ${game.iconColor}`}>
+              <div class="mb-4" style={`color: ${game.featured ? 'var(--accent-primary)' : 'var(--text-secondary)'}`}>
                 {game.id === 'minecraft' && (
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M24 0L48 12L24 24L0 12L24 0Z" fill="#5D8C3A"/>
                     <path d="M24 24L48 12V36L24 48V24Z" fill="#735037"/>
                     <path d="M24 24L0 12V36L24 48V24Z" fill="#8B654D"/>
@@ -158,40 +153,32 @@ const gameCategories = [
                   </svg>
                 )}
                 {game.id === 'rust' && (
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="24" cy="24" r="12" stroke={game.iconColor} stroke-width="3" fill="none"/>
-                    <circle cx="24" cy="24" r="6" stroke={game.iconColor} stroke-width="2" fill="none"/>
-                    <path d="M24 4V10" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M24 38V44" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M4 24H10" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M38 24H44" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M10 10L14 14" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M34 34L38 38" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M38 10L34 14" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <path d="M14 34L10 38" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
+                  <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M24 4V10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M24 38V44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M4 24H10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M38 24H44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                   </svg>
                 )}
                 {game.id === 'cs2' && (
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="24" cy="24" r="22" stroke={game.iconColor} stroke-width="3" fill="none"/>
-                    <path d="M24 10V24L34 30" stroke={game.iconColor} stroke-width="3" stroke-linecap="round"/>
-                    <circle cx="24" cy="24" r="4" fill={game.iconColor}/>
-                    <path d="M24 4V8" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
-                    <path d="M24 40V44" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
-                    <path d="M4 24H8" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
-                    <path d="M40 24H44" stroke={game.iconColor} stroke-width="2" stroke-linecap="round"/>
+                  <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                    <path d="M24 10V24L34 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="24" cy="24" r="4" fill="currentColor"/>
                   </svg>
                 )}
               </div>
-              <h3 class="text-2xl font-bold text-white mb-2">{game.name}</h3>
-              <p class="text-[#8892b0] mb-4">{game.description}</p>
+              <h3 class="text-xl font-semibold mb-1" style="color: var(--text-primary);">{game.name}</h3>
+              <p class="text-sm mb-3" style="color: var(--text-secondary);">{game.description}</p>
               {game.serverCount > 0 && (
-                <p class="text-[#00f5d4] font-bold">{game.serverCount.toLocaleString()} servers</p>
+                <p class="text-sm font-medium" style="color: var(--accent-primary);">{game.serverCount.toLocaleString()} servers</p>
               )}
               {game.featured && (
-                <div class="mt-4 flex items-center gap-2 text-[#00f5d4]">
-                  <span class="text-sm font-medium">Explore</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <div class="mt-3 flex items-center gap-1 text-sm" style="color: var(--accent-primary);">
+                  <span>Explore</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </div>
               )}
             </a>
@@ -201,53 +188,53 @@ const gameCategories = [
     </section>
 
     <!-- Featured Minecraft Servers -->
-    <section class="px-4 py-16 border-t border-[#1a1a25]">
+    <section class="px-4 py-16 border-t" style="border-color: var(--border-subtle);">
       <div class="max-w-6xl mx-auto">
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-3xl font-bold text-white">Featured Minecraft Servers</h2>
-          <a href="/minecraft" class="text-[#00f5d4] hover:underline flex items-center gap-2">
-            View All
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold" style="color: var(--text-primary);">Featured Minecraft Servers</h2>
+          <a href="/minecraft" class="flex items-center gap-1 text-sm hover:underline" style="color: var(--accent-primary);">
+            View all
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
-        <div id="featured-servers" class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="col-span-full text-center py-12 text-[#8892b0]">Loading servers...</div>
+        <div id="featured-servers" class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="col-span-full text-center py-12" style="color: var(--text-secondary);">Loading servers...</div>
         </div>
       </div>
     </section>
 
     <!-- Why GuildPost -->
-    <section class="px-4 py-16 border-t border-[#1a1a25]">
+    <section class="px-4 py-16 border-t" style="border-color: var(--border-subtle);">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-white mb-12 text-center">Why GuildPost?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="text-center">
-            <div class="w-16 h-16 bg-[#12121a] border border-[#2a2a3a] flex items-center justify-center mx-auto mb-4 text-2xl">🎮</div>
-            <h3 class="text-xl font-bold text-white mb-2">Multi-Game Support</h3>
-            <p class="text-[#8892b0]">Starting with Minecraft, expanding to Rust, CS2, and more.</p>
+        <h2 class="text-2xl font-semibold mb-10 text-center" style="color: var(--text-primary);">Why GuildPost?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center p-6" style="background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+            <div class="w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl rounded-lg" style="background-color: var(--bg-tertiary);">🎮</div>
+            <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary);">Multi-Game Support</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">Starting with Minecraft, expanding to Rust, CS2, and more.</p>
           </div>
-          <div class="text-center">
-            <div class="w-16 h-16 bg-[#12121a] border border-[#2a2a3a] flex items-center justify-center mx-auto mb-4 text-2xl">👥</div>
-            <h3 class="text-xl font-bold text-white mb-2">Community Driven</h3>
-            <p class="text-[#8892b0]">Real player votes and reviews. No pay-to-win placement.</p>
+          <div class="text-center p-6" style="background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+            <div class="w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl rounded-lg" style="background-color: var(--bg-tertiary);">👥</div>
+            <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary);">Community Driven</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">Real player votes and reviews. No pay-to-win placement.</p>
           </div>
-          <div class="text-center">
-            <div class="w-16 h-16 bg-[#12121a] border border-[#2a2a3a] flex items-center justify-center mx-auto mb-4 text-2xl">📊</div>
-            <h3 class="text-xl font-bold text-white mb-2">Live Status</h3>
-            <p class="text-[#8892b0]">Real-time player counts and latency. Know before you join.</p>
+          <div class="text-center p-6" style="background-color: var(--bg-secondary); border-radius: var(--radius-lg);">
+            <div class="w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl rounded-lg" style="background-color: var(--bg-tertiary);">📊</div>
+            <h3 class="text-lg font-semibold mb-2" style="color: var(--text-primary);">Live Status</h3>
+            <p class="text-sm" style="color: var(--text-secondary);">Real-time player counts and latency. Know before you join.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Footer CTA -->
-    <section class="px-4 py-16 border-t border-[#1a1a25]">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-white mb-4">Ready to Find Your Server?</h2>
-        <p class="text-[#8892b0] mb-8">Join thousands of players discovering their next favorite server.</p>
-        <a href="/minecraft" class="inline-flex items-center gap-2 bg-[#ff3864] text-white px-8 py-4 font-bold text-lg hover:bg-[#e63357] transition-colors" style="clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)">
+    <section class="px-4 py-16 border-t" style="border-color: var(--border-subtle);">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="text-2xl font-semibold mb-3" style="color: var(--text-primary);">Ready to find your server?</h2>
+        <p class="mb-6" style="color: var(--text-secondary);">Join thousands of players discovering their next favorite multiplayer experience.</p>
+        <a href="/minecraft" class="gp-btn-primary inline-flex items-center gap-2 px-6 py-3">
           Start Browsing
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
     </section>
@@ -258,11 +245,15 @@ const gameCategories = [
 
 <script>
   // Use global supabase from CDN library loaded in Layout.astro
-  const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndweHV0c2RiaWFtcG54ZmdrandxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNTEwMDQsImV4cCI6MjA5MDkyNzAwNH0.35hrTSgxQnICpLOY3g6W3eNxxe7DKCc3q165tyb0Ieo';
+  // Keys loaded from window.__CONFIG (injected by Layout.astro)
+  const { supabaseUrl, supabaseKey } = window.__CONFIG || {};
   
   // Load featured servers
   async function loadServers() {
+    if (!supabaseKey) {
+      console.error('Supabase key not configured');
+      return;
+    }
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     const { data: servers, error } = await supabase
       .from('servers')
@@ -272,28 +263,28 @@ const gameCategories = [
     
     const container = document.getElementById('featured-servers');
     if (error || !servers?.length) {
-      container.innerHTML = `<div class="col-span-full text-center py-12 text-[#8892b0]">No servers found.</div>`;
+      container.innerHTML = `<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">No servers found.</div>`;
       return;
     }
     
     container.innerHTML = servers.map(server => `
-      <a href="/servers/${server.id}" class="block p-5 bg-[#12121a] border border-[#2a2a3a] hover:border-[#00f5d4] transition-colors group rounded-lg">
-        <div class="flex items-start gap-4 mb-4">
-          ${server.icon ? `<img src="${server.icon}" alt="" class="w-14 h-14 rounded bg-[#1a1a25]" loading="lazy" />` : `<div class="w-14 h-14 rounded bg-[#1a1a25] flex items-center justify-center"><span class="text-[#00f5d4] text-2xl">⛏</span></div>`}
+      <a href="/servers/${server.id}" class="block p-4 transition-all group gp-card-interactive" style="background-color: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
+        <div class="flex items-start gap-3 mb-3">
+          ${server.icon ? `<img src="${server.icon}" alt="" class="w-12 h-12 rounded-lg" style="background-color: var(--bg-tertiary);" loading="lazy" />` : `<div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: var(--bg-tertiary);"><span style="color: var(--accent-primary);" class="text-xl">⛏</span></div>`}
           <div class="flex-1 min-w-0">
-            <h3 class="font-bold text-white group-hover:text-[#00f5d4] transition-colors truncate text-lg">${server.name}</h3>
-            <p class="text-sm text-[#8892b0] font-mono truncate">${server.ip}:${server.port}</p>
+            <h3 class="font-medium truncate text-base group-hover:text-[var(--accent-primary)] transition-colors" style="color: var(--text-primary);">${server.name}</h3>
+            <p class="text-xs font-mono truncate" style="color: var(--text-tertiary);">${server.ip}:${server.port}</p>
           </div>
         </div>
-        <div class="flex items-center gap-4 mb-3 text-sm">
-          <span class="flex items-center gap-1 ${server.status === 'online' ? 'text-green-500' : 'text-[#8892b0]'}">
-            <span class="w-1.5 h-1.5 rounded-full ${server.status === 'online' ? 'bg-green-500' : 'bg-gray-500'}"></span>
-            ${server.players_online || 0}/${server.max_players || '?'} online
+        <div class="flex items-center gap-3 mb-2 text-xs">
+          <span class="flex items-center gap-1" style="color: ${server.status === 'online' ? 'var(--accent-tertiary)' : 'var(--text-muted)'};">
+            <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${server.status === 'online' ? 'var(--accent-tertiary)' : 'var(--text-muted)'}"></span>
+            ${server.players_online || 0}/${server.max_players || '?'}
           </span>
-          <span class="flex items-center gap-1 text-[#ff3864]">▲ ${server.vote_count || 0}</span>
+          <span class="flex items-center gap-1" style="color: var(--accent-secondary);">▲ ${server.vote_count || 0}</span>
         </div>
         <div class="flex flex-wrap gap-1">
-          ${(server.tags || []).slice(0, 3).map(tag => `<span class="text-xs px-2 py-1 bg-[#1a1a25] text-[#8892b0] rounded">${tag}</span>`).join('')}
+          ${(server.tags || []).slice(0, 3).map(tag => `<span class="text-xs px-2 py-0.5 rounded" style="background-color: var(--bg-tertiary); color: var(--text-secondary); border-radius: var(--radius-sm);">${tag}</span>`).join('')}
         </div>
       </a>
     `).join('');
@@ -308,11 +299,19 @@ const gameCategories = [
   // Surprise Me
   document.getElementById('surprise-btn')?.addEventListener('click', async () => {
     const btn = document.getElementById('surprise-btn');
-    btn.innerHTML = `<svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Finding...`;
+    btn.innerHTML = `<svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Finding...`;
     
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    if (!supabaseKey) {
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
+      return;
+    }
+    
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     const { count } = await supabase.from('servers').select('*', { count: 'exact', head: true });
-    if (!count) { showToast('No servers', 'error'); return; }
+    if (!count) { 
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
+      return; 
+    }
     
     const { data } = await supabase.from('servers').select('id').range(Math.floor(Math.random() * count), Math.floor(Math.random() * count)).limit(1);
     if (data?.[0]) window.location.href = `/servers/${data[0].id}`;
