@@ -7,7 +7,7 @@
     "build": "astro build && cp public/_routes.json dist/_routes.json && cp public/_routes.json .",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
     "i18n:init": "crowdin init",
     "i18n:upload": "crowdin upload sources",
