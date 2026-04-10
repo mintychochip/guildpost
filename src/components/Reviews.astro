@@ -4,11 +4,11 @@ const { serverId, reviews: initialReviews = [] } = Astro.props;
 ---
 
 <div class="mt-8 p-6 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg">
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
     <h2 class="text-xl font-bold text-[var(--text-primary)]">Reviews</h2>
     <button 
       id="write-review-btn"
-      class="px-4 py-2 bg-[var(--accent-primary)] hover:brightness-110 text-[var(--bg-primary)] font-bold rounded-lg transition-colors text-sm"
+      class="px-4 py-2 bg-[var(--accent-primary)] hover:brightness-110 text-[var(--bg-primary)] font-bold rounded-lg transition-colors text-sm w-full sm:w-auto"
     >
       Write a Review
     </button>

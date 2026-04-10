@@ -200,6 +200,52 @@ const { id = 'gemma-wizard' } = Astro.props;
     max-width: 80%;
     font-size: 14px;
     line-height: 1.5;
+    word-break: break-word;
+  }
+
+  @media (max-width: 640px) {
+    .gemma-wizard {
+      margin: 0 -16px;
+    }
+    
+    .search-wrapper {
+      flex-direction: column;
+    }
+    
+    .search-btn {
+      width: 100%;
+      padding: 12px;
+    }
+    
+    .quick-pills {
+      flex-wrap: wrap;
+    }
+    
+    .quick-pills button {
+      flex: 1;
+      min-width: 100px;
+      justify-content: center;
+    }
+    
+    .bubble {
+      max-width: 90%;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    
+    .chat-input-area {
+      padding: 12px;
+    }
+    
+    .send-btn {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    
+    .messages {
+      padding: 16px;
+      max-height: 300px;
+    }
   }
 
   .bubble.ai {
