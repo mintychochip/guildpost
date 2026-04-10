@@ -29,7 +29,8 @@ export async function onRequest(context) {
   }
 
   const url = new URL(request.url);
-  const path = url.pathname;
+  // Strip /api prefix since Functions are mounted at /api/
+  const path = url.pathname.replace(/^\/api/, '') || '/';
 
   try {
       // Semantic Search
