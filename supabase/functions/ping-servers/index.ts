@@ -2,9 +2,9 @@
 // Periodically checks server status and updates database
 // Can be triggered by cron job or called manually
 
-import { createClient } from '@supabase/supabase-js';
-import * as net from 'net';
-import { Buffer } from 'buffer';
+import { createClient } from 'npm:@supabase/supabase-js@2';
+import * as net from 'node:net';
+import { Buffer } from 'node:buffer';
 
 // Varint helper functions
 function varintSize(value: number): number {
@@ -223,13 +223,24 @@ export async function pingServers(request: Request): Promise<Response> {
       last_ping_at: result.checked_at
     }));
     
-    // Batch update servers
-    const { error: updateError } = await supabase
-      .from('servers')
-      .upsert(updates, { onConflict: 'id' });
-    
-    if (updateError) {
-      console.error('Failed to update servers:', updateError);
+    // Batch update servers (use update with eq filter since upsert requires all not-null fields)
+    for (const update of updates) {
+      const { error: updateError } = await supabase
+        .from('servers')
+        .update({
+          status: update.status,
+          players_online: update.players_online,
+          max_players: update.max_players,
+          version: update.version,
+          ping_ms: update.ping_ms,
+          last_error: update.last_error,
+          last_ping_at: update.last_ping_at
+        })
+        .eq('id', update.id);
+        
+      if (updateError) {
+        console.error(`Failed to update server ${update.id}:`, updateError);
+      }
     }
     
     // Store ping history for analytics (only store every 3rd ping to save space)
