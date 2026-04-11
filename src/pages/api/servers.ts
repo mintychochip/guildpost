@@ -14,12 +14,7 @@ export const GET: APIRoute = async ({ locals }) => {
   const supabaseUrl = env.SUPABASE_URL || env.PUBLIC_SUPABASE_URL;
   const supabaseKey = env.SUPABASE_SERVICE_KEY || env.PUBLIC_SUPABASE_ANON_KEY;
 
-  // Debug: Log what's available (remove in production)
-  console.log('Env check:', {
-    hasUrl: !!supabaseUrl,
-    hasKey: !!supabaseKey,
-    envKeys: Object.keys(env).filter(k => !k.includes('SECRET') && !k.includes('KEY'))
-  });
+  // Environment validation (silent in production)
 
   if (!supabaseUrl || !supabaseKey) {
     return new Response(JSON.stringify({ 
@@ -73,7 +68,11 @@ export const GET: APIRoute = async ({ locals }) => {
       servers: allServers,
       count: allServers.length
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 
+        ...corsHeaders, 
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=60, stale-while-revalidate=300'
+      }
     });
   } catch (err) {
     console.error('Servers list error:', err);
