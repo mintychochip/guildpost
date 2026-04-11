@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { getRuntime } from '@astrojs/cloudflare';
 
 export const prerender = false;
 
@@ -9,22 +8,16 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-export const GET: APIRoute = async ({ params, request, context }) => {
+export const GET: APIRoute = async ({ params, request, locals }) => {
   const { id } = params;
   const url = new URL(request.url);
   const days = parseInt(url.searchParams.get('days') || '1', 10);
   
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
   
-  // Use Cloudflare runtime for env vars on Cloudflare Pages
-  let supabaseKey = '';
-  try {
-    const runtime = getRuntime(context);
-    supabaseKey = runtime?.env?.SUPABASE_SERVICE_KEY || '';
-  } catch {
-    // Fallback for local dev
-    supabaseKey = (import.meta as any).env?.SUPABASE_SERVICE_KEY || '';
-  }
+  // Access env vars from Cloudflare Pages runtime via locals
+  const env = (locals as any)?.runtime?.env || {};
+  const supabaseKey = env.SUPABASE_SERVICE_KEY;
   
   if (!supabaseKey) {
     return new Response(
