@@ -29,3 +29,13 @@ scripts/detailed-*.mjs
 scripts/final-*.mjs
 scripts/fix-*.mjs
 scripts/test-*.mjs
+
+# Scraping output files (artifacts, not source)
+scripts/*.json
+scripts/*.txt
+scripts/aggressive_*.json
+scripts/aggressive_*.txt
+scripts/mass_scrape_*.json
+scripts/mass_scrape_*.txt
+scripts/mc_mp_optimized_*.json
+scripts/mc_mp_optimized_*.txt
