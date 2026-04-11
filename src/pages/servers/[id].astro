@@ -580,7 +580,7 @@ const isOnline = server.status === 'online';
   </div>
 </Layout>
 
-<script define:vars={{ serverId: id, serverIp: server.ip, serverPort: server.port, serverName: server.name }}>
+<script define:vars={{ serverId: id, serverIp: server.ip, serverPort: server.port, serverName: server.name, serverPlayers: server.players_online }}>
   // Copy IP functionality - handle both buttons
   const ipText = `${serverIp}${serverPort && serverPort !== 25565 ? ':' + serverPort : ''}`;
   
@@ -879,7 +879,7 @@ const isOnline = server.status === 'online';
   function generateMockHistory(period) {
     const points = period === '24h' ? 24 : period === '7d' ? 28 : 30;
     const history = [];
-    const basePlayers = server.players_online || 50;
+    const basePlayers = serverPlayers || 50;
     
     for (let i = 0; i < points; i++) {
       const variation = Math.sin(i * 0.5) * (basePlayers * 0.3) + (Math.random() - 0.5) * 10;
@@ -984,7 +984,7 @@ const isOnline = server.status === 'online';
     
     // Peak players from current server data (passed from Astro)
     if (peakEl) {
-      peakEl.textContent = server.players_online || 0;
+      peakEl.textContent = serverPlayers || 0;
     }
     
     // Uptime percentage from API
