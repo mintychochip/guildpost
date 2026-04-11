@@ -3,6 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ServerMediaUploader from '../components/ServerMediaUploader.astro';
 
 // Get auth parameters from URL
 const ownerEmail = Astro.url.searchParams.get('email');
@@ -324,6 +325,11 @@ const categories = [
                     
                     {/* Settings Tab */}
                     <div id={`tab-settings-${server.id}`} class="tab-content hidden">
+                      <div class="p-4 bg-[#0a0a0f] rounded-lg mb-6">
+                        <h3 class="font-bold text-white mb-4">Server Media</h3>
+                        <ServerMediaUploader serverId={server.id} />
+                      </div>
+                      
                       <div class="p-4 bg-[#0a0a0f] rounded-lg">
                         <h3 class="font-bold text-white mb-4">Server Settings</h3>
                         <div class="space-y-4">
