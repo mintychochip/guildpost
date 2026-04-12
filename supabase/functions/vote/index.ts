@@ -406,6 +406,7 @@ export async function handleVote(request: Request): Promise<Response> {
     }
     
     // Record the vote with full tracking
+    const voteTime = new Date().toISOString();
     const { data: vote, error: voteError } = await supabase
       .from('votes')
       .insert([{
@@ -420,10 +421,25 @@ export async function handleVote(request: Request): Promise<Response> {
         is_tor: ipCheck.isTor,
         fraud_score: ipCheck.fraudScore,
         user_agent: request.headers.get('user-agent'),
-        created_at: new Date().toISOString()
+        created_at: voteTime
       }])
       .select()
       .single();
+    
+    // Also record to vote_history for time-series analytics
+    const { error: historyError } = await supabase
+      .from('vote_history')
+      .insert([{
+        server_id: serverId,
+        username: username.toLowerCase(),
+        ip_address: clientIP,
+        voted_at: voteTime
+      }]);
+    
+    if (historyError) {
+      console.error('Failed to record vote history:', historyError);
+      // Don't fail the vote if history recording fails
+    }
     
     if (voteError) {
       throw voteError;
