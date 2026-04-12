@@ -281,6 +281,74 @@ import Footer from '../components/Footer.astro';
           </p>
         </div>
 
+        <!-- Server Banner Upload -->
+        <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+          <label class="block text-white font-medium mb-2 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Server Banner <span class="text-[#8892b0] font-normal">(Optional)</span>
+          </label>
+          <p class="text-sm text-[#8892b0] mb-3">
+            Upload a banner image to make your server stand out. Recommended size: 1200×400px.
+          </p>
+          
+          <div id="banner-upload-zone" class="border-2 border-dashed border-[#2a2a3a] rounded-lg p-6 text-center hover:border-[#00f5d4] transition-colors cursor-pointer relative">
+            <input 
+              type="file" 
+              id="banner-input" 
+              name="banner"
+              accept="image/jpeg,image/png,image/webp"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div id="banner-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2 text-[#8892b0]">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" x2="12" y1="3" y2="15"/>
+              </svg>
+              <p class="text-[#8892b0]">Drop banner image or click to upload</p>
+              <p class="text-xs text-[#8892b0] mt-1">JPG, PNG, WebP · Max 2MB</p>
+            </div>
+            <div id="banner-preview" class="hidden">
+              <img id="banner-preview-img" src="" alt="Banner preview" class="max-h-32 mx-auto rounded-lg" />
+              <button type="button" id="remove-banner" class="mt-2 text-sm text-[#ff3864] hover:underline">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Server Icon Upload -->
+        <div class="p-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg">
+          <label class="block text-white font-medium mb-2 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f5d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/></svg>
+            Server Icon <span class="text-[#8892b0] font-normal">(Optional)</span>
+          </label>
+          <p class="text-sm text-[#8892b0] mb-3">
+            Square icon for server cards. Recommended: 256×256px. PNG with transparency preferred.
+          </p>
+          
+          <div id="icon-upload-zone" class="border-2 border-dashed border-[#2a2a3a] rounded-lg p-4 text-center hover:border-[#00f5d4] transition-colors cursor-pointer relative max-w-[200px]">
+            <input 
+              type="file" 
+              id="icon-input" 
+              name="icon"
+              accept="image/jpeg,image/png"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div id="icon-placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2 text-[#8892b0]">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <p class="text-sm text-[#8892b0]">Upload icon</p>
+              <p class="text-xs text-[#8892b0]">PNG, JPG · Max 500KB</p>
+            </div>
+            <div id="icon-preview" class="hidden">
+              <img id="icon-preview-img" src="" alt="Icon preview" class="h-16 w-16 mx-auto rounded-lg object-cover" />
+              <button type="button" id="remove-icon" class="mt-2 text-sm text-[#ff3864] hover:underline">Remove</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Submit Button -->
         <div class="pt-4">
           <button 
@@ -459,6 +527,39 @@ import Footer from '../components/Footer.astro';
       return;
     }
     
+    // Upload media if files were selected
+    const serverId = data?.[0]?.id;
+    if (serverId) {
+      const mediaFormData = new FormData();
+      const bannerFile = bannerInput?.files?.[0];
+      const iconFile = iconInput?.files?.[0];
+      
+      if (bannerFile) {
+        mediaFormData.append('banner', bannerFile);
+      }
+      if (iconFile) {
+        mediaFormData.append('icon', iconFile);
+      }
+      
+      // Only upload if there are files
+      if (bannerFile || iconFile) {
+        try {
+          const mediaResponse = await fetch(`/api/servers/${serverId}/media`, {
+            method: 'POST',
+            body: mediaFormData
+          });
+          
+          if (!mediaResponse.ok) {
+            console.error('Media upload failed:', await mediaResponse.text());
+            // Don't fail the submission if media upload fails
+          }
+        } catch (mediaError) {
+          console.error('Media upload error:', mediaError);
+          // Don't fail the submission if media upload fails
+        }
+      }
+    }
+    
     // Show success
     form.classList.add('hidden');
     successMsg.classList.remove('hidden');
@@ -478,5 +579,103 @@ import Footer from '../components/Footer.astro';
     btnIcon.classList.remove('hidden');
     btnSpinner.classList.add('hidden');
     charCount.textContent = '0';
+    
+    // Reset media previews
+    resetBannerPreview();
+    resetIconPreview();
   };
+  
+  // Banner upload preview
+  const bannerInput = document.getElementById('banner-input') as HTMLInputElement;
+  const bannerPreview = document.getElementById('banner-preview');
+  const bannerPreviewImg = document.getElementById('banner-preview-img') as HTMLImageElement;
+  const bannerPlaceholder = document.getElementById('banner-placeholder');
+  const removeBannerBtn = document.getElementById('remove-banner');
+  
+  function resetBannerPreview() {
+    if (bannerInput) bannerInput.value = '';
+    bannerPreview?.classList.add('hidden');
+    bannerPlaceholder?.classList.remove('hidden');
+  }
+  
+  bannerInput?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      // Validate file size (2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        errorMsg.classList.remove('hidden');
+        errorText.textContent = 'Banner image must be less than 2MB';
+        resetBannerPreview();
+        return;
+      }
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        errorMsg.classList.remove('hidden');
+        errorText.textContent = 'Banner must be JPG, PNG, or WebP';
+        resetBannerPreview();
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (bannerPreviewImg) bannerPreviewImg.src = e.target?.result as string;
+        bannerPreview?.classList.remove('hidden');
+        bannerPlaceholder?.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  removeBannerBtn?.addEventListener('click', () => {
+    resetBannerPreview();
+  });
+  
+  // Icon upload preview
+  const iconInput = document.getElementById('icon-input') as HTMLInputElement;
+  const iconPreview = document.getElementById('icon-preview');
+  const iconPreviewImg = document.getElementById('icon-preview-img') as HTMLImageElement;
+  const iconPlaceholder = document.getElementById('icon-placeholder');
+  const removeIconBtn = document.getElementById('remove-icon');
+  
+  function resetIconPreview() {
+    if (iconInput) iconInput.value = '';
+    iconPreview?.classList.add('hidden');
+    iconPlaceholder?.classList.remove('hidden');
+  }
+  
+  iconInput?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      // Validate file size (500KB max)
+      if (file.size > 500 * 1024) {
+        errorMsg.classList.remove('hidden');
+        errorText.textContent = 'Icon image must be less than 500KB';
+        resetIconPreview();
+        return;
+      }
+      
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png'];
+      if (!validTypes.includes(file.type)) {
+        errorMsg.classList.remove('hidden');
+        errorText.textContent = 'Icon must be JPG or PNG';
+        resetIconPreview();
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (iconPreviewImg) iconPreviewImg.src = e.target?.result as string;
+        iconPreview?.classList.remove('hidden');
+        iconPlaceholder?.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  removeIconBtn?.addEventListener('click', () => {
+    resetIconPreview();
+  });
 </script>
