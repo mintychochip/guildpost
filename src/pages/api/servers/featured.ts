@@ -43,7 +43,7 @@ export const GET: APIRoute = async ({ url }) => {
     if (!response.ok) {
       // Fallback: query servers directly if RPC fails
       const fallbackResponse = await fetch(
-        `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner_url,icon_url&status=eq.online&or=(tier.eq.elite,and(tier.eq.premium,featured_until.gt.${new Date().toISOString()}))&order=tier.desc,vote_count.desc&limit=${limit}`,
+        `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&status=eq.online&or=(tier.eq.elite,and(tier.eq.premium,featured_until.gt.${new Date().toISOString()}))&order=tier.desc,vote_count.desc&limit=${limit}`,
         {
           headers: {
             'apikey': supabaseKey,
@@ -61,7 +61,7 @@ export const GET: APIRoute = async ({ url }) => {
       // If no featured servers, return top voted online servers as fallback
       if (!servers || servers.length === 0) {
         const topServersResponse = await fetch(
-          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner_url,icon_url&status=eq.online&order=vote_count.desc,players_online.desc&limit=${limit}`,
+          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&status=eq.online&order=vote_count.desc,players_online.desc&limit=${limit}`,
           {
             headers: {
               'apikey': supabaseKey,
@@ -110,7 +110,7 @@ export const GET: APIRoute = async ({ url }) => {
       const idsParam = serverIds.map((id: string) => `id.eq.${id}`).join(',');
       
       const detailsResponse = await fetch(
-        `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner_url,icon_url&or=(${idsParam})`,
+        `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&or=(${idsParam})`,
         {
           headers: {
             'apikey': supabaseKey,
@@ -147,7 +147,7 @@ export const GET: APIRoute = async ({ url }) => {
     
     // If no featured servers, return fallback
     const fallbackResponse = await fetch(
-      `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner_url,icon_url&status=eq.online&order=vote_count.desc,players_online.desc&limit=${limit}`,
+      `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&status=eq.online&order=vote_count.desc,players_online.desc&limit=${limit}`,
       {
         headers: {
           'apikey': supabaseKey,

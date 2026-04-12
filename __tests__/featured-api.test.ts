@@ -63,8 +63,8 @@ describe('Featured Servers API', () => {
 
   it('should return enriched server data with banner and icon', () => {
     const content = fs.readFileSync(apiPath, 'utf-8');
-    expect(content).toContain('banner_url');
-    expect(content).toContain('icon_url');
+    expect(content).toContain('banner');
+    expect(content).toContain('icon');
   });
 
   it('should handle empty featured list with top voted fallback', () => {
