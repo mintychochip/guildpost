@@ -103,6 +103,7 @@ const isOnline = server.status === 'online';
     ? `${server.description.substring(0, 120)}... Join ${server.name} at ${server.ip}:${server.port}. ${server.players_online || 0} players online, ${server.vote_count || 0} votes.`
     : `Join ${server.name} Minecraft server at ${server.ip}:${server.port}. ${server.players_online || 0}/${server.max_players || '?'} players online. Live stats, reviews, and voting. Find your next multiplayer home.`}
   url={`https://guildpost.tech/servers/${id}`}
+  image={server.banner || server.icon || 'https://guildpost.tech/og-image-new.png'}
   keywords={`${server.name}, minecraft server, ${(server.tags || []).join(', ')}, ${server.ip}, multiplayer, ${server.status === 'online' ? 'online' : 'offline'}`}
 >
   <!-- Schema.org Structured Data for GameServer -->
