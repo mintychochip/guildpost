@@ -8,6 +8,7 @@ import Footer from '../components/Footer.astro';
 import AnimatedStat from '../components/AnimatedStat.astro';
 import GemmaWizard from '../components/GemmaWizard.astro';
 import SchemaOrg from '../components/SchemaOrg.astro';
+import FeaturedServers from '../components/FeaturedServers.astro';
 
 // Server count - fetched at build time from Supabase
 // Falls back to known count if fetch fails
@@ -15,9 +16,12 @@ const supabaseUrl = import.meta.env.SUPABASE_URL || import.meta.env.PUBLIC_SUPAB
 const supabaseKey = import.meta.env.SUPABASE_SERVICE_KEY || import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
 let serverCount = 9911; // Known count as of April 2026
+let featuredServers = [];
+let isFeaturedFallback = false;
 
 try {
   if (supabaseUrl && supabaseKey) {
+    // Fetch server count
     const response = await fetch(
       `${supabaseUrl}/rest/v1/servers?select=count`,
       {
@@ -34,9 +38,69 @@ try {
         serverCount = data[0].count;
       }
     }
+
+    // Fetch featured servers for homepage
+    const featuredResponse = await fetch(
+      `${supabaseUrl}/rest/v1/rpc/get_featured_servers`,
+      {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ limit_count: 6 })
+      }
+    );
+
+    if (featuredResponse.ok) {
+      const featuredData = await featuredResponse.json();
+      if (featuredData && featuredData.length > 0) {
+        // Enrich with full server data
+        const serverIds = featuredData.map((s: any) => s.id);
+        const idsParam = serverIds.map((id: string) => `id.eq.${id}`).join(',');
+        
+        const detailsResponse = await fetch(
+          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&or=(${idsParam})`,
+          {
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`
+            }
+          }
+        );
+        
+        if (detailsResponse.ok) {
+          const fullServers = await detailsResponse.json();
+          // Preserve featured order
+          featuredServers = featuredData.map((featured: any) => {
+            const full = fullServers.find((s: any) => s.id === featured.id);
+            return full || featured;
+          }).filter(Boolean);
+        }
+      }
+      
+      // If no featured servers, fall back to top voted
+      if (featuredServers.length === 0) {
+        const topServersResponse = await fetch(
+          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&status=eq.online&order=vote_count.desc,players_online.desc&limit=6`,
+          {
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`
+            }
+          }
+        );
+        
+        if (topServersResponse.ok) {
+          featuredServers = await topServersResponse.json();
+          isFeaturedFallback = true;
+        }
+      }
+    }
   }
 } catch (e) {
-  console.error('Failed to fetch server count:', e);
+  console.error('Failed to fetch data:', e);
 }
 
 // Ensure we always show a positive count
@@ -273,20 +337,7 @@ const gameCategories = [
     <!-- Featured Minecraft Servers -->
     <section class="px-4 py-16 border-t" style="border-color: var(--border-subtle);">
       <div class="max-w-6xl mx-auto">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <h2 class="text-2xl font-semibold" style="color: var(--text-primary);">Featured Servers</h2>
-            <span class="px-2 py-1 text-xs rounded-full" style="background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%); color: #000; font-weight: 600;">★ Premium</span>
-          </div>
-          <a href="/minecraft" class="flex items-center gap-1 text-sm hover:underline" style="color: var(--accent-primary);">
-            View all
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </div>
-        <p class="text-sm mb-6" style="color: var(--text-secondary);">Elite and premium tier servers highlighted by the community</p>
-        <div id="featured-servers" class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="col-span-full text-center py-12" style="color: var(--text-secondary);">Loading featured servers...</div>
-        </div>
+        <FeaturedServers servers={featuredServers} isFallback={isFeaturedFallback} />
       </div>
     </section>
 
@@ -332,104 +383,57 @@ const gameCategories = [
 </Layout>
 
 <script>
-  // Load featured servers from API
-  async function loadServers() {
-    try {
-      const response = await fetch('/api/servers/featured?limit=6');
-      if (!response.ok) throw new Error('Failed to load featured servers');
-      const data = await response.json();
-      const servers = data.servers || [];
-      const isFallback = data.is_fallback;
-      
-      const container = document.getElementById('featured-servers');
-      if (!servers.length) {
-        container.innerHTML = `<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">No servers found.</div>`;
-        return;
-      }
-      
-      // Tier badge styles
-      const getTierBadge = (tier) => {
-        if (tier === 'elite') {
-          return `<span class="px-1.5 py-0.5 text-xs rounded font-bold" style="background: linear-gradient(135deg, #ff3864 0%, #ff6b6b 100%); color: white;">ELITE</span>`;
-        } else if (tier === 'premium') {
-          return `<span class="px-1.5 py-0.5 text-xs rounded font-bold" style="background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%); color: #000;">PREMIUM</span>`;
-        }
-        return '';
-      };
-      
-      container.innerHTML = servers.slice(0, 6).map(server => `
-      <a href="/servers/${server.id}" class="block p-4 transition-all group gp-card-interactive relative overflow-hidden" 
-         style="background: rgba(30,41,59,0.3); border: 1px solid ${server.tier === 'elite' ? 'rgba(255,56,100,0.5)' : server.tier === 'premium' ? 'rgba(255,215,0,0.4)' : 'var(--border-subtle)'}; border-radius: var(--radius-lg); ${server.tier === 'elite' ? 'box-shadow: 0 0 20px rgba(255,56,100,0.1);' : server.tier === 'premium' ? 'box-shadow: 0 0 15px rgba(255,215,0,0.08);' : ''}">
-        ${server.tier === 'elite' ? '<div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #ff3864, #ff6b6b, #ff3864);"></div>' : ''}
-        <div class="flex items-start gap-3 mb-3">
-          ${server.icon ? `<img src="${server.icon}" alt="${server.name} Minecraft server icon logo" class="w-12 h-12 rounded-lg" style="background-color: var(--bg-tertiary);" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" /><div class="w-12 h-12 rounded-lg items-center justify-center hidden" style="background-color: var(--bg-tertiary);"><span style="color: var(--accent-primary);" class="text-xl">⛏</span></div>` : `<div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: var(--bg-tertiary);"><span style="color: var(--accent-primary);" class="text-xl">⛏</span></div>`}
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center gap-2">
-              <h3 class="font-medium truncate text-base group-hover:text-[var(--accent-primary)] transition-colors" style="color: var(--text-primary);">${server.name}</h3>
-              ${getTierBadge(server.tier)}
-            </div>
-            <p class="text-xs font-mono truncate" style="color: var(--text-tertiary);">${server.ip}:${server.port}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3 mb-2 text-xs">
-          <span class="flex items-center gap-1" style="color: ${server.status === 'online' ? 'var(--success)' : 'var(--text-muted)'};">
-            <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${server.status === 'online' ? 'var(--success)' : 'var(--text-muted)'}"></span>
-            ${server.players_online || 0}/${server.max_players || '?'}
-          </span>
-          <span class="flex items-center gap-1" style="color: var(--accent-secondary);">▲ ${server.vote_count || 0}</span>
-        </div>
-        <div class="flex flex-wrap gap-1">
-          ${(server.tags || []).slice(0, 3).map(tag => `<span class="text-xs px-2 py-0.5 rounded" style="background-color: rgba(30,41,59,0.5); color: var(--text-secondary); border-radius: var(--radius-sm);">${tag}</span>`).join('')}
-        </div>
-      </a>
-    `).join('');
-    
-    // Show fallback notice if using fallback
-    if (isFallback) {
-      const section = document.querySelector('#featured-servers').closest('section');
-      const notice = document.createElement('p');
-      notice.className = 'text-xs mt-4 text-center';
-      notice.style.cssText = 'color: var(--text-tertiary);';
-      notice.innerHTML = '📌 Currently showing top voted servers. <a href="/premium" style="color: var(--accent-primary);">Upgrade to get featured here</a>';
-      section.appendChild(notice);
-    }
-    } catch (err) {
-      console.error('Failed to load featured servers:', err);
-      document.getElementById('featured-servers').innerHTML = '<div class="col-span-full text-center py-12" style="color: var(--text-secondary);">Failed to load servers.</div>';
-    }
-  }
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadServers);
-  } else {
-    loadServers();
-  }
-  
-  // Surprise Me
-  document.getElementById('surprise-btn')?.addEventListener('click', async () => {
+  // Surprise me - random server button
+  async function initSurpriseMe() {
     const btn = document.getElementById('surprise-btn');
-    btn.innerHTML = `<svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Finding...`;
+    if (!btn) return;
     
-    try {
-      const response = await fetch('/api/servers');
-      if (!response.ok) throw new Error('Failed to load servers');
-      const data = await response.json();
-      // Handle both {servers: [...]} and flat array responses
-      const servers = Array.isArray(data) ? data : (data.servers || []);
+    btn.addEventListener('click', async () => {
+      btn.innerHTML = `
+        <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+        Finding a random server...
+      `;
       
-      if (!servers.length) {
-        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
-        return;
+      try {
+        const response = await fetch('/api/servers/random');
+        if (!response.ok) throw new Error('Failed to fetch random server');
+        const data = await response.json();
+        
+        if (data.server && data.server.id) {
+          window.location.href = `/servers/${data.server.id}`;
+        } else {
+          throw new Error('Invalid server data');
+        }
+      } catch (err) {
+        console.error('Random server error:', err);
+        btn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          Couldn't find a server — try again
+        `;
+        setTimeout(() => {
+          btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+            Surprise me — Random Server
+          `;
+        }, 3000);
       }
-      
-      const randomServer = servers[Math.floor(Math.random() * servers.length)];
-      window.location.href = `/servers/${randomServer.id}`;
-    } catch (err) {
-      console.error('Surprise me failed:', err);
-      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> Surprise me — Random Server`;
-    }
+    });
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    initSurpriseMe();
   });
-  
 </script>
 
 <style>
