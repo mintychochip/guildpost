@@ -154,6 +154,18 @@ const VALID_CATEGORIES = [
             <option value="RU">🇷🇺 Russia</option>
             <option value="JP">🇯🇵 Japan</option>
           </select>
+          
+          <!-- Rating Filter -->
+          <select 
+            id="rating-select"
+            class="px-4 py-3 bg-[#0a0a0f] border border-[#2a2a3a] rounded-lg text-white focus:outline-none focus:border-[#00f5d4]"
+          >
+            <option value="all">All Ratings</option>
+            <option value="4">⭐⭐⭐⭐ 4+ Stars</option>
+            <option value="3">⭐⭐⭐ 3+ Stars</option>
+            <option value="2">⭐⭐ 2+ Stars</option>
+            <option value="1">⭐ 1+ Star</option>
+          </select>
         </div>
         
         <!-- Active Filters -->
@@ -277,6 +289,7 @@ const VALID_CATEGORIES = [
   const versionSelect = document.getElementById('version-select');
   const platformSelect = document.getElementById('platform-select');
   const countrySelect = document.getElementById('country-select');
+  const ratingSelect = document.getElementById('rating-select');
   const serversList = document.getElementById('servers-list');
   const serverCount = document.getElementById('server-count');
   const paginationInfo = document.getElementById('pagination-info');
@@ -360,6 +373,13 @@ const VALID_CATEGORIES = [
     const countryFilter = countrySelect.value;
     if (countryFilter !== 'all') {
       results = results.filter(s => s.country_code === countryFilter);
+    }
+    
+    // Rating filter
+    const ratingFilter = ratingSelect.value;
+    if (ratingFilter !== 'all') {
+      const minRating = parseFloat(ratingFilter);
+      results = results.filter(s => s.rating_average && s.rating_average >= minRating);
     }
     
     // Platform filter (edition)
@@ -612,6 +632,7 @@ const VALID_CATEGORIES = [
     versionSelect.value = 'all';
     platformSelect.value = 'all';
     countrySelect.value = 'all';
+    ratingSelect.value = 'all';
     applyFilters();
     updateActiveFilters();
   };
@@ -629,6 +650,9 @@ const VALID_CATEGORIES = [
     if (countrySelect.value !== 'all') {
       const countryOption = countrySelect.options[countrySelect.selectedIndex];
       filters.push({ type: 'country', value: countryOption.text.replace(/[^\w\s]/g, '').trim() });
+    }
+    if (ratingSelect.value !== 'all') {
+      filters.push({ type: 'rating', value: `${ratingSelect.value}+ Stars` });
     }
     
     if (filters.length === 0) {
@@ -657,6 +681,7 @@ const VALID_CATEGORIES = [
   if (versionSelect) versionSelect.addEventListener('change', applyFilters);
   if (platformSelect) platformSelect.addEventListener('change', applyFilters);
   if (countrySelect) countrySelect.addEventListener('change', applyFilters);
+  if (ratingSelect) ratingSelect.addEventListener('change', applyFilters);
   
   if (prevPageBtn) prevPageBtn.addEventListener('click', () => {
     if (currentPage > 1) {
