@@ -17,6 +17,8 @@ interface Props {
     icon?: string;
     tags?: string[];
     tier?: string;
+    rating_average?: number;
+    rating_count?: number;
   }>;
   isFallback?: boolean;
 }
@@ -122,6 +124,15 @@ const formatPlayers = (online: number = 0, max: number = 0) => {
                 <h3 class="font-semibold text-white group-hover:text-[#00f5d4] transition-colors truncate">
                   {server.name}
                 </h3>
+                {/* Star rating display */}
+                {server.rating_average && server.rating_count && server.rating_count > 0 && (
+                  <div class="flex items-center gap-1 text-xs mb-1">
+                    <span class="text-yellow-400">
+                      {'★'.repeat(Math.round(server.rating_average))}{'☆'.repeat(5 - Math.round(server.rating_average))}
+                    </span>
+                    <span class="text-[#8892b0]">({server.rating_count})</span>
+                  </div>
+                )}
                 <p class="text-xs text-[#8892b0] font-mono truncate">
                   {server.ip}:{server.port}
                 </p>

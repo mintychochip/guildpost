@@ -61,7 +61,7 @@ try {
         const idsParam = serverIds.map((id: string) => `id.eq.${id}`).join(',');
         
         const detailsResponse = await fetch(
-          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&or=(${idsParam})`,
+          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon,rating_average,rating_count&or=(${idsParam})`,
           {
             headers: {
               'apikey': supabaseKey,
@@ -83,7 +83,7 @@ try {
       // If no featured servers, fall back to top voted
       if (featuredServers.length === 0) {
         const topServersResponse = await fetch(
-          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon&status=eq.online&order=vote_count.desc,players_online.desc&limit=6`,
+          `${supabaseUrl}/rest/v1/servers?select=id,name,ip,port,tier,vote_count,players_online,max_players,status,description,tags,version,banner,icon,rating_average,rating_count&status=eq.online&order=vote_count.desc,players_online.desc&limit=6`,
           {
             headers: {
               'apikey': supabaseKey,
