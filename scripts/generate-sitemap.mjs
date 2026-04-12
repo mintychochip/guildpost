@@ -43,7 +43,7 @@ async function generateSitemap() {
   // Fetch all server IDs
   const { data: servers, error } = await supabase
     .from('servers')
-    .select('id, updated_at');
+    .select('id, created_at');
   
   if (error) {
     console.error('❌ Error fetching servers:', error);
@@ -67,7 +67,7 @@ async function generateSitemap() {
       loc: `${BASE_URL}/servers/${server.id}`,
       changefreq: 'daily',
       priority: '0.9',
-      lastmod: server.updated_at || new Date().toISOString().split('T')[0]
+      lastmod: server.created_at || new Date().toISOString().split('T')[0]
     });
   });
   
