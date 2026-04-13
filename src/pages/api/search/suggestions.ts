@@ -30,7 +30,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
     });
   }
 
-  const env = locals?.runtime?.env || {};
+  const env = locals?.runtime?.env || process.env || {};
   const apiKey = env.GEMINI_API_KEY;
 
   if (!apiKey) {
@@ -77,6 +77,9 @@ Suggestions (JSON array only):`;
       const match = content.match(/\[[\s\S]*?\]/);
       if (match) {
         suggestions = JSON.parse(match[0]);
+      }
+      if (!suggestions.length) {
+        suggestions = generateFallbackSuggestions(query);
       }
     } catch (e) {
       suggestions = generateFallbackSuggestions(query);
