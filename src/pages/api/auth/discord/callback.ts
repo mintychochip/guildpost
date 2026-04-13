@@ -105,7 +105,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 
     if (!verifiedGuild) {
       // Redirect back with error - GuildPost bot not in any server
-      const errorUrl = new URL(redirectUrl);
+      const errorUrl = new URL(redirectUrl, url.origin);
       errorUrl.searchParams.set('discord_error', 'bot_not_in_server');
       errorUrl.searchParams.set('discord_message', 'Please invite the GuildPost bot to your Discord server first');
       
@@ -122,7 +122,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     const hasPermission = checkAdminPermission(verifiedGuild);
 
     if (!hasPermission) {
-      const errorUrl = new URL(redirectUrl);
+      const errorUrl = new URL(redirectUrl, url.origin);
       errorUrl.searchParams.set('discord_error', 'no_permission');
       errorUrl.searchParams.set('discord_message', 'You need Administrator or Manage Server permissions');
       
@@ -139,7 +139,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     await storeDiscordVerification(serverId, verifiedGuild);
 
     // Redirect back to success page
-    const successUrl = new URL(redirectUrl);
+    const successUrl = new URL(redirectUrl, url.origin);
     successUrl.searchParams.set('discord_verified', 'true');
     successUrl.searchParams.set('discord_guild', verifiedGuild.name);
     
