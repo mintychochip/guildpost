@@ -250,7 +250,8 @@ export const POST: APIRoute = async ({ request, locals }: { request: Request, lo
       // Fallback to basic responses if no API key
       return new Response(JSON.stringify({ 
         response: 'I understand you\'re looking for a server! Try being more specific about the gamemode (survival, pvp, skyblock, etc.) and any features you want.',
-        readyToSearch: false 
+        readyToSearch: false,
+        ai: false
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
@@ -278,10 +279,10 @@ export const POST: APIRoute = async ({ request, locals }: { request: Request, lo
     }
 
     return new Response(JSON.stringify({
-      response: cleanResponse || 'Tell me more about what kind of server you want!',
+      response: cleanResponse || `Tell me more about what kind of server you want! Try mentioning features like "survival", "pvp", or specific game modes.`,
       readyToSearch,
       searchQuery,
-      results: searchResults?.results,
+      results: searchResults?.results || null,
       searchType: 'hybrid',
       ai: true
     }), {
@@ -293,7 +294,8 @@ export const POST: APIRoute = async ({ request, locals }: { request: Request, lo
     return new Response(JSON.stringify({ 
       response: 'I\'m having trouble connecting to my AI brain right now. Try searching with keywords like "survival", "pvp", or "skyblock"!',
       readyToSearch: false,
-      ai: false
+      ai: false,
+      error: err instanceof Error ? err.message : 'Unknown error'
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
