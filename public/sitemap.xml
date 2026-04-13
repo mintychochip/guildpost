@@ -4304,6 +4304,12 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://guildpost.tech/servers/mass-1775932145074-3357</loc>
+    <lastmod>2026-04-11T18:29:05.074+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://guildpost.tech/servers/mass-1775932145058-912</loc>
     <lastmod>2026-04-11T18:29:05.058+00:00</lastmod>
     <changefreq>daily</changefreq>
@@ -6075,12 +6081,6 @@
   </url>
   <url>
     <loc>https://guildpost.tech/servers/mass-1775932145060-1203</loc>
-    <lastmod>2026-04-11T18:29:05.06+00:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://guildpost.tech/servers/mass-1775932145060-1211</loc>
     <lastmod>2026-04-11T18:29:05.06+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
