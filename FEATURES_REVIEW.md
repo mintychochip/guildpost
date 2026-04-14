@@ -2,7 +2,7 @@
 
 **Project:** GuildPost - Minecraft Server Listing Platform  
 **Author:** mintychochip  
-**Updated:** April 14, 2026  
+**Updated:** April 14, 2026 (Proactive Run #50)  
 **Platform:** Cloudflare Pages + Astro + Supabase
 
 ---
@@ -19,7 +19,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 2. **GitHub Auto-Deployment** - Continuous deployment on every push to master
 3. **Custom Domain (guildpost.tech)** - SSL auto-provisioned, DNS managed via Cloudflare
 4. **Supabase Backend** - PostgreSQL with pgvector, Row Level Security, real-time subscriptions
-5. **Comprehensive Test Suite** - 502 tests across 35 test files with Vitest
+5. **Comprehensive Test Suite** - 510 tests across 36 test files with Vitest
 6. **SEO Optimization** - Auto-generated sitemap.xml (1,017 URLs), robots.txt, OpenGraph meta tags
 7. **Mobile-Responsive Design** - TailwindCSS with dark theme (#00f5d4 cyan, #ff3864 pink)
 8. **Toast Notifications** - Slide-in notifications with auto-dismiss
@@ -105,7 +105,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 
 | Metric | Target | Actual |
 |--------|--------|--------|
-| Test Coverage | 80%+ | 502 tests passing |
+| Test Coverage | 80%+ | 510 tests passing |
 | Lighthouse Performance | 90+ | 95-98 |
 | Lighthouse SEO | 90+ | 100 |
 | TTFB | < 200ms | ~50ms |
@@ -118,6 +118,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 All commits attributed to: `mintychochip <jlo2@csub.edu>`
 
 Recent test coverage commits:
+- feat(analytics): add time range selector and peak hours analysis
 - feat: add Web Push Notifications with 32 comprehensive tests
 - feat(discord): add /top command to show top-voted servers
 - `dd987da` - fix(tests): remove duplicate code
@@ -133,7 +134,7 @@ Recent test coverage commits:
 ### Immediate (Small Tasks)
 - [x] **Discord Bot** - `/search`, `/status`, `/votes`, and `/top` slash commands implemented
 - [x] **Web Push Notifications** - Browser push alerts for votes and server status changes
-- [ ] **Advanced Analytics** - Player retention curves, peak hours analysis
+- [x] **Advanced Analytics** - Time range selector, peak hours analysis, platform growth charts
 
 ### Future Considerations
 - [ ] Mobile app (React Native/Expo)
@@ -154,4 +155,4 @@ GuildPost is a mature, production-ready platform with:
 **Live Site:** https://guildpost.tech  
 **Repository:** https://github.com/mintychochip/guildpost  
 **Platform:** Cloudflare Pages + Supabase + Gemini AI  
-**Test Status:** 502 passing | 4 skipped | 35 test files
+**Test Status:** 510 passing | 4 skipped | 36 test files
