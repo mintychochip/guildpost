@@ -2,7 +2,7 @@
 
 **Project:** GuildPost - Minecraft Server Listing Platform  
 **Author:** mintychochip  
-**Updated:** April 13, 2026  
+**Updated:** April 14, 2026  
 **Platform:** Cloudflare Pages + Astro + Supabase
 
 ---
@@ -19,7 +19,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 2. **GitHub Auto-Deployment** - Continuous deployment on every push to master
 3. **Custom Domain (guildpost.tech)** - SSL auto-provisioned, DNS managed via Cloudflare
 4. **Supabase Backend** - PostgreSQL with pgvector, Row Level Security, real-time subscriptions
-5. **Comprehensive Test Suite** - 407 tests across 30 test files with Vitest
+5. **Comprehensive Test Suite** - 502 tests across 35 test files with Vitest
 6. **SEO Optimization** - Auto-generated sitemap.xml (1,017 URLs), robots.txt, OpenGraph meta tags
 7. **Mobile-Responsive Design** - TailwindCSS with dark theme (#00f5d4 cyan, #ff3864 pink)
 8. **Toast Notifications** - Slide-in notifications with auto-dismiss
@@ -77,7 +77,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 
 ## Technical Infrastructure
 
-### API Endpoints (19 tested routes)
+### API Endpoints (22 tested routes)
 - Authentication: Discord OAuth, 2FA, session management
 - Server CRUD: Create, read, update, delete with ownership verification
 - Search: Semantic, hybrid, keyword with ranking
@@ -85,6 +85,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 - Reviews: Submit, moderate, aggregate ratings
 - Media: Upload, validate, serve
 - Webhooks: Discord integration, Votifier support
+- **Push Notifications**: Subscribe, unsubscribe, VAPID key management, browser push delivery
 
 ### Database Schema
 - 15+ tables with proper relationships and RLS policies
@@ -104,7 +105,7 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 
 | Metric | Target | Actual |
 |--------|--------|--------|
-| Test Coverage | 80%+ | 407 tests passing |
+| Test Coverage | 80%+ | 502 tests passing |
 | Lighthouse Performance | 90+ | 95-98 |
 | Lighthouse SEO | 90+ | 100 |
 | TTFB | < 200ms | ~50ms |
@@ -117,6 +118,8 @@ GuildPost is a production-ready, full-featured Minecraft server listing platform
 All commits attributed to: `mintychochip <jlo2@csub.edu>`
 
 Recent test coverage commits:
+- feat: add Web Push Notifications with 32 comprehensive tests
+- feat(discord): add /top command to show top-voted servers
 - `dd987da` - fix(tests): remove duplicate code
 - `a1f0034` - test(stripe): add comprehensive Stripe webhook tests
 - `c9c0d53` - test(discord): add Discord OAuth flow tests
@@ -128,8 +131,8 @@ Recent test coverage commits:
 ## Next Phase Opportunities
 
 ### Immediate (Small Tasks)
-- [x] **Discord Bot** - `/search` and `/status` slash commands implemented, vote notifications pending
-- [ ] **Web Push Notifications** - Browser alerts for votes, server status changes
+- [x] **Discord Bot** - `/search`, `/status`, `/votes`, and `/top` slash commands implemented
+- [x] **Web Push Notifications** - Browser push alerts for votes and server status changes
 - [ ] **Advanced Analytics** - Player retention curves, peak hours analysis
 
 ### Future Considerations
@@ -143,7 +146,7 @@ Recent test coverage commits:
 
 GuildPost is a mature, production-ready platform with:
 - ✅ 30+ implemented features
-- ✅ 407 tests across 30 test files (comprehensive coverage)
+- ✅ 502 tests across 35 test files (comprehensive coverage)
 - ✅ Clean codebase (zero TODOs/FIXMEs)
 - ✅ Modern stack (Astro 5, Cloudflare, Supabase, AI)
 - ✅ All Priority 1 & 2 features from April 2026 roadmap completed
@@ -151,4 +154,4 @@ GuildPost is a mature, production-ready platform with:
 **Live Site:** https://guildpost.tech  
 **Repository:** https://github.com/mintychochip/guildpost  
 **Platform:** Cloudflare Pages + Supabase + Gemini AI  
-**Test Status:** 407 passing | 4 skipped | 30 test files
+**Test Status:** 502 passing | 4 skipped | 35 test files

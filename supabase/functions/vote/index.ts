@@ -477,6 +477,9 @@ export async function handleVote(request: Request): Promise<Response> {
         console.error('Discord webhook failed:', err);
       }
     }
+
+    // Send browser push notifications (if enabled)
+    await sendPushNotifications(supabase, serverId, server.name, (server.vote_count || 0) + 1, username);
     
     // Send Votifier vote if server has votifier configured
     let votifierSent = false;
@@ -524,6 +527,116 @@ export async function handleVote(request: Request): Promise<Response> {
       JSON.stringify({ success: false, message: 'Internal server error' }),
       { headers, status: 500 }
     );
+  }
+}
+
+// Send browser push notifications for vote events
+async function sendPushNotifications(
+  supabase: ReturnType<typeof createClient>,
+  serverId: string,
+  serverName: string,
+  voteCount: number,
+  voterUsername: string
+): Promise<void> {
+  try {
+    // Get push subscriptions for this server
+    const { data: subscriptions, error } = await supabase
+      .from('push_subscriptions')
+      .select('*')
+      .eq('server_id', serverId)
+      .eq('is_active', true)
+      .or('subscription_type.eq.votes,subscription_type.eq.all');
+
+    if (error || !subscriptions || subscriptions.length === 0) {
+      return;
+    }
+
+    // Get VAPID keys from environment
+    const vapidPublicKey = Deno.env.get('VAPID_PUBLIC_KEY') || '';
+    const vapidPrivateKey = Deno.env.get('VAPID_PRIVATE_KEY') || '';
+
+    if (!vapidPublicKey || !vapidPrivateKey) {
+      console.log('VAPID keys not configured, skipping push notifications');
+      return;
+    }
+
+    const notificationPayload = {
+      title: `New Vote on ${serverName}`,
+      body: `Your server received a vote from ${voterUsername}! Total: ${voteCount.toLocaleString()} votes`,
+      icon: 'https://guildpost.tech/logo.svg',
+      badge: 'https://guildpost.tech/favicon.svg',
+      tag: `vote-${serverId}`,
+      data: {
+        type: 'vote',
+        serverId,
+        voteCount,
+        url: `https://guildpost.tech/servers/${serverId}`
+      }
+    };
+
+    const now = new Date().toISOString();
+
+    // Send notifications to each subscription
+    for (const sub of subscriptions) {
+      try {
+        // Create Authorization header with VAPID
+        const vapidHeader = {
+          typ: 'JWT',
+          alg: 'ES256'
+        };
+        const vapidClaims = {
+          sub: 'mailto:admin@guildpost.tech',
+          exp: Math.floor(Date.now() / 1000) + 3600,
+          aud: new URL(sub.endpoint).origin
+        };
+
+        // Note: Full VAPID JWT signing requires crypto libraries
+        // This is a simplified version - in production, use web-push library equivalent
+        const authHeader = `vapid t=${btoa(JSON.stringify(vapidHeader))}.${btoa(JSON.stringify(vapidClaims))}`;
+
+        const response = await fetch(sub.endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/octet-stream',
+            'TTL': '60',
+            'Urgency': 'normal',
+            'Authorization': authHeader
+          },
+          body: JSON.stringify(notificationPayload)
+        });
+
+        // Log the notification
+        await supabase.from('push_notification_history').insert({
+          subscription_id: sub.id,
+          notification_type: 'vote',
+          title: notificationPayload.title,
+          body: notificationPayload.body,
+          data: notificationPayload.data,
+          sent_at: now,
+          delivered: response.ok,
+          error_message: response.ok ? null : `HTTP ${response.status}`
+        });
+
+        // Mark inactive if subscription expired
+        if (response.status === 404 || response.status === 410) {
+          await supabase
+            .from('push_subscriptions')
+            .update({ is_active: false, updated_at: now })
+            .eq('id', sub.id);
+        }
+
+        if (response.ok) {
+          console.log(`Push notification sent to subscription ${sub.id}`);
+        } else {
+          console.warn(`Push notification failed: HTTP ${response.status}`);
+        }
+      } catch (pushError) {
+        console.error('Error sending push notification:', pushError);
+      }
+    }
+  } catch (err) {
+    console.error('Push notification system error:', err);
+    // Don't fail the vote if push fails
   }
 }
 

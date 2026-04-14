@@ -1,0 +1,342 @@
+---
+// Push Notification Toggle Component
+// Allows users to enable/disable browser push notifications for votes and server status
+
+interface Props {
+  serverId?: number;  // If provided, notifications are for this server (server owner)
+  class?: string;
+}
+
+const { serverId, class: className = '' } = Astro.props;
+---
+
+<div class={`relative ${className}`}>
+  <button 
+    id="push-toggle-btn"
+    class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent-primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+    aria-label="Push notifications"
+    disabled
+  >
+    <span id="push-icon">🔕</span>
+    <span id="push-text" class="text-sm hidden sm:inline">Notifications</span>
+    <span id="push-badge" class="hidden ml-1 px-1.5 py-0.5 text-xs bg-[var(--accent-secondary)] text-white rounded-full">OFF</span>
+  </button>
+  
+  <div 
+    id="push-menu" 
+    class="hidden absolute right-0 top-full mt-2 w-56 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg z-50 overflow-hidden"
+  >
+    <div class="p-3">
+      <p class="text-[var(--text-muted)] text-xs uppercase tracking-wider mb-2">Push Notifications</p>
+      
+      <div id="push-status" class="text-sm text-[var(--text-secondary)] mb-3">
+        Checking support...
+      </div>
+      
+      <div id="push-options" class="space-y-2 hidden">
+        <label class="flex items-center gap-2 text-[var(--text-primary)] text-sm cursor-pointer hover:text-[var(--accent-primary)] transition-colors">
+          <input type="radio" name="push-type" value="all" class="accent-[var(--accent-primary)]">
+          <span>All notifications</span>
+        </label>
+        
+        {serverId ? (
+          <>
+            <label class="flex items-center gap-2 text-[var(--text-primary)] text-sm cursor-pointer hover:text-[var(--accent-primary)] transition-colors">
+              <input type="radio" name="push-type" value="votes" class="accent-[var(--accent-primary)]">
+              <span>Votes only</span>
+            </label>
+            
+            <label class="flex items-center gap-2 text-[var(--text-primary)] text-sm cursor-pointer hover:text-[var(--accent-primary)] transition-colors">
+              <input type="radio" name="push-type" value="status" class="accent-[var(--accent-primary)]">
+              <span>Status changes only</span>
+            </label>
+          </>
+        ) : (
+          <label class="flex items-center gap-2 text-[var(--text-primary)] text-sm cursor-pointer hover:text-[var(--accent-primary)] transition-colors">
+            <input type="radio" name="push-type" value="votes" class="accent-[var(--accent-primary)]">
+            <span>Votes only</span>
+          </label>
+        )}
+        
+        <div class="border-t border-[var(--border-color)] my-2"></div>
+        
+        <button 
+          id="push-enable-btn"
+          class="w-full text-left px-3 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--bg-primary)] text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          Enable Notifications
+        </button>
+        
+        <button 
+          id="push-disable-btn"
+          class="hidden w-full text-left px-3 py-2 rounded-lg hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-sm transition-colors"
+        >
+          Disable Notifications
+        </button>
+      </div>
+      
+      <div id="push-unsupported" class="hidden">
+        <p class="text-sm text-[var(--text-secondary)]">
+          Your browser doesn't support push notifications.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ serverId }}>
+  // Push notification state
+  let isSupported = false;
+  let isSubscribed = false;
+  let vapidPublicKey = '';
+  let currentSubscription = null;
+  
+  const btn = document.getElementById('push-toggle-btn');
+  const menu = document.getElementById('push-menu');
+  const icon = document.getElementById('push-icon');
+  const text = document.getElementById('push-text');
+  const badge = document.getElementById('push-badge');
+  const status = document.getElementById('push-status');
+  const options = document.getElementById('push-options');
+  const unsupported = document.getElementById('push-unsupported');
+  const enableBtn = document.getElementById('push-enable-btn');
+  const disableBtn = document.getElementById('push-disable-btn');
+  
+  // Check for service worker support
+  function checkSupport() {
+    if (!('serviceWorker' in navigator)) {
+      status.textContent = 'Not supported in this browser';
+      unsupported.classList.remove('hidden');
+      return false;
+    }
+    
+    if (!('PushManager' in window)) {
+      status.textContent = 'Push notifications not available';
+      unsupported.classList.remove('hidden');
+      return false;
+    }
+    
+    if (!('Notification' in window)) {
+      status.textContent = 'Notifications not supported';
+      unsupported.classList.remove('hidden');
+      return false;
+    }
+    
+    return true;
+  }
+  
+  // Initialize
+  async function init() {
+    isSupported = checkSupport();
+    
+    if (!isSupported) {
+      btn.disabled = true;
+      return;
+    }
+    
+    btn.disabled = false;
+    
+    // Fetch VAPID public key
+    try {
+      const response = await fetch('/api/push/vapid-key');
+      if (response.ok) {
+        const data = await response.json();
+        vapidPublicKey = data.publicKey;
+      }
+    } catch (e) {
+      console.error('Failed to fetch VAPID key:', e);
+      status.textContent = 'Service temporarily unavailable';
+      return;
+    }
+    
+    // Check for existing subscription
+    await checkExistingSubscription();
+    
+    status.classList.add('hidden');
+    options.classList.remove('hidden');
+  }
+  
+  // Check if user already has a subscription
+  async function checkExistingSubscription() {
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.getSubscription();
+      
+      if (subscription) {
+        currentSubscription = subscription;
+        isSubscribed = true;
+        updateUI(true);
+      } else {
+        isSubscribed = false;
+        updateUI(false);
+      }
+    } catch (e) {
+      console.error('Error checking subscription:', e);
+      updateUI(false);
+    }
+  }
+  
+  // Update UI based on subscription state
+  function updateUI(subscribed) {
+    if (subscribed) {
+      icon.textContent = '🔔';
+      text.textContent = 'Notifications On';
+      badge.textContent = 'ON';
+      badge.classList.remove('hidden');
+      badge.classList.add('bg-[var(--accent-primary)]');
+      badge.classList.remove('bg-[var(--accent-secondary)]');
+      enableBtn.classList.add('hidden');
+      disableBtn.classList.remove('hidden');
+    } else {
+      icon.textContent = '🔕';
+      text.textContent = 'Notifications';
+      badge.textContent = 'OFF';
+      badge.classList.remove('hidden');
+      badge.classList.remove('bg-[var(--accent-primary)]');
+      badge.classList.add('bg-[var(--accent-secondary)]');
+      enableBtn.classList.remove('hidden');
+      disableBtn.classList.add('hidden');
+    }
+  }
+  
+  // Request permission and subscribe
+  async function subscribe() {
+    try {
+      // Request notification permission
+      const permission = await Notification.requestPermission();
+      
+      if (permission !== 'granted') {
+        alert('Notification permission denied. Please enable notifications in your browser settings.');
+        return;
+      }
+      
+      // Get selected subscription type
+      const selectedType = document.querySelector('input[name="push-type"]:checked')?.value || 'all';
+      
+      // Register service worker if not already registered
+      let registration = await navigator.serviceWorker.ready;
+      
+      if (!registration) {
+        registration = await navigator.serviceWorker.register('/service-worker.js');
+        await navigator.serviceWorker.ready;
+      }
+      
+      // Subscribe to push
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+      });
+      
+      // Send subscription to server
+      const response = await fetch('/api/push/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          endpoint: subscription.endpoint,
+          p256dh: arrayBufferToBase64(subscription.getKey('p256dh')),
+          auth: arrayBufferToBase64(subscription.getKey('auth')),
+          subscription_type: selectedType,
+          server_id: serverId
+        })
+      });
+      
+      if (response.ok) {
+        currentSubscription = subscription;
+        isSubscribed = true;
+        updateUI(true);
+        
+        // Show success notification
+        if (registration.active) {
+          registration.active.postMessage({
+            type: 'SHOW_NOTIFICATION',
+            title: 'Notifications Enabled',
+            body: 'You will now receive updates from GuildPost!'
+          });
+        }
+      } else {
+        const error = await response.json();
+        console.error('Failed to subscribe:', error);
+        alert('Failed to enable notifications. Please try again.');
+      }
+    } catch (e) {
+      console.error('Error subscribing:', e);
+      alert('An error occurred. Please try again.');
+    }
+  }
+  
+  // Unsubscribe
+  async function unsubscribe() {
+    try {
+      if (currentSubscription) {
+        await currentSubscription.unsubscribe();
+        
+        // Notify server
+        await fetch('/api/push/unsubscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            endpoint: currentSubscription.endpoint
+          })
+        });
+      }
+      
+      currentSubscription = null;
+      isSubscribed = false;
+      updateUI(false);
+    } catch (e) {
+      console.error('Error unsubscribing:', e);
+      alert('An error occurred while disabling notifications.');
+    }
+  }
+  
+  // Helper: Convert URL-safe base64 to Uint8Array
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    
+    return outputArray;
+  }
+  
+  // Helper: Convert ArrayBuffer to base64
+  function arrayBufferToBase64(buffer) {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+  
+  // Event listeners
+  btn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu?.classList.toggle('hidden');
+  });
+  
+  document.addEventListener('click', () => {
+    menu?.classList.add('hidden');
+  });
+  
+  enableBtn?.addEventListener('click', subscribe);
+  disableBtn?.addEventListener('click', unsubscribe);
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
