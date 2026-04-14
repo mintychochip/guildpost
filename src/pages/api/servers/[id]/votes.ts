@@ -1,5 +1,5 @@
 // API route for server vote analytics
-// Returns vote history for dashboard charts
+// Returns vote history for dashboard charts with extended time ranges
 
 import type { APIRoute } from 'astro';
 
@@ -9,10 +9,21 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+// Valid time ranges
+const VALID_HOURS = [24, 168, 720]; // 1 day, 7 days, 30 days
+
 export const GET: APIRoute = async ({ params, request, locals }) => {
   const { id } = params;
   const url = new URL(request.url);
-  const hours = parseInt(url.searchParams.get('hours') || '24', 10);
+  let hours = parseInt(url.searchParams.get('hours') || '24', 10);
+  
+  // Validate hours parameter
+  if (!VALID_HOURS.includes(hours)) {
+    hours = 24; // Default to 24h if invalid
+  }
+  
+  // Check for peak hours analysis request
+  const peakHours = url.searchParams.get('peak_hours') === 'true';
   
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
   
@@ -52,44 +63,74 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
     
     const votes = await response.json();
     
-    // Aggregate votes by hour
-    const hourlyData: { [hour: string]: number } = {};
+    // Calculate time grouping interval based on hours
+    // For 24h: group by hour
+    // For 168h (7d): group by 6-hour blocks
+    // For 720h (30d): group by day
+    let intervalHours = 1;
+    let formatLabel: (date: Date) => string;
     
-    // Initialize all hours with 0
-    for (let i = 0; i < hours; i++) {
-      const hourTime = new Date(endTime);
-      hourTime.setHours(hourTime.getHours() - (hours - 1 - i));
-      hourTime.setMinutes(0, 0, 0);
-      hourlyData[hourTime.toISOString().slice(0, 13)] = 0; // YYYY-MM-DDTHH format
+    if (hours <= 24) {
+      intervalHours = 1;
+      formatLabel = (d) => d.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+    } else if (hours <= 168) {
+      intervalHours = 6;
+      formatLabel = (d) => {
+        const day = d.toISOString().slice(0, 10);
+        const block = Math.floor(d.getUTCHours() / 6);
+        return `${day}-B${block}`;
+      };
+    } else {
+      intervalHours = 24;
+      formatLabel = (d) => d.toISOString().slice(0, 10); // YYYY-MM-DD
     }
     
-    // Count votes per hour
+    // Aggregate votes by time interval
+    const intervalData: { [key: string]: { count: number, startTime: Date } } = {};
+    
+    // Initialize all intervals with 0
+    const numIntervals = Math.ceil(hours / intervalHours);
+    for (let i = 0; i < numIntervals; i++) {
+      const intervalTime = new Date(endTime);
+      intervalTime.setHours(intervalTime.getHours() - ((numIntervals - 1 - i) * intervalHours));
+      intervalTime.setMinutes(0, 0, 0);
+      const key = formatLabel(intervalTime);
+      intervalData[key] = { count: 0, startTime: intervalTime };
+    }
+    
+    // Count votes per interval
     for (const vote of votes) {
-      const hour = vote.voted_at.slice(0, 13); // YYYY-MM-DDTHH format
-      if (hourlyData[hour] !== undefined) {
-        hourlyData[hour]++;
+      const voteDate = new Date(vote.voted_at);
+      const key = formatLabel(voteDate);
+      if (intervalData[key] !== undefined) {
+        intervalData[key].count++;
       }
     }
     
     // Convert to array format for charts
-    const chartData = Object.entries(hourlyData)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([hour, count]) => ({
-        hour: hour + ':00:00Z',
-        votes: count
+    const chartData = Object.entries(intervalData)
+      .sort(([a], [b]) => intervalData[a].startTime.getTime() - intervalData[b].startTime.getTime())
+      .map(([key, data]) => ({
+        hour: data.startTime.toISOString(),
+        label: hours <= 24 
+          ? data.startTime.getUTCHours() + ':00'
+          : hours <= 168
+            ? `${data.startTime.toISOString().slice(5, 10)} ${['00', '06', '12', '18'][Math.floor(data.startTime.getUTCHours() / 6)]}`
+            : data.startTime.toISOString().slice(5, 10),
+        votes: data.count
       }));
     
     // Calculate stats
     const totalVotes = votes.length;
-    const avgPerHour = hours > 0 ? Math.round((totalVotes / hours) * 10) / 10 : 0;
-    const maxInHour = Math.max(...Object.values(hourlyData), 0);
+    const avgPerHour = numIntervals > 0 ? Math.round((totalVotes / numIntervals) * 10) / 10 : 0;
+    const maxInHour = Math.max(...Object.values(intervalData).map(d => d.count), 0);
     
     // Get previous period comparison
     const prevStartTime = new Date(startTime);
     prevStartTime.setHours(prevStartTime.getHours() - hours);
     
     const prevResponse = await fetch(
-      `${supabaseUrl}/rest/v1/vote_history?server_id=eq.${id}&voted_at=gte.${prevStartTime.toISOString()}&voted_at=lt.${startTime.toISOString()}&select=id`,
+      `${supabaseUrl}/rest/v1/vote_history?server_id=eq.${id}&voted_at=gte.${prevStartTime.toISOString()}&voted_at=lt.${startTime.toISOString()}&select=voted_at`,
       {
         headers: {
           'apikey': supabaseKey,
@@ -110,17 +151,44 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
       }
     }
     
+    // Calculate peak hours if requested
+    let peakHoursData = null;
+    if (peakHours && votes.length > 0) {
+      // Group by hour of day (0-23)
+      const hourOfDayData: { [hour: number]: number } = {};
+      for (let i = 0; i < 24; i++) hourOfDayData[i] = 0;
+      
+      for (const vote of votes) {
+        const hour = new Date(vote.voted_at).getUTCHours();
+        hourOfDayData[hour]++;
+      }
+      
+      peakHoursData = Object.entries(hourOfDayData).map(([hour, count]) => ({
+        hour: parseInt(hour),
+        hour_label: `${hour}:00 - ${hour}:59 UTC`,
+        votes: count,
+        percentage: votes.length > 0 ? Math.round((count / votes.length) * 100) : 0
+      })).sort((a, b) => b.votes - a.votes);
+    }
+    
+    const responseData: any = {
+      server_id: id,
+      period: `${hours}h`,
+      period_label: hours === 24 ? '24 Hours' : hours === 168 ? '7 Days' : '30 Days',
+      total_votes: totalVotes,
+      avg_per_hour: avgPerHour,
+      max_per_hour: maxInHour,
+      trend_percent: trend,
+      chart_data: chartData,
+      generated_at: new Date().toISOString()
+    };
+    
+    if (peakHoursData) {
+      responseData.peak_hours = peakHoursData.slice(0, 6); // Top 6 peak hours
+    }
+    
     return new Response(
-      JSON.stringify({
-        server_id: id,
-        period: `${hours}h`,
-        total_votes: totalVotes,
-        avg_per_hour: avgPerHour,
-        max_per_hour: maxInHour,
-        trend_percent: trend,
-        chart_data: chartData,
-        generated_at: new Date().toISOString()
-      }),
+      JSON.stringify(responseData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
     

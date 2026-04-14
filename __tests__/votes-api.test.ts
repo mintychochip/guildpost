@@ -44,16 +44,17 @@ describe('Vote Analytics API', () => {
     expect(content).toContain('order=voted_at.asc');
   });
 
-  it('should aggregate votes by hour', () => {
+  it('should aggregate votes by time interval', () => {
     const content = fs.readFileSync(apiPath, 'utf-8');
-    expect(content).toContain('hourlyData');
+    expect(content).toContain('intervalData');
     expect(content).toContain('slice(0, 13)');
+    expect(content).toContain('formatLabel');
   });
 
-  it('should initialize all hours with zero votes', () => {
+  it('should initialize all intervals with zero votes', () => {
     const content = fs.readFileSync(apiPath, 'utf-8');
     expect(content).toContain('= 0');
-    expect(content).toMatch(/for.*hours.*i\+\+/);
+    expect(content).toMatch(/for.*i.*numIntervals/);
   });
 
   it('should calculate total votes', () => {
@@ -106,13 +107,14 @@ describe('Vote Analytics API', () => {
   it('should format chart data with ISO timestamps', () => {
     const content = fs.readFileSync(apiPath, 'utf-8');
     expect(content).toContain('chart_data');
-    expect(content).toContain(':00:00Z');
+    expect(content).toContain('toISOString');
+    expect(content).toContain('label');
   });
 
   it('should sort chart data chronologically', () => {
     const content = fs.readFileSync(apiPath, 'utf-8');
     expect(content).toContain('.sort(');
-    expect(content).toContain('localeCompare');
+    expect(content).toContain('getTime()');
   });
 
   it('should include generated_at timestamp', () => {

@@ -40,20 +40,22 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'test-server-123' },
-        request: { url: 'http://localhost/api/servers/test-server-123/players?hours=4' },
+        request: { url: 'http://localhost/api/servers/test-server-123/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
       expect(response.status).toBe(200);
       const data = await response.json();
       expect(data.server_id).toBe('test-server-123');
-      expect(data.period).toBe('4h');
+      expect(data.period).toBe('24h');
+      expect(data.period_label).toBe('24 Hours');
       expect(data.avg_players).toBe(43); // (45+50+35+40) / 4 = 42.5, rounded
       expect(data.max_players).toBe(50);
       expect(data.min_players).toBe(35);
       expect(data.total_samples).toBe(4);
       expect(data.chart_data).toBeDefined();
       expect(Array.isArray(data.chart_data)).toBe(true);
+      expect(data.chart_data.length).toBe(24); // 24 hour slots for 24h period
       expect(data.generated_at).toBeDefined();
     });
 
@@ -106,7 +108,7 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'test-server' },
-        request: { url: 'http://localhost/api/servers/test-server/players?hours=2' },
+        request: { url: 'http://localhost/api/servers/test-server/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
@@ -135,7 +137,7 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'new-server' },
-        request: { url: 'http://localhost/api/servers/new-server/players?hours=1' },
+        request: { url: 'http://localhost/api/servers/new-server/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
@@ -197,7 +199,7 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'test-server' },
-        request: { url: 'http://localhost/api/servers/test-server/players?hours=2' },
+        request: { url: 'http://localhost/api/servers/test-server/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
@@ -222,7 +224,7 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'empty-server' },
-        request: { url: 'http://localhost/api/servers/empty-server/players?hours=1' },
+        request: { url: 'http://localhost/api/servers/empty-server/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
@@ -233,7 +235,7 @@ describe('Players API', () => {
       expect(data.min_players).toBe(0);
       expect(data.total_samples).toBe(0);
       expect(data.trend_percent).toBe(0);
-      expect(data.chart_data).toHaveLength(1); // Still has chart slots for the hour
+      expect(data.chart_data).toHaveLength(24); // 24 hour slots for 24h period
     });
 
     it('should aggregate multiple pings per hour correctly', async () => {
@@ -260,12 +262,12 @@ describe('Players API', () => {
       const module = await import('../src/pages/api/servers/[id]/players.ts');
       const response = await module.GET({
         params: { id: 'test-server' },
-        request: { url: 'http://localhost/api/servers/test-server/players?hours=2' },
+        request: { url: 'http://localhost/api/servers/test-server/players?hours=24' },
         locals: { runtime: { env: { SUPABASE_SERVICE_KEY: 'test-key' } } },
       } as any);
 
       const data = await response.json();
-      // All pings are in hour 11, so chart should have entries for hours 10 and 11
+      // All pings are in hour 11, find that hour in 24h chart
       const hour11Data = data.chart_data.find((d: any) => d.hour.includes('T11:'));
       expect(hour11Data).toBeDefined();
       expect(hour11Data.avg_players).toBe(38); // (30+35+40+45)/4 = 37.5, rounded

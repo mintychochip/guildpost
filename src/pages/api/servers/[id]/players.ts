@@ -1,5 +1,5 @@
 // API route for server player count analytics
-// Returns player history for dashboard charts
+// Returns player history for dashboard charts with extended time ranges
 
 import type { APIRoute } from 'astro';
 
@@ -9,10 +9,21 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+// Valid time ranges
+const VALID_HOURS = [24, 168, 720]; // 1 day, 7 days, 30 days
+
 export const GET: APIRoute = async ({ params, request, locals }) => {
   const { id } = params;
   const url = new URL(request.url);
-  const hours = parseInt(url.searchParams.get('hours') || '24', 10);
+  let hours = parseInt(url.searchParams.get('hours') || '24', 10);
+  
+  // Validate hours parameter
+  if (!VALID_HOURS.includes(hours)) {
+    hours = 24; // Default to 24h if invalid
+  }
+  
+  // Check for peak hours analysis request
+  const peakHours = url.searchParams.get('peak_hours') === 'true';
 
   const supabaseUrl = 'https://wpxutsdbiampnxfgkjwq.supabase.co';
 
@@ -52,34 +63,64 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
 
     const pings = await response.json();
 
-    // Aggregate players by hour
-    const hourlyData: { [hour: string]: number[] } = {};
-
-    // Initialize all hours with empty arrays
-    for (let i = 0; i < hours; i++) {
-      const hourTime = new Date(endTime);
-      hourTime.setHours(hourTime.getHours() - (hours - 1 - i));
-      hourTime.setMinutes(0, 0, 0);
-      hourlyData[hourTime.toISOString().slice(0, 13)] = []; // YYYY-MM-DDTHH format
+    // Calculate time grouping interval based on hours
+    // For 24h: group by hour
+    // For 168h (7d): group by 6-hour blocks
+    // For 720h (30d): group by day
+    let intervalHours = 1;
+    let formatLabel: (date: Date) => string;
+    
+    if (hours <= 24) {
+      intervalHours = 1;
+      formatLabel = (d) => d.toISOString().slice(0, 13); // YYYY-MM-DDTHH
+    } else if (hours <= 168) {
+      intervalHours = 6;
+      formatLabel = (d) => {
+        const day = d.toISOString().slice(0, 10);
+        const block = Math.floor(d.getUTCHours() / 6);
+        return `${day}-B${block}`;
+      };
+    } else {
+      intervalHours = 24;
+      formatLabel = (d) => d.toISOString().slice(0, 10); // YYYY-MM-DD
     }
 
-    // Group player counts by hour
+    // Aggregate players by time interval
+    const intervalData: { [key: string]: { counts: number[], startTime: Date } } = {};
+
+    // Initialize all intervals with empty arrays
+    const numIntervals = Math.ceil(hours / intervalHours);
+    for (let i = 0; i < numIntervals; i++) {
+      const intervalTime = new Date(endTime);
+      intervalTime.setHours(intervalTime.getHours() - ((numIntervals - 1 - i) * intervalHours));
+      intervalTime.setMinutes(0, 0, 0);
+      const key = formatLabel(intervalTime);
+      intervalData[key] = { counts: [], startTime: intervalTime };
+    }
+
+    // Group player counts by interval
     for (const ping of pings) {
-      const hour = ping.created_at.slice(0, 13); // YYYY-MM-DDTHH format
-      if (hourlyData[hour] !== undefined && ping.players_online !== null) {
-        hourlyData[hour].push(ping.players_online);
+      const pingDate = new Date(ping.created_at);
+      const key = formatLabel(pingDate);
+      if (intervalData[key] !== undefined && ping.players_online !== null) {
+        intervalData[key].counts.push(ping.players_online);
       }
     }
 
-    // Calculate averages per hour
-    const chartData = Object.entries(hourlyData)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([hour, counts]) => ({
-        hour: hour + ':00:00Z',
-        avg_players: counts.length > 0 ? Math.round(counts.reduce((a, b) => a + b, 0) / counts.length) : 0,
-        max_players: counts.length > 0 ? Math.max(...counts) : 0,
-        min_players: counts.length > 0 ? Math.min(...counts) : 0,
-        sample_count: counts.length
+    // Calculate averages per interval
+    const chartData = Object.entries(intervalData)
+      .sort(([a], [b]) => intervalData[a].startTime.getTime() - intervalData[b].startTime.getTime())
+      .map(([key, data]) => ({
+        hour: data.startTime.toISOString(),
+        label: hours <= 24 
+          ? data.startTime.getUTCHours() + ':00'
+          : hours <= 168
+            ? `${data.startTime.toISOString().slice(5, 10)} ${['00', '06', '12', '18'][Math.floor(data.startTime.getUTCHours() / 6)]}`
+            : data.startTime.toISOString().slice(5, 10),
+        avg_players: data.counts.length > 0 ? Math.round(data.counts.reduce((a, b) => a + b, 0) / data.counts.length) : 0,
+        max_players: data.counts.length > 0 ? Math.max(...data.counts) : 0,
+        min_players: data.counts.length > 0 ? Math.min(...data.counts) : 0,
+        sample_count: data.counts.length
       }));
 
     // Calculate stats
@@ -120,18 +161,48 @@ export const GET: APIRoute = async ({ params, request, locals }) => {
       }
     }
 
+    // Calculate peak hours if requested
+    let peakHoursData = null;
+    if (peakHours && allPlayerCounts.length > 0) {
+      // Group by hour of day (0-23)
+      const hourOfDayData: { [hour: number]: number[] } = {};
+      for (let i = 0; i < 24; i++) hourOfDayData[i] = [];
+      
+      for (const ping of pings) {
+        const hour = new Date(ping.created_at).getUTCHours();
+        if (ping.players_online !== null) {
+          hourOfDayData[hour].push(ping.players_online);
+        }
+      }
+      
+      peakHoursData = Object.entries(hourOfDayData).map(([hour, counts]) => ({
+        hour: parseInt(hour),
+        hour_label: `${hour}:00 - ${hour}:59 UTC`,
+        avg_players: counts.length > 0 ? Math.round(counts.reduce((a, b) => a + b, 0) / counts.length) : 0,
+        max_players: counts.length > 0 ? Math.max(...counts) : 0,
+        total_samples: counts.length
+      })).sort((a, b) => b.avg_players - a.avg_players);
+    }
+
+    const responseData: any = {
+      server_id: id,
+      period: `${hours}h`,
+      period_label: hours === 24 ? '24 Hours' : hours === 168 ? '7 Days' : '30 Days',
+      avg_players: avgPlayers,
+      max_players: maxPlayers,
+      min_players: minPlayers,
+      total_samples: totalSamples,
+      trend_percent: trend,
+      chart_data: chartData,
+      generated_at: new Date().toISOString()
+    };
+    
+    if (peakHoursData) {
+      responseData.peak_hours = peakHoursData.slice(0, 6); // Top 6 peak hours
+    }
+
     return new Response(
-      JSON.stringify({
-        server_id: id,
-        period: `${hours}h`,
-        avg_players: avgPlayers,
-        max_players: maxPlayers,
-        min_players: minPlayers,
-        total_samples: totalSamples,
-        trend_percent: trend,
-        chart_data: chartData,
-        generated_at: new Date().toISOString()
-      }),
+      JSON.stringify(responseData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

@@ -303,18 +303,43 @@ const categories = [
                     
                     {/* Analytics Tab */}
                     <div id={`tab-analytics-${server.id}`} class="tab-content hidden">
-                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {/* Time Range Selector */}
+                      <div class="flex gap-2 mb-4">
+                        <button 
+                          class="time-range-btn px-3 py-1.5 bg-[#00f5d4] text-[#0a0a0f] rounded text-sm font-medium transition-colors" 
+                          data-server={server.id}
+                          data-range="24"
+                        >
+                          24 Hours
+                        </button>
+                        <button 
+                          class="time-range-btn px-3 py-1.5 bg-[#1a1a25] text-[#8892b0] rounded text-sm hover:bg-[#2a2a3a] transition-colors" 
+                          data-server={server.id}
+                          data-range="168"
+                        >
+                          7 Days
+                        </button>
+                        <button 
+                          class="time-range-btn px-3 py-1.5 bg-[#1a1a25] text-[#8892b0] rounded text-sm hover:bg-[#2a2a3a] transition-colors" 
+                          data-server={server.id}
+                          data-range="720"
+                        >
+                          30 Days
+                        </button>
+                      </div>
+
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
                         {/* Vote Analytics */}
                         <div class="p-4 bg-[#0a0a0f] rounded-lg">
                           <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-white">Vote Analytics (24h)</h3>
+                            <h3 class="font-bold text-white" id={`vote-title-${server.id}`}>Vote Analytics</h3>
                             <span id={`vote-trend-${server.id}`} class="text-xs"></span>
                           </div>
                           <div id={`vote-chart-${server.id}`} class="h-32 flex items-end gap-1">
                             <div class="col-span-full text-center text-[#8892b0] text-sm">Loading vote data...</div>
                           </div>
                           <div class="flex justify-between text-xs text-[#8892b0] mt-2">
-                            <span>24h ago</span>
+                            <span id={`vote-start-${server.id}`}>Start</span>
                             <span>Now</span>
                           </div>
                           <div id={`vote-stats-${server.id}`} class="mt-3 pt-3 border-t border-[#2a2a3a] text-xs text-[#8892b0]"></div>
@@ -323,17 +348,36 @@ const categories = [
                         {/* Player Analytics */}
                         <div class="p-4 bg-[#0a0a0f] rounded-lg">
                           <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-white">Player History (24h)</h3>
+                            <h3 class="font-bold text-white" id={`player-title-${server.id}`}>Player History</h3>
                             <span id={`player-trend-${server.id}`} class="text-xs"></span>
                           </div>
                           <div id={`player-chart-${server.id}`} class="h-32 flex items-end gap-1">
                             <div class="col-span-full text-center text-[#8892b0] text-sm">Loading player data...</div>
                           </div>
                           <div class="flex justify-between text-xs text-[#8892b0] mt-2">
-                            <span>24h ago</span>
+                            <span id={`player-start-${server.id}`}>Start</span>
                             <span>Now</span>
                           </div>
                           <div id={`player-stats-${server.id}`} class="mt-3 pt-3 border-t border-[#2a2a3a] text-xs text-[#8892b0]"></div>
+                        </div>
+                      </div>
+
+                      {/* Peak Hours Analysis */}
+                      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* Vote Peak Hours */}
+                        <div class="p-4 bg-[#0a0a0f] rounded-lg">
+                          <h3 class="font-bold text-white mb-4">🔥 Peak Vote Hours (UTC)</h3>
+                          <div id={`peak-votes-${server.id}`} class="space-y-2">
+                            <div class="text-[#8892b0] text-sm">Loading peak hours...</div>
+                          </div>
+                        </div>
+
+                        {/* Player Peak Hours */}
+                        <div class="p-4 bg-[#0a0a0f] rounded-lg">
+                          <h3 class="font-bold text-white mb-4">👥 Peak Player Hours (UTC)</h3>
+                          <div id={`peak-players-${server.id}`} class="space-y-2">
+                            <div class="text-[#8892b0] text-sm">Loading peak hours...</div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -591,32 +635,70 @@ const categories = [
     }
   });
 
+  // Time range state per server
+  const timeRangeState: { [serverId: string]: number } = {};
+
   // Load analytics data when analytics tab is clicked
   document.querySelectorAll('.tab-btn[data-tab="analytics"]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const serverId = btn.dataset.server;
+      // Default to 24h if not set
+      if (!timeRangeState[serverId]) {
+        timeRangeState[serverId] = 24;
+      }
+      await loadAnalytics(serverId);
+    });
+  });
+
+  // Time range button handlers
+  document.querySelectorAll('.time-range-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const serverId = btn.dataset.server;
+      const range = parseInt(btn.dataset.range, 10);
+      
+      // Update UI
+      document.querySelectorAll(`.time-range-btn[data-server="${serverId}"]`).forEach(b => {
+        b.classList.remove('bg-[#00f5d4]', 'text-[#0a0a0f]');
+        b.classList.add('bg-[#1a1a25]', 'text-[#8892b0]');
+      });
+      btn.classList.remove('bg-[#1a1a25]', 'text-[#8892b0]');
+      btn.classList.add('bg-[#00f5d4]', 'text-[#0a0a0f]');
+      
+      // Update state and reload
+      timeRangeState[serverId] = range;
       await loadAnalytics(serverId);
     });
   });
 
   async function loadAnalytics(serverId) {
-    // Load vote analytics
+    const hours = timeRangeState[serverId] || 24;
+    const periodLabel = hours === 24 ? '24 Hours' : hours === 168 ? '7 Days' : '30 Days';
+    
+    // Update titles
+    const voteTitle = document.getElementById(`vote-title-${serverId}`);
+    const playerTitle = document.getElementById(`player-title-${serverId}`);
+    if (voteTitle) voteTitle.textContent = `Vote Analytics (${periodLabel})`;
+    if (playerTitle) playerTitle.textContent = `Player History (${periodLabel})`;
+
+    // Load vote analytics with peak hours
     try {
-      const voteResponse = await fetch(`/api/servers/${serverId}/votes?hours=24`);
+      const voteResponse = await fetch(`/api/servers/${serverId}/votes?hours=${hours}&peak_hours=true`);
       if (voteResponse.ok) {
         const voteData = await voteResponse.json();
         renderVoteChart(serverId, voteData);
+        renderPeakVoteHours(serverId, voteData.peak_hours);
       }
     } catch (err) {
       console.error('Failed to load vote analytics:', err);
     }
 
-    // Load player analytics
+    // Load player analytics with peak hours
     try {
-      const playerResponse = await fetch(`/api/servers/${serverId}/players?hours=24`);
+      const playerResponse = await fetch(`/api/servers/${serverId}/players?hours=${hours}&peak_hours=true`);
       if (playerResponse.ok) {
         const playerData = await playerResponse.json();
         renderPlayerChart(serverId, playerData);
+        renderPeakPlayerHours(serverId, playerData.peak_hours);
       }
     } catch (err) {
       console.error('Failed to load player analytics:', err);
@@ -627,28 +709,37 @@ const categories = [
     const chartContainer = document.getElementById(`vote-chart-${serverId}`);
     const statsContainer = document.getElementById(`vote-stats-${serverId}`);
     const trendContainer = document.getElementById(`vote-trend-${serverId}`);
+    const startLabel = document.getElementById(`vote-start-${serverId}`);
 
     if (!chartContainer || !data.chart_data) return;
+
+    // Update start label
+    if (startLabel && data.chart_data.length > 0) {
+      const firstLabel = data.chart_data[0].label;
+      startLabel.textContent = firstLabel || 'Start';
+    }
 
     // Calculate max for scaling
     const maxVotes = Math.max(...data.chart_data.map(d => d.votes), 1);
 
-    // Render bars
+    // Render bars with new label format
     chartContainer.innerHTML = data.chart_data.map((d, i) => {
       const height = maxVotes > 0 ? (d.votes / maxVotes) * 100 : 0;
-      const hour = new Date(d.hour).getUTCHours();
+      const tooltip = d.label 
+        ? `${d.label} - ${d.votes} votes`
+        : `${d.hour} - ${d.votes} votes`;
       return `<div
         class="flex-1 bg-[#00f5d4]/40 hover:bg-[#00f5d4] transition-colors rounded-t cursor-pointer"
         style="height: ${Math.max(height, 5)}%"
-        title="${hour}:00 UTC - ${d.votes} votes"
+        title="${tooltip}"
       />`;
     }).join('');
 
     // Render stats
     if (statsContainer) {
       statsContainer.innerHTML = `
-        <span class="text-[#00f5d4]">${data.total_votes || 0} total votes</span> •
-        <span>${data.avg_per_hour || 0}/hour avg</span> •
+        <span class="text-[#00f5d4]">${data.total_votes || 0} total</span> •
+        <span>${data.avg_per_hour || 0}/interval avg</span> •
         <span>${data.max_per_hour || 0} peak</span>
       `;
     }
@@ -658,7 +749,8 @@ const categories = [
       const trend = data.trend_percent;
       const trendColor = trend > 0 ? '#10b981' : trend < 0 ? '#ef4444' : '#8892b0';
       const trendIcon = trend > 0 ? '↗' : trend < 0 ? '↘' : '→';
-      trendContainer.innerHTML = `<span style="color: ${trendColor}">${trendIcon} ${Math.abs(trend)}% vs last 24h</span>`;
+      const period = data.period_label || '24h';
+      trendContainer.innerHTML = `<span style="color: ${trendColor}">${trendIcon} ${Math.abs(trend)}% vs previous ${period}</span>`;
     }
   }
 
@@ -666,30 +758,38 @@ const categories = [
     const chartContainer = document.getElementById(`player-chart-${serverId}`);
     const statsContainer = document.getElementById(`player-stats-${serverId}`);
     const trendContainer = document.getElementById(`player-trend-${serverId}`);
+    const startLabel = document.getElementById(`player-start-${serverId}`);
 
     if (!chartContainer || !data.chart_data) return;
+
+    // Update start label
+    if (startLabel && data.chart_data.length > 0) {
+      const firstLabel = data.chart_data[0].label;
+      startLabel.textContent = firstLabel || 'Start';
+    }
 
     // Calculate max for scaling
     const maxPlayers = Math.max(...data.chart_data.map(d => d.max_players), 1);
 
-    // Render bars showing avg players (with max as hover)
+    // Render bars with new label format
     chartContainer.innerHTML = data.chart_data.map((d, i) => {
       const height = maxPlayers > 0 ? (d.avg_players / maxPlayers) * 100 : 0;
-      const hour = new Date(d.hour).getUTCHours();
+      const tooltip = d.label
+        ? `${d.label} - Avg: ${d.avg_players}, Max: ${d.max_players}`
+        : `Avg: ${d.avg_players}, Max: ${d.max_players}`;
       return `<div
         class="flex-1 bg-[#a855f7]/40 hover:bg-[#a855f7] transition-colors rounded-t cursor-pointer"
         style="height: ${Math.max(height, 5)}%"
-        title="${hour}:00 UTC - Avg: ${d.avg_players}, Max: ${d.max_players}, Min: ${d.min_players}"
+        title="${tooltip}"
       />`;
     }).join('');
 
     // Render stats
     if (statsContainer) {
       statsContainer.innerHTML = `
-        <span class="text-[#a855f7]">${data.avg_players || 0} avg players</span> •
+        <span class="text-[#a855f7]">${data.avg_players || 0} avg</span> •
         <span>${data.max_players || 0} max</span> •
-        <span>${data.min_players || 0} min</span> •
-        <span>${data.total_samples || 0} samples</span>
+        <span>${data.min_players || 0} min</span>
       `;
     }
 
@@ -698,7 +798,60 @@ const categories = [
       const trend = data.trend_percent;
       const trendColor = trend > 0 ? '#10b981' : trend < 0 ? '#ef4444' : '#8892b0';
       const trendIcon = trend > 0 ? '↗' : trend < 0 ? '↘' : '→';
-      trendContainer.innerHTML = `<span style="color: ${trendColor}">${trendIcon} ${Math.abs(trend)}% vs last 24h</span>`;
+      const period = data.period_label || '24h';
+      trendContainer.innerHTML = `<span style="color: ${trendColor}">${trendIcon} ${Math.abs(trend)}% vs previous ${period}</span>`;
     }
+  }
+
+  function renderPeakVoteHours(serverId, peakHours) {
+    const container = document.getElementById(`peak-votes-${serverId}`);
+    if (!container || !peakHours || peakHours.length === 0) {
+      if (container) container.innerHTML = '<div class="text-[#8892b0] text-sm">No vote data available for peak analysis</div>';
+      return;
+    }
+
+    const maxVotes = peakHours[0]?.votes || 1;
+    
+    container.innerHTML = peakHours.slice(0, 6).map((hour, i) => {
+      const percentage = maxVotes > 0 ? (hour.votes / maxVotes) * 100 : 0;
+      const rankColor = i === 0 ? '#ffd700' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#00f5d4';
+      return `
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold w-4" style="color: ${rankColor}">#${i + 1}</span>
+          <span class="text-[#8892b0] text-sm w-24">${hour.hour_label}</span>
+          <div class="flex-1 h-4 bg-[#1a1a25] rounded-full overflow-hidden">
+            <div class="h-full bg-[#00f5d4]/60 rounded-full transition-all" style="width: ${percentage}%"></div>
+          </div>
+          <span class="text-white text-sm font-bold w-8 text-right">${hour.votes}</span>
+          <span class="text-[#8892b0] text-xs w-10">${hour.percentage || Math.round((hour.votes / peakHours.reduce((a, b) => a + b.votes, 0)) * 100)}%</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderPeakPlayerHours(serverId, peakHours) {
+    const container = document.getElementById(`peak-players-${serverId}`);
+    if (!container || !peakHours || peakHours.length === 0) {
+      if (container) container.innerHTML = '<div class="text-[#8892b0] text-sm">No player data available for peak analysis</div>';
+      return;
+    }
+
+    const maxPlayers = peakHours[0]?.avg_players || 1;
+    
+    container.innerHTML = peakHours.slice(0, 6).map((hour, i) => {
+      const percentage = maxPlayers > 0 ? (hour.avg_players / maxPlayers) * 100 : 0;
+      const rankColor = i === 0 ? '#ffd700' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#a855f7';
+      return `
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-bold w-4" style="color: ${rankColor}">#${i + 1}</span>
+          <span class="text-[#8892b0] text-sm w-24">${hour.hour_label}</span>
+          <div class="flex-1 h-4 bg-[#1a1a25] rounded-full overflow-hidden">
+            <div class="h-full bg-[#a855f7]/60 rounded-full transition-all" style="width: ${percentage}%"></div>
+          </div>
+          <span class="text-white text-sm font-bold w-8 text-right">${hour.avg_players}</span>
+          <span class="text-[#8892b0] text-xs w-10">avg</span>
+        </div>
+      `;
+    }).join('');
   }
 </script>
