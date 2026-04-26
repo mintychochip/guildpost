@@ -2,6 +2,8 @@ import type { APIRoute } from 'astro';
 
 const SITE_URL = 'https://guildpost.tech';
 
+export const prerender = true;
+
 // Generate RSS feeds for servers at build time
 export async function getStaticPaths() {
   // Return empty - these will be generated on-demand by Cloudflare Functions

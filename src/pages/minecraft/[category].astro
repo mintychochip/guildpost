@@ -5,6 +5,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 
+export const prerender = true;
+
 // Pre-render all valid category pages
 export async function getStaticPaths() {
   // Valid game mode categories (not hosting platforms)

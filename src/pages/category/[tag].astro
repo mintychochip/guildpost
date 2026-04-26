@@ -5,6 +5,8 @@ import Header from '../../components/Header.astro';
 import SchemaOrg from '../../components/SchemaOrg.astro';
 import { categoryDescriptions } from '../../lib/seo';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const categories = [
     'pvp', 'survival', 'skyblock', 'factions', 'smp', 'minigames', 

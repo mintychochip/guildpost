@@ -17,8 +17,8 @@ supabase/migrations/
 # Build artifacts
 *.tar.gz
 
-# Cloudflare wrangler cache
-.wrangler/cache/
+# Cloudflare wrangler cache/state
+.wrangler/
 
 # Temporary debug scripts (one-off audit/debug tools)
 scripts/analyze-*.mjs
