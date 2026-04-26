@@ -19,7 +19,7 @@
     "discord:unregister": "node scripts/register-discord-commands.mjs --delete"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.2.0",
+    "@astrojs/cloudflare": "^13.2.1",
     "@supabase/supabase-js": "^2.39.0",
     "astro": "^6.1.9",
     "chart.js": "^4.5.1",
