@@ -6,7 +6,7 @@ Minecraft server listing platform with AI-powered search, server discovery, and 
 
 ## Tech Stack
 
-- **Framework:** Astro 5.x (SSR)
+- **Framework:** Astro 6.x (SSR)
 - **Platform:** Cloudflare Pages
 - **Database:** Supabase (PostgreSQL + pgvector)
 - **Styling:** TailwindCSS
