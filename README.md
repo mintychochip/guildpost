@@ -1,58 +1,75 @@
 # GuildPost
 
-Minecraft server listing platform with AI-powered search, server discovery, and community features.
+<p align="center">
+  <img src="https://img.shields.io/badge/Astro-5.0-black?style=flat-square&logo=astro&color=BC52EE" alt="Astro">
+  <img src="https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwindcss&color=06B6D4" alt="Tailwind">
+  <img src="https://img.shields.io/badge/Supabase-Database-green?style=flat-square&logo=supabase&color=3ECF8E" alt="Supabase">
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="License">
+</p>
 
-**Live Site:** https://guildpost.tech
+<p align="center">
+  <strong>Find Your Server. The ultimate directory for game servers.</strong>
+</p>
 
-## Tech Stack
+<p align="center">
+  <a href="https://guildpost.tech">Live Demo</a> •
+  <a href="#features">Features</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#development">Development</a>
+</p>
 
-- **Framework:** Astro 6.x (SSR)
-- **Platform:** Cloudflare Pages
-- **Database:** Supabase (PostgreSQL + pgvector)
-- **Styling:** TailwindCSS
-- **AI:** Gemini API (text-embedding-004) + Gemma 3 4B
+---
 
 ## Features
 
-### Core Platform
-- Cloudflare Pages SSR with Astro
-- GitHub auto-deployment
-- Custom domain (guildpost.tech)
-- Supabase backend with Row Level Security
+- **Server Discovery** — Browse 2,000+ Minecraft servers with advanced search and filtering
+- **Live Status** — Real-time player counts, latency checks, and online/offline status
+- **Community Rankings** — Vote-based server rankings with no pay-to-win placement
+- **Game Categories** — Support for Minecraft (PvP, Survival, Skyblock, Factions, SMP)
+- **Trending Servers** — See what's hot with daily trending and recently added servers
+- **Responsive Design** — Optimized for desktop, tablet, and mobile
+- **Cyberpunk Aesthetic** — Dark theme with neon accents and retro-futuristic UI
 
-### Server Discovery
-- AI semantic search (natural language queries)
-- Advanced filters & sorting
-- Category-based navigation (18 categories)
-- Real-time server status
-- Pagination
+---
 
-### User Features
-- Favorites/bookmarks
-- Server comparison (up to 4 servers)
-- Voting system with 24h cooldown
-- Social sharing (Twitter, Discord)
-- Related server recommendations
+## Tech Stack
 
-### Server Management
-- Server submission form
-- Votifier integration
-- Image scraping tools
-- Discord webhook notifications
-- SEO-optimized detail pages
+| Category | Technology |
+|----------|------------|
+| **Framework** | [Astro](https://astro.build) 5.0+ — Static site generation with Islands architecture |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com) 3.4+ — Utility-first CSS |
+| **Database** | [Supabase](https://supabase.com) — PostgreSQL + Realtime |
+| **Icons** | Lucide React |
+| **Deployment** | GitHub Pages / Static export |
 
-### AI Features
-- Semantic search with embeddings
-- AI search suggestions (Gemma 4B)
-- Intent-based query parsing
+---
 
 ## Quick Start
 
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
 ```bash
+# Clone the repository
+git clone https://github.com/mintychochip/guildpost.git
+cd guildpost
+
 # Install dependencies
 npm install
 
-# Development server
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your Supabase credentials
+```
+
+### Development
+
+```bash
+# Start development server
 npm run dev
 
 # Build for production
@@ -62,94 +79,56 @@ npm run build
 npm run preview
 ```
 
+The site is built for static export to GitHub Pages.
+
+---
+
 ## Project Structure
 
 ```
-src/
-├── components/       # Astro components (Header, ServerCards, etc.)
-├── layouts/         # Page layouts
-├── pages/           # Route pages
-│   ├── index.astro           # Homepage
-│   ├── minecraft.astro       # Server listing
-│   ├── minecraft/[category].astro  # Category pages
-│   ├── servers/[id].astro    # Server detail (SSR)
-│   ├── compare.astro         # Server comparison
-│   ├── favorites.astro       # User favorites
-│   ├── submit.astro          # Server submission
-│   └── api/                  # API endpoints
-├── scripts/         # Utility scripts
-└── supabase/        # Database migrations
-functions/           # Cloudflare Functions
-public/             # Static assets
-docs/               # Documentation
+guildpost/
+├── src/
+│   ├── components/     # Reusable Astro components
+│   ├── layouts/        # Page layouts
+│   ├── pages/          # Route pages
+│   └── styles/         # Global styles
+├── public/             # Static assets
+├── supabase/           # Database schema & migrations
+└── package.json
 ```
 
-## Environment Setup
+---
 
-### 1. Supabase
-- Create project at supabase.com
-- Run migrations in `supabase/migrations/`
-- Enable pgvector extension for semantic search
+## Brand Guidelines
 
-### 2. Cloudflare
-- Connect repo to Cloudflare Pages
-- Set environment variables:
-  - `SUPABASE_URL`
-  - `SUPABASE_SERVICE_KEY` (secret)
-  - `GEMINI_API_KEY` (secret)
-  - `CRON_SECRET` (secret)
+| Element | Value |
+|---------|-------|
+| Background | `#0a0a0f` |
+| Primary (Cyan) | `#00f5d4` |
+| Secondary (Pink) | `#ff3864` |
+| White | `#ffffff` |
+| Muted Text | `#a0a0b0` |
 
-### 3. Deploy Worker
-```bash
-wrangler login
-wrangler secret put SUPABASE_SERVICE_KEY
-wrangler secret put GEMINI_API_KEY
-wrangler secret put CRON_SECRET
-wrangler deploy
-```
+---
 
-## Key Files
+## Contributing
 
-| File | Purpose |
-|------|---------|
-| `astro.config.mjs` | Astro configuration (SSR, Cloudflare adapter) |
-| `wrangler.toml` | Cloudflare Worker config, cron triggers |
-| `tailwind.config.js` | TailwindCSS theme |
-| `supabase/migrations/` | Database schema |
-| `docs/` | Feature documentation |
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Documentation
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- `AI_FEATURES.md` - AI semantic search setup
-- `FEATURES_REVIEW.md` - Complete feature list
-- `VOTIFIER_SETUP.md` - Votifier integration guide
-- `SEMANTIC_SEARCH_SETUP.md` - Search configuration
-- `README_DASHBOARD_UPDATE.md` - Dashboard features
-- `docs/intent-search-design.md` - Intent search architecture
-
-## Development Notes
-
-- Commits must use: `mintychochip <jlo2@csub.edu>`
-- Pre-commit: `git config user.name "mintychochip" && git config user.email "jlo2@csub.edu"`
-- Uses `minecraft-server-util` (externalized in vite config)
-- Cron job pings servers every 5 minutes
-
-## Scripts
-
-```bash
-# Generate embeddings for existing servers
-node scripts/generate-embeddings.mjs
-
-# Scrape server images
-node scripts/scrape-images.mjs
-
-# Import scraped data
-node scripts/import-scraped-servers.mjs
-
-# Generate sitemap
-node scripts/generate-sitemap.mjs
-```
+---
 
 ## License
 
-MIT
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  Built for the community. Not for profit.
+</p>
