@@ -19,3 +19,7 @@ SUPABASE_URL = "https://wpxutsdbiampnxfgkjwq.supabase.co"
 # - STRIPE_WEBHOOK_SECRET
 
 # Cron polling is handled via external cron service calling /api/cron/ping
+
+# Assets binding must use a non-reserved name for Pages
+[assets]
+binding = "STATIC_ASSETS"
