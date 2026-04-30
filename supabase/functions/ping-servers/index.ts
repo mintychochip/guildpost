@@ -170,6 +170,56 @@ async function pingServer(ip: string, port: number, timeout: number = 5000): Pro
   });
 }
 
+// Send status change notification via internal API
+async function triggerStatusNotification(
+  supabase: ReturnType<typeof createClient>,
+  serverId: number,
+  previousStatus: string,
+  newStatus: string,
+  playerCount?: number
+): Promise<void> {
+  // Only notify on online -> offline transitions (downtime)
+  if (previousStatus === 'online' && newStatus === 'offline') {
+    try {
+      // Get server info for the notification
+      const { data: server } = await supabase
+        .from('servers')
+        .select('id, name')
+        .eq('id', serverId)
+        .single();
+
+      if (!server) return;
+
+      // Get active push subscriptions for this server
+      const { data: subscriptions } = await supabase
+        .from('push_subscriptions')
+        .select('*')
+        .eq('server_id', serverId)
+        .eq('is_active', true)
+        .or('subscription_type.eq.status,subscription_type.eq.all');
+
+      if (!subscriptions || subscriptions.length === 0) return;
+
+      // Store notification records for the edge function to pick up
+      const notifications = subscriptions.map(sub => ({
+        subscription_id: sub.id,
+        notification_type: 'status_change',
+        title: `${server.name} is offline`,
+        body: 'Your server has gone offline and is not responding to pings.',
+        data: { serverId, isOnline: false, url: `/servers/${serverId}` },
+        server_id: serverId
+      }));
+
+      // Insert into pending notifications table
+      await supabase.from('pending_notifications').insert(notifications);
+      
+      console.log(`Queued ${notifications.length} downtime notifications for server ${serverId}`);
+    } catch (err) {
+      console.error('Failed to queue status notification:', err);
+    }
+  }
+}
+
 // Main handler
 export async function pingServers(request: Request): Promise<Response> {
   const headers = {
@@ -183,10 +233,10 @@ export async function pingServers(request: Request): Promise<Response> {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    // Get servers to ping (limit to avoid timeouts)
+    // Get servers to ping (with current status to detect changes)
     const { data: servers, error: fetchError } = await supabase
       .from('servers')
-      .select('id, ip, port, last_ping_at')
+      .select('id, ip, port, status, last_ping_at')
       .order('last_ping_at', { ascending: true, nullsFirst: true })
       .limit(100); // Ping 100 servers per invocation
     
@@ -225,6 +275,10 @@ export async function pingServers(request: Request): Promise<Response> {
     
     // Batch update servers (use update with eq filter since upsert requires all not-null fields)
     for (const update of updates) {
+      // Get previous status before updating
+      const serverBefore = servers.find(s => s.id === update.id);
+      const previousStatus = serverBefore?.status || 'unknown';
+      
       const { error: updateError } = await supabase
         .from('servers')
         .update({
@@ -240,6 +294,17 @@ export async function pingServers(request: Request): Promise<Response> {
         
       if (updateError) {
         console.error(`Failed to update server ${update.id}:`, updateError);
+      } else {
+        // Check for status change and trigger notifications
+        if (previousStatus !== update.status) {
+          await triggerStatusNotification(
+            supabase,
+            update.id,
+            previousStatus,
+            update.status,
+            update.players_online
+          );
+        }
       }
     }
     
